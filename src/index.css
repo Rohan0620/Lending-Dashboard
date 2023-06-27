@@ -1,3 +1,41 @@
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+body {
+  margin: 0;
+  font-family: 'Poppins' !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.signin
+{
+  font-weight: 700;
+}
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.text-4xl\/\[35px\] {
+  font-size: 2.441rem;
+  line-height: 35px;
+}
+.text-2xl\/\[26px\] {
+  font-size: 1.563rem;
+  line-height: 26px;
+}
+
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

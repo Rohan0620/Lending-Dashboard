@@ -1,23 +1,24 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '../../routes/RouterConfig'
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Curecoin from "./curecoinHome.jpg";
 
 const Home = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate()
-
-    const changeDir = (dir) =>{
-        navigate(dir)
-    }
+  useEffect(() => {
+    setTimeout(() => {
+      navigate("/login");
+    }, 2000);
+  });
 
   return (
-    <div className='Home'>
-        <div className="text-xl text-[red]">
-            Hello Buddies
-        </div>
-        <button className={`bg-[#3498db] p-[10px] text-[white] rounded-md hover:bg-[red] hover:text-[#3498db]`} onClick={()=>{changeDir(ROUTES.About)}}>Go To About</button>
+    <div className="w-full h-[100vh] bg-blue">
+      <div className="flex flex-col w-full h-full justify-center items-center">
+        <img src={Curecoin} alt="curecoin" />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

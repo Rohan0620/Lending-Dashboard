@@ -1,25 +1,26 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import About from '../pages/About/About';
-import Home from '../pages/Home/Home';
-import { ROUTES } from './RouterConfig';
-
+import { BrowserRouter,Route,Routes } from 'react-router-dom'
+// import Home from '../pages/Home/Home'
+import Home from '../pages/Home/Home'
+import Auth from '../pages/auth/Auth'
+import Register from '../pages/auth/Register'
+import LenderInfo from '../pages/LenderInfo/Info'
+import LenderLocation from '../pages/LenderLocation/LenderLocation'
+import AddAccount from '../pages/addAccount/AddAccount'
 const Router = () => {
-
-    const RouteWithRole = ({ Element }) => {
-        return (
-          <>
-            <Element/>
-          </>
-        );
-      }
-
   return (
     <div>
+        <BrowserRouter>
         <Routes>
-            <Route exact path={ROUTES.Home} element={<RouteWithRole Element={Home} />}></Route>
-            <Route exact path={ROUTES.About} element={<RouteWithRole Element={About} />}></Route>
+            <Route exact path="/" element={<Home/>}/>
+            <Route exact path="/login" element={<Auth/>}/>
+            <Route exact path="/register" element={<Register/>}/>
+            <Route exact path="/addlenderinfo" element={<LenderInfo/>}/>
+            <Route exact path="/addlenderloc" element={<LenderLocation/>}/>
+            <Route exact path="/addaccount" element={<AddAccount/>}/>
+
         </Routes>
+        </BrowserRouter>
     </div>
   )
 }
