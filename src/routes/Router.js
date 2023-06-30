@@ -7,6 +7,7 @@ import Register from '../pages/auth/Register'
 import LenderInfo from '../pages/LenderInfo/Info'
 import LenderLocation from '../pages/LenderLocation/LenderLocation'
 import AddAccount from '../pages/addAccount/AddAccount'
+import ApprovedCust from '../pages/Approvedcustomer/ApprovedCust'
 const Router = () => {
   return (
     <div>
@@ -18,6 +19,7 @@ const Router = () => {
             <Route exact path="/addlenderinfo" element={<LenderInfo/>}/>
             <Route exact path="/addlenderloc" element={<LenderLocation/>}/>
             <Route exact path="/addaccount" element={<AddAccount/>}/>
+            <Route exact path='/approvedcustomer' element={<ApprovedCust/>}/>
 
         </Routes>
         </BrowserRouter>
