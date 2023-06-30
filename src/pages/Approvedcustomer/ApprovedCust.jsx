@@ -515,7 +515,6 @@ const ApprovedCust = () => {
               </span>
             </div>
           </Drawer>
-
       </div>
     </div>
   );
