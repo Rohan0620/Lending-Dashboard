@@ -179,25 +179,25 @@ const ApprovedCust = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 align-middle p-10 gap-5">
-        <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" onClick={handleClick}>
+        <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
             <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
               <img src={require("./user.png")} alt="user" />
             </div>
             <div className="flex flex-col justify-center items-center p-6 " >
               <span className="text-xl text-left font-semibold mr-auto">
-                John Doe
+                John Doe 23
               </span>
               <span className="text-lg">6376078722</span>
             </div>
             <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
                 <img src={require("./right.png")} alt="user" />
               </span>
               <span className="text-lg text-yellowgreen">Approved</span>
             </div>
           </div>
 
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" onClick={handleClick}>
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
             <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
               <img src={require("./user.png")} alt="user" />
             </div>
@@ -208,13 +208,13 @@ const ApprovedCust = () => {
               <span className="text-lg">6376078722</span>
             </div>
             <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto">
-                <img src={require("./right.png")} alt="user" />
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user"  />
               </span>
               <span className="text-lg text-yellowgreen">Approved</span>
             </div>
           </div>
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" onClick={handleClick}>
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
             <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
               <img src={require("./user.png")} alt="user" />
             </div>
@@ -225,7 +225,7 @@ const ApprovedCust = () => {
               <span className="text-lg">6376078722</span>
             </div>
             <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
                 <img src={require("./right.png")} alt="user" />
               </span>
               <span className="text-lg text-yellowgreen">Approved</span>
@@ -233,6 +233,85 @@ const ApprovedCust = () => {
           </div>
 
           {/* ------ */}
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto ">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+
+
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer onClick={handleClick}">
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+
+
+           <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+
+
           <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" onClick={handleClick}>
             <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
               <img src={require("./user.png")} alt="user" />
@@ -244,86 +323,7 @@ const ApprovedCust = () => {
               <span className="text-lg">6376078722</span>
             </div>
             <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto">
-                <img src={require("./right.png")} alt="user" />
-              </span>
-              <span className="text-lg text-yellowgreen">Approved</span>
-            </div>
-          </div>
-
-
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" onClick={handleClick}>
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
-            </div>
-            <div className="flex flex-col justify-center items-center p-6 " >
-              <span className="text-xl text-left font-semibold mr-auto">
-                John Doe
-              </span>
-              <span className="text-lg">6376078722</span>
-            </div>
-            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto">
-                <img src={require("./right.png")} alt="user" />
-              </span>
-              <span className="text-lg text-yellowgreen">Approved</span>
-            </div>
-          </div>
-
-
-
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" onClick={handleClick}>
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
-            </div>
-            <div className="flex flex-col justify-center items-center p-6 " >
-              <span className="text-xl text-left font-semibold mr-auto">
-                John Doe
-              </span>
-              <span className="text-lg">6376078722</span>
-            </div>
-            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto">
-                <img src={require("./right.png")} alt="user" />
-              </span>
-              <span className="text-lg text-yellowgreen">Approved</span>
-            </div>
-          </div>
-
-
-
-           <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" onClick={handleClick}>
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
-            </div>
-            <div className="flex flex-col justify-center items-center p-6 " >
-              <span className="text-xl text-left font-semibold mr-auto">
-                John Doe
-              </span>
-              <span className="text-lg">6376078722</span>
-            </div>
-            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto">
-                <img src={require("./right.png")} alt="user" />
-              </span>
-              <span className="text-lg text-yellowgreen">Approved</span>
-            </div>
-          </div>
-
-
-
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" onClick={handleClick}>
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
-            </div>
-            <div className="flex flex-col justify-center items-center p-6 " >
-              <span className="text-xl text-left font-semibold mr-auto">
-                John Doe
-              </span>
-              <span className="text-lg">6376078722</span>
-            </div>
-            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
                 <img src={require("./right.png")} alt="user" />
               </span>
               <span className="text-lg text-yellowgreen">Approved</span>
