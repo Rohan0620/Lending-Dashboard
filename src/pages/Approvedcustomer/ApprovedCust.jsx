@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../../components/Sidebar";
 import { Drawer } from "antd";
+import { Progress } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -509,10 +510,36 @@ const ApprovedCust = () => {
             </div>
 
 
-            <div className="flex flex-row ml-5 mt-3">
+            <div className="flex flex-col  ml-5 mt-3">
               <span className="text-4xl font-extrabold mt-4">
-                Credit Limit
+                Credit Limit 
               </span>
+              <span className="text-end mb-5 text-xl">Total Limit $ 42000 </span>
+            <Progress className="text-xl smt-4" type='line' percent={60} strokeColor='blue' strokeWidth={50} />
+            <div className="flex flex-row justify-between align-top">
+            <span className="text-xl smt-4">$0</span>
+            <span className="text-xl smt-4">$10000</span>
+            </div>
+
+            </div>
+
+            <div className="flex flex-col  ml-5 mt-3">
+            <span className="text-4xl font-extrabold mt-4">
+                Ongoing Loans
+            </span>
+            <div className="flex w-[100%] h-[70px] mt-5 border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                Loan ID-543478
+              </span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+             
+              <span className="text-lg text-red">Approved</span>
+            </div>
+          </div>
+
+
             </div>
           </Drawer>
       </div>
