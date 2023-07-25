@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import "./loans.css";
+import "./repay.css";
 import { Divider, Drawer } from "antd";
 
-const Loans = () => {
+const Repayment
+ = () => {
   const [selectClient, setSelectClient] = React.useState(false);
   const [showClientdDtails, setShowClientdDtails] = React.useState(false);
   const [showTreatments, setShowTreatments] = React.useState(false);
@@ -214,9 +215,9 @@ const Loans = () => {
                   <td>Loan ID</td>
                   <td >Name</td>
                   <td>Phone No</td>
-                  <td>Tensure</td>
                   <td>Amount</td>
                   <td>Date</td>
+                  <td>EMI No</td>
                   <td className="mr-4">Status</td>
                 </tr>
                 <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-5">
@@ -233,7 +234,7 @@ const Loans = () => {
                     </div>
                   </td> */}
                   <td>5000</td>
-                  <td>21 Jun 2022</td>
+                  <td>1</td>
                   <td className="text-yellowgreen">Settled</td>                
                 </tr>
                 <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
@@ -247,7 +248,7 @@ const Loans = () => {
 
                   
                   <td>5000</td>
-                  <td>21 Jun 2022</td>
+                  <td>4</td>
                   <td className="text-red mr-4">Pending</td>
                 </tr>
                 <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
@@ -261,7 +262,7 @@ const Loans = () => {
 
                   
                   <td>5000</td>
-                  <td>21 Jun 2022</td>
+                  <td>6</td>
                   <td className="text-yellowgreen">Settled</td>                
                 </tr>
                 <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
@@ -275,7 +276,7 @@ const Loans = () => {
 
                   
                   <td>5000</td>
-                  <td>21 Jun 2022</td>
+                  <td>3</td>
                   <td className="text-yellowgreen">Settled</td>                
                 </tr>
                 <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
@@ -289,7 +290,7 @@ const Loans = () => {
 
                   
                   <td>5000</td>
-                  <td>21 Jun 2022</td>
+                  <td>6</td>
                   <td className="text-yellowgreen">Settled</td>                
                 </tr>
                 <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
@@ -303,7 +304,7 @@ const Loans = () => {
 
                   
                   <td>5000</td>
-                  <td>21 Jun 2022</td>
+                  <td>4</td>
                   <td className="text-red mr-4">Pending</td>
                 </tr>
                 <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
@@ -317,7 +318,7 @@ const Loans = () => {
 
                   
                   <td>5000</td>
-                  <td>21 Jun 2022</td>
+                  <td>2</td>
                   <td className="text-red mr-4">Pending</td>
                 </tr>
               </tbody>
@@ -508,47 +509,37 @@ const Loans = () => {
             </span>
           </div>
           <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
+            <span className="ml-4 text-lg font-semibold">
             22 July 2023
             </span>
-            <span className='text-lg ml-auto mr-4 '>
+
+            <span className="mr-auto ml-6 text-lg font-semibold">
             ₹8333
             </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 August 2023
+            <span className='text-lg text-yellowgreen ml-auto mr-4 '>
+            Settled
             </span>
-          <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 September 2023
-            </span>
-          <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 October 2023
-            </span>
-          <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 November 2023
-            </span>
-            <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
+
           </div>
 
 
+          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+            <span className="ml-4 text-lg font-semibold">
+            22 July 2023
+            </span>
+
+            <span className="mr-auto ml-6 text-lg font-semibold">
+            ₹8333
+            </span>
+            <span className='text-lg text-red ml-auto mr-4 '>
+            Pending
+            </span>
+
+          </div>
+
+          
+
+{/* 
           <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
                 <Divider className="bg-blue mr-auto pt-0 " />
                 <div className="flex justify-end">
@@ -565,11 +556,11 @@ const Loans = () => {
                     <span className="text-xl font-bold">PROCEED</span>
                   </button>
                 </div>
-              </div>
+              </div> */}
 
           </Drawer>
 
-          <Drawer
+          {/* <Drawer
           placement="right"
           closable={false}
           onClose={onCloseCredits}
@@ -592,13 +583,14 @@ const Loans = () => {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-          </div>
+          </div> */}
+
           {/* <div className="block px-5 pt-10">
             <span className="text-4xl font-bold">Set Credit Limit</span>
           </div> */}
 
 
-
+{/* 
 <div className="flex flex-row ml-5 mt-3">
             <span className="text-4xl font-extrabold mt-4">
             Fund Account
@@ -644,7 +636,7 @@ const Loans = () => {
 
               
             </div>
-          </div>
+          </div> */}
 
 
           
@@ -656,7 +648,7 @@ const Loans = () => {
             
           </div> */}
  
-          <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
+          {/* <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
             <Divider className="bg-blue mr-auto pt-0 " />
             <div className="flex justify-end">
               <button
@@ -673,11 +665,11 @@ const Loans = () => {
               </button>
             </div>
           </div>
-        </Drawer>
+        </Drawer> */}
 
 
 
-        
+{/*         
         <Drawer
           placement="right"
           closable={false}
@@ -719,11 +711,11 @@ const Loans = () => {
           </div>
         </Drawer>
           
-      
+       */}
         </div>
       </div>
     </>
   );
 };
 
-export default Loans;
+export default Repayment;
