@@ -8,6 +8,9 @@ import LenderInfo from '../pages/LenderInfo/Info'
 import LenderLocation from '../pages/LenderLocation/LenderLocation'
 import AddAccount from '../pages/addAccount/AddAccount'
 import ApprovedCust from '../pages/Approvedcustomer/ApprovedCust'
+
+import Loans from '../pages/Loans/Loans'
+
 import PendingCustomer from '../pages/PendingCustomer/PendingCustomer'
 const Router = () => {
   return (
@@ -21,8 +24,9 @@ const Router = () => {
             <Route exact path="/addlenderloc" element={<LenderLocation/>}/>
             <Route exact path="/addaccount" element={<AddAccount/>}/>
             <Route exact path='/approvedcustomer' element={<ApprovedCust/>}/>
+            <Route exact path='/all_loans' element={<Loans/>}/>
+            <Route exact path='/pendingcust' element={<PendingCustomer/>}/>
             <Route exact path='/pendingcustomer' element={<PendingCustomer/>}/>
-
         </Routes>
         </BrowserRouter>
     </div>
