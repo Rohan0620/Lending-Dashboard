@@ -8,6 +8,7 @@ const PendingCustomer = () => {
   const [selectClient, setSelectClient] = useState(false);
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
+  
   const onClose = () => {
     setSelectClient(false);
     setShowApproved(false);
@@ -709,6 +710,7 @@ const PendingCustomer = () => {
             </div>
           </div>
         </Drawer>
+
         <Drawer
           placement="right"
           closable={false}
@@ -785,6 +787,8 @@ const PendingCustomer = () => {
             </div>
           </div>
         </Drawer>
+
+
         <Drawer
           placement="right"
           closable={false}
