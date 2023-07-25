@@ -27,7 +27,6 @@ const Router = () => {
             <Route exact path='/all_loans' element={<Loans/>}/>
             <Route exact path='/pendingcust' element={<PendingCustomer/>}/>
             <Route exact path='/pendingcustomer' element={<PendingCustomer/>}/>
-
         </Routes>
         </BrowserRouter>
     </div>
