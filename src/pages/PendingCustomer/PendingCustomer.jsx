@@ -6,27 +6,35 @@ import { Link } from "react-router-dom";
 
 const PendingCustomer = () => {
   const [selectClient, setSelectClient] = useState(false);
-  const [showTreatments, setShowTreatments] = useState(false);
-  const [showClientdDtails, setShowClientdDtails] = useState(false);
-  const handleClientDetails = () => {
-    setShowClientdDtails(true);
-    setSelectClient(false);
-  };
+  const [showCreditsLimit, setShowCreditsLimit] = useState(false);
+  const [showApproved, setShowApproved] = useState(false);
   const onClose = () => {
     setSelectClient(false);
+    setShowApproved(false);
+    setShowCreditsLimit(false);
   };
-  const onCloseClientDetails = () => {
-    setSelectClient(true);
-
-    setShowClientdDtails(false);
+  const handleApprove = () => {
+    setShowApproved(true);
+    setShowCreditsLimit(false);
   };
   const handleClick = () => {
     setSelectClient(!selectClient);
   };
+  const handleCredits = () => {
+    setShowCreditsLimit(true);
+    setSelectClient(false);
+  };
+  const onCloseCredits = () => {
+    setShowCreditsLimit(false);
+    setSelectClient(true);
+  };
+
   return (
     <div className="flex w-full font-Poppins">
-      <Sidebar />
-      <div className="container mt-[50px]">
+      <div>
+        <Sidebar />
+      </div>
+      <div className="container mt-[60px]">
         <div className="flex flex-row justify-around">
           <div className="flex text-black">
             {/* <span className="text-3xl font-bold text-left"></span> */}
@@ -188,16 +196,20 @@ const PendingCustomer = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 align-middle p-10 gap-5 ml-4">
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
+        <div className="grid grid-cols-2 align-middle p-5 pt-10 gap-5 ml-4">
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
             </div>
             <div className="flex flex-col justify-center items-center p-6 ">
               <span className="text-xl text-left font-semibold mr-auto">
-                John Doe 23
+                John Doe
               </span>
-              <span className="text-lg">6376078722</span>
+              <span className="text-lg text-left">6376078722</span>
             </div>
             <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
               <span
@@ -210,29 +222,13 @@ const PendingCustomer = () => {
             </div>
           </div>
 
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
-            </div>
-            <div className="flex flex-col justify-center items-center p-6 ">
-              <span className="text-xl text-left font-semibold mr-auto">
-                John Doe
-              </span>
-              <span className="text-lg">6376078722</span>
-            </div>
-            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span
-                className="text-right ml-auto cursor-pointer"
-                onClick={handleClick}
-              >
-                <img src={require("./right.png")} alt="user" />
-              </span>
-              <span className="text-lg text-red">Pending</span>
-            </div>
-          </div>
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
             </div>
             <div className="flex flex-col justify-center items-center p-6 ">
               <span className="text-xl text-left font-semibold mr-auto">
@@ -250,17 +246,19 @@ const PendingCustomer = () => {
               <span className="text-lg text-red">Pending</span>
             </div>
           </div>
-
-          {/* ------ */}
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
             </div>
             <div className="flex flex-col justify-center items-center p-6 ">
               <span className="text-xl text-left font-semibold mr-auto">
                 John Doe
               </span>
-              <span className="text-lg">6376078722</span>
+              <span className="text-lg text-left">6376078722</span>
             </div>
             <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
               <span
@@ -273,15 +271,19 @@ const PendingCustomer = () => {
             </div>
           </div>
 
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
             </div>
             <div className="flex flex-col justify-center items-center p-6 ">
-              <span className="text-xl text-left font-semibold mr-auto ">
+              <span className="text-xl text-left font-semibold mr-auto">
                 John Doe
               </span>
-              <span className="text-lg">6376078722</span>
+              <span className="text-lg text-left">6376078722</span>
             </div>
             <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
               <span
@@ -294,33 +296,19 @@ const PendingCustomer = () => {
             </div>
           </div>
 
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
             </div>
             <div className="flex flex-col justify-center items-center p-6 ">
               <span className="text-xl text-left font-semibold mr-auto">
                 John Doe
               </span>
-              <span className="text-lg">6376078722</span>
-            </div>
-            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto cursor-pointer onClick={handleClick}">
-                <img src={require("./right.png")} alt="user" />
-              </span>
-              <span className="text-lg text-red">Pending</span>
-            </div>
-          </div>
-
-          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
-            </div>
-            <div className="flex flex-col justify-center items-center p-6 ">
-              <span className="text-xl text-left font-semibold mr-auto">
-                John Doe
-              </span>
-              <span className="text-lg">6376078722</span>
+              <span className="text-lg text-left">6376078722</span>
             </div>
             <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
               <span
@@ -333,18 +321,119 @@ const PendingCustomer = () => {
             </div>
           </div>
 
-          <div
-            className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5"
-            onClick={handleClick}
-          >
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
             </div>
             <div className="flex flex-col justify-center items-center p-6 ">
               <span className="text-xl text-left font-semibold mr-auto">
                 John Doe
               </span>
-              <span className="text-lg">6376078722</span>
+              <span className="text-lg text-left">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span
+                className="text-right ml-auto cursor-pointer"
+                onClick={handleClick}
+              >
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-red">Pending</span>
+            </div>
+          </div>
+
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 ">
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg text-left">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span
+                className="text-right ml-auto cursor-pointer"
+                onClick={handleClick}
+              >
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-red">Pending</span>
+            </div>
+          </div>
+
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 ">
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg text-left">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span
+                className="text-right ml-auto cursor-pointer"
+                onClick={handleClick}
+              >
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-red">Pending</span>
+            </div>
+          </div>
+
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 ">
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg text-left">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span
+                className="text-right ml-auto cursor-pointer"
+                onClick={handleClick}
+              >
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-red">Pending</span>
+            </div>
+          </div>
+
+          <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
+            <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+              <img
+                src={require("./user.png")}
+                alt="user"
+                className="w-[75px]"
+              />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 ">
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg text-left">6376078722</span>
             </div>
             <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
               <span
@@ -396,7 +485,7 @@ const PendingCustomer = () => {
           <div className="flex flex-row ml-5 mt-3">
             <span className="text-4xl font-extrabold mt-4">Client Details</span>
           </div>
-          <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+          <div className="flex w-[600px] h-[510px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-6">
             <div className="flex flex-row w-full">
               <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
                 <img
@@ -413,8 +502,8 @@ const PendingCustomer = () => {
               </div>
 
               <div></div>
-              <div className="flex flex-col w-[30%] items-center justify-start mt-[3rem] ml-auto mr-[130px]">
-                <span className="text-[18px] text-left text-red font-semibold ml-auto mr-auto m-1">
+              <div className="flex flex-col w-[30%] items-center justify-start mt-[3rem] ml-auto pr-12">
+                <span className="text-[18px] text-left text-red font-semibold ml-auto m-1">
                   Pending
                 </span>
                 {/* <span className="text-lg font-normal  ml-auto mr-auto m-1">ABC Ground</span> */}
@@ -501,7 +590,7 @@ const PendingCustomer = () => {
               Employment Details
             </span>
           </div>
-          <div className="flex w-[600px] h-[200px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+          <div className="flex w-[600px] h-[220px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
             <div className="flex flex-col w-full mt-8">
               <div className="flex flex-row justify-around">
                 <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
@@ -533,11 +622,9 @@ const PendingCustomer = () => {
           </div>
 
           <div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-              Income Details
-            </span>
+            <span className="text-4xl font-extrabold mt-3">Income Details</span>
           </div>
-          <div className="flex w-[600px] h-[120px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+          <div className="flex w-[600px] h-[120px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-6">
             <div className="flex flex-col w-full mt-8">
               <div className="flex flex-row justify-around">
                 <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
@@ -559,69 +646,184 @@ const PendingCustomer = () => {
               </div>
             </div>
           </div>
-
-          <div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-              Documents
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
+          <div className="relative pb-[120px]">
+            <div className="flex flex-row ml-5 mt-3">
+              <span className="text-4xl font-extrabold mt-4">Documents</span>
+            </div>
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+              <span className="mr-auto ml-4 text-lg font-semibold">
                 PAN Card
-            </span>
-            <span className='ml-auto mr-4'>
+              </span>
+              <span className="ml-auto mr-4">
                 <img src={require("./arrow.png")} alt="arrow" />
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
+              </span>
+            </div>
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+              <span className="mr-auto ml-4 text-lg font-semibold">
                 Salary Slip
-            </span>
-            <span className='ml-auto mr-4'>
+              </span>
+              <span className="ml-auto mr-4">
                 <img src={require("./arrow.png")} alt="arrow" />
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
+              </span>
+            </div>
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+              <span className="mr-auto ml-4 text-lg font-semibold">
                 Bank Statement
-            </span>
-            <span className='ml-auto mr-4'>
+              </span>
+              <span className="ml-auto mr-4">
                 <img src={require("./arrow.png")} alt="arrow" />
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
+              </span>
+            </div>
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+              <span className="mr-auto ml-4 text-lg font-semibold">
                 Income Tax Return
-            </span>
-            <span className='ml-auto mr-4'>
+              </span>
+              <span className="ml-auto mr-4">
                 <img src={require("./arrow.png")} alt="arrow" />
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
+              </span>
+            </div>
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+              <span className="mr-auto ml-4 text-lg font-semibold">
                 Address Proof
-            </span>
-            <span className='ml-auto mr-4'>
+              </span>
+              <span className="ml-auto mr-4">
                 <img src={require("./arrow.png")} alt="arrow" />
-            </span>
+              </span>
+            </div>
           </div>
           <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
-                <Divider className="bg-blue mr-auto pt-0 " />
-                <div className="flex justify-end">
-                  <button
-                    className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-4"
-                    onClick={onClose}
-                  >
-                    <span className="text-xl font-bold">CANCEL</span>
-                  </button>
-                  <button
-                    className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
-                    // onClick={han}
-                  >
-                    <span className="text-xl font-bold">NEXT</span>
-                  </button>
+            <Divider className="bg-blue mr-auto pt-0 " />
+            <div className="flex justify-end">
+              <button
+                className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-4"
+                onClick={onClose}
+              >
+                <span className="text-xl font-bold">CANCEL</span>
+              </button>
+              <button
+                className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
+                onClick={handleCredits}
+              >
+                <span className="text-xl font-bold">NEXT</span>
+              </button>
+            </div>
+          </div>
+        </Drawer>
+        <Drawer
+          placement="right"
+          closable={false}
+          onClose={onCloseCredits}
+          open={showCreditsLimit}
+          key="right"
+          width={700}
+        >
+          <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
+            <svg
+              className="h-8 w-8 text-black cursor-pointer"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              onClick={onCloseCredits}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+          </div>
+          <div className="block px-5 pt-10">
+            <span className="text-4xl font-bold">Set Credit Limit</span>
+          </div>
+          <div className="container relative">
+            <div className="w-full ml-5 mt-6">
+              <div className="grid grid-cols-2 gap-5 overflow-hidden">
+                <div className="flex justify-center items-center h-[230px] w-[300px] border-1  border-none bg-lightBlue rounded-lg">
+                  <span className="text-3xl text-blue">&#8377;50,000</span>
+                </div>
+                <div className="flex justify-center items-center h-[230px] w-[300px] ml-[-15px] border-1 border-none bg-lightBlue rounded-lg">
+                  <span className="text-3xl text-blue">&#8377;100,000</span>
+                </div>
+                <div className="flex justify-center items-center h-[230px] w-[300px] border-1 border-none bg-lightBlue rounded-lg">
+                  <span className="text-3xl text-blue">&#8377;500,000</span>
+                </div>
+                <div className="flex justify-center items-center h-[230px] w-[300px] ml-[-15px] border-1 border-none bg-lightBlue rounded-lg">
+                  <span className="text-3xl text-blue">&#8377;1,000,000</span>
                 </div>
               </div>
+              <div className="flex flex-row mt-12 ml-[-20px] justify-center relative text-xl font-bold">
+                or
+              </div>
+              <div className="block mt-10">
+                <span className="text-3xl text-blue p-3 mb-[-15px]">
+                  &#8377;
+                </span>
+                <input
+                  type="number"
+                  className="w-[575px] h-[50px] font-Poppins text-2xl text-blue border-1 border-solid border-blue placeholder-blue bg-white border-x-0 border-t-0"
+                  placeholder="Credit Limit"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
+            <Divider className="bg-blue mr-auto pt-0 " />
+            <div className="flex justify-end">
+              <button
+                className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-4"
+                onClick={onCloseCredits}
+              >
+                <span className="text-xl font-bold">CANCEL</span>
+              </button>
+              <button
+                className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
+                onClick={handleApprove}
+              >
+                <span className="text-xl font-bold">NEXT</span>
+              </button>
+            </div>
+          </div>
+        </Drawer>
+        <Drawer
+          placement="right"
+          closable={false}
+          onClose={onClose}
+          open={showApproved}
+          key="right"
+          width={700}
+        >
+          <div className="w-full h-screen relative">
+            <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
+              <svg
+                className="h-8 w-8 text-black cursor-pointer"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                onClick={onClose}
+              >
+                {" "}
+                <path stroke="none" d="M0 0h24v24H0z" />{" "}
+                <line x1="18" y1="6" x2="6" y2="18" />{" "}
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </div>
+            <div className="flex w-full h-screen justify-center top-[50%] font-Poppins">
+              <div className="flex flex-col flex-wrap justify-center items-center">
+                <div className="">
+                  <img src={require("./approved.png")} alt="congrats" />
+                </div>
+                <span className=" w-[500px] break-words text-3xl  font-bold text-center">
+                  Approved Successfully
+                </span>
+              </div>
+            </div>
+          </div>
         </Drawer>
       </div>
     </div>
