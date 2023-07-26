@@ -205,126 +205,117 @@ const Repayment
               </div>
             </div>
           </div>
-          <div className="flex w-[80vww] justify-center p-7">
-            <table cellSpacing="0" className="w-full mt-4">
-              <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
-                <tr className=" first-row border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
-                  <td>
-                    <img src={require("./status.png")} alt="status" />
-                  </td>
-                  <td>Loan ID</td>
-                  <td >Name</td>
-                  <td>Phone No</td>
-                  <td>Amount</td>
-                  <td>Date</td>
-                  <td>EMI No</td>
-                  <td className="mr-4">Status</td>
-                </tr>
-                <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-5">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-                  {/* <td className="text-center h-[50px] w-[230px]">
-                    <div className="ml-10 block text-xl text-blue text-center border-solid border-1 border-blue bg-lightBlue rounded-2xl h-[40px]">
-                      Kidney Surgery
-                    </div>
-                  </td> */}
-                  <td>5000</td>
-                  <td>1</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}>#1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>4</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./completed.png")} alt="completed" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>6</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>3</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>6</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>4</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>2</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="flex px-7">
+          <table cellSpacing="0" className="w-full mt-4">
+                <thead>
+                  <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                    <td className="pl-4 w-[30px]">
+                      <img src={require("./status.png")} alt="status" />
+                    </td>
+                    <td className="pl-4 w-[150px]">Loan ID</td>
+                    <td className="w-[200px]">Name</td>
+                    <td className="pl-4 w-[140px]">Phone No</td>
+                    <td className="pl-4 w-[200px]">Amount</td>
+                    <td className="pl-4 w-[140px]">Date</td>
+                    <td className="pl-4 w-[80px]">EMI</td>
+                    <td className="pr-4 w-[100px]">Status</td>
+                  </tr>
+                </thead>
+                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+                      <tr
+                        className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
+                          <td className="pl-3 w-[30px]">
+                            <img
+                              src={require("./completed.png")}
+                              alt="completed"
+                            />
+                          </td>
+                        <td className="text-aliceblue pl-4 w-[150px]">
+                        #1256784542
+                        </td>
+                        <td className="pl-4 w-[200px]">
+                          John Doe
+                        </td>
+                        <td className="pl-4 w-[140px]">
+                        9874563210
+                        </td>
+                        <td className="pl-4 w-[200px]">
+                          3 months
+                        </td>
+                        <td className="pl-4 w-[150px]">
+                          <span>Jul 26 2023</span>
+                        </td>
+                        <td className="pl-4 w-[80px] pr-4">
+                          1
+                        </td>
+                          <td className="text-yellowgreen pr-6 w-[80px]">
+                            Processed
+                          </td>
+                      </tr>
+                      <tr
+                        className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
+                          <td className="pl-3 w-[30px]">
+                            <img
+                              src={require("./completed.png")}
+                              alt="completed"
+                            />
+                          </td>
+                        <td className="text-aliceblue pl-4 w-[150px]">
+                        #1256784542
+                        </td>
+                        <td className="pl-4 w-[200px]">
+                          John Doe
+                        </td>
+                        <td className="pl-4 w-[140px]">
+                        9874563210
+                        </td>
+                        <td className="pl-4 w-[200px]">
+                          3 months
+                        </td>
+                        <td className="pl-4 w-[150px]">
+                          <span>Jul 26 2023</span>
+                        </td>
+                        <td className="pl-4 w-[80px] pr-4">
+                          1
+                        </td>
+                          <td className="text-yellowgreen pr-6 w-[80px]">
+                            Processed
+                          </td>
+                      </tr>
+                      <tr
+                        className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
+                          <td className="pl-3 w-[30px]">
+                            <img
+                              src={require("./completed.png")}
+                              alt="completed"
+                            />
+                          </td>
+                        <td className="text-aliceblue pl-4 w-[150px]">
+                        #1256784542
+                        </td>
+                        <td className="pl-4 w-[200px]">
+                          John Doe
+                        </td>
+                        <td className="pl-4 w-[140px]">
+                        9874563210
+                        </td>
+                        <td className="pl-4 w-[200px]">
+                          3 months
+                        </td>
+                        <td className="pl-4 w-[150px]">
+                          <span>Jul 26 2023</span>
+                        </td>
+                        <td className="pl-4 w-[80px] pr-4">
+                          1
+                        </td>
+                          <td className="text-yellowgreen pr-6 w-[80px]">
+                            Processed
+                          </td>
+                      </tr>
+                </tbody>
+              </table>
           </div>
-        
+         
           <Drawer
             placement="right"
             closable={false}

@@ -486,7 +486,7 @@ const PendingCustomer = () => {
           <div className="flex flex-row ml-5 mt-3">
             <span className="text-4xl font-extrabold mt-4">Client Details</span>
           </div>
-          <div className="flex w-[600px] h-[510px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-6">
+          <div className="flex w-[600px] h-[540px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-6">
             <div className="flex flex-row w-full">
               <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
                 <img
@@ -647,7 +647,7 @@ const PendingCustomer = () => {
               </div>
             </div>
           </div>
-          <div className="relative pb-[120px]">
+          <div className="relative pb-[100px]">
             <div className="flex flex-row ml-5 mt-3">
               <span className="text-4xl font-extrabold mt-4">Documents</span>
             </div>
@@ -693,7 +693,7 @@ const PendingCustomer = () => {
             </div>
           </div>
           <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
-            <Divider className="bg-blue mr-auto pt-0 " />
+            <Divider className="bg-blue mr-auto mt-0" />
             <div className="flex justify-end">
               <button
                 className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-4"
