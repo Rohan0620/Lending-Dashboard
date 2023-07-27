@@ -1,6 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./node_modules/tw-elements/dist/js/**/*.{js,jsx,ts,tsx}"],
+  variants: {
+    extend: {
+      // ...
+     transitionTimingFunction: ['hover', 'focus'],
+    }
+  },
   theme: {
     extend: {
       colors: {
@@ -42,16 +48,25 @@ module.exports = {
         lightgray: "#cecece",
         silver: "#bdbdbd",
         dimgray: "#616161",
-        skyblue: "#99d2f5",
+        skyblue: "#8DBCFD",
         peach:"#FF7B7B",
         slate:"#EFEFEF",
         lightBlue:"#F4F9FD",
-        red:"#FF0000"
+        red:"#FF0000",
+        green:"#2CAB00",
+        lightYellow:"#FFF6D4",
+        yellow:"#F9C718",
+        navy:"#6488ea",
+        darkBlue:"#002962"
       },
+      transitionTimingFunction: {
+        'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)',
+        'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
+       },
+      // transitionTimingFunction: ['hover', 'focus'],
+      borderColor: ['active'],
       fontFamily: {
-        "components-button-large": "Roboto",
-        "baloo-bhai": "'Baloo Bhai'",
-        "Poppins" : "Poppins"
+        poppins: ['Poppins', 'sans-serif'],
       },
       borderRadius: {
         "10xs": "3px",
@@ -77,6 +92,9 @@ module.exports = {
       '3xl': '1.953rem',
       '4xl': '2.441rem',
       '5xl': '3.052rem',
+    },
+    opacity: {
+      '67': '.67',
     },
     fontWeight: {
       thin: '100',
@@ -120,8 +138,13 @@ module.exports = {
     borderSpacing: {
       '7': '1rem',
     },
+    outlineWidth: {
+      1:'1px',
+      5: '5px',
+    }
   },
   corePlugins: {
     preflight: false,
+    
   },
 };
