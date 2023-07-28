@@ -3,27 +3,23 @@ import Sidebar from "../../components/Sidebar";
 import "./repay.css";
 import { Divider, Drawer } from "antd";
 
-const Repayment
- = () => {
+const Repayment = () => {
   const [selectClient, setSelectClient] = React.useState(false);
   const [showClientdDtails, setShowClientdDtails] = React.useState(false);
   const [showTreatments, setShowTreatments] = React.useState(false);
-  
+
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
-  
 
   const handleApprove = () => {
     setShowApproved(true);
     setShowCreditsLimit(false);
   };
-  
-  
-  const onFundAccount=()=>{
+
+  const onFundAccount = () => {
     setSelectClient(false);
     setShowCreditsLimit(true);
-
-  }
+  };
   // const offCanvasRef = React.useRef(null);
 
   // useEffect(() => {
@@ -34,8 +30,6 @@ const Repayment
   //   }
   // }, [selectClient]);
   const handleClientDetails = () => {
-
-    
     setShowClientdDtails(true);
     setSelectClient(false);
   };
@@ -43,7 +37,6 @@ const Repayment
     setSelectClient(false);
     setShowApproved(false);
     setShowCreditsLimit(false);
-
   };
   const onCloseClientDetails = () => {
     setSelectClient(true);
@@ -62,10 +55,12 @@ const Repayment
   return (
     <>
       <div className="flex w-full">
-        <Sidebar />
+        <div>
+          <Sidebar />
+        </div>
         <div className="w-full mt-[50px] relative">
           <div className="flex flex-row justify-between items-center">
-            <div className="flex flex-row w-[vw] text-black px-5">
+            <div className="flex flex-rowtext-black px-5">
               <div className="flex flex-col justify-center items-start px-6">
                 <span className="text-lg font-normal ">Settled Amount</span>
                 <span className="text-3xl font-bold ">
@@ -205,126 +200,69 @@ const Repayment
               </div>
             </div>
           </div>
-          <div className="flex w-[80vww] justify-center p-7">
+          <div className="flex pl-10 pr-12">
             <table cellSpacing="0" className="w-full mt-4">
-              <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
-                <tr className=" first-row border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
-                  <td>
+              <thead>
+                <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                  <td className="pl-4 w-[30px]">
                     <img src={require("./status.png")} alt="status" />
                   </td>
-                  <td>Loan ID</td>
-                  <td >Name</td>
-                  <td>Phone No</td>
-                  <td>Amount</td>
-                  <td>Date</td>
-                  <td>EMI No</td>
-                  <td className="mr-4">Status</td>
+                  <td className="pl-4 w-[150px]">Loan ID</td>
+                  <td className="w-[200px]">Name</td>
+                  <td className="pl-4 w-[140px]">Phone No</td>
+                  <td className="pl-4 w-[150px]">Amount</td>
+                  <td className="pl-4 w-[150px]">Tenure</td>
+                  <td className="pl-4 w-[140px]">Date</td>
+                  <td className="pr-4 w-[100px]">Status</td>
                 </tr>
-                <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-5">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-                  {/* <td className="text-center h-[50px] w-[230px]">
-                    <div className="ml-10 block text-xl text-blue text-center border-solid border-1 border-blue bg-lightBlue rounded-2xl h-[40px]">
-                      Kidney Surgery
-                    </div>
-                  </td> */}
-                  <td>5000</td>
-                  <td>1</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}>#1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>4</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
+              </thead>
+              <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+                <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
+                  <td className="pl-3 w-[30px]">
                     <img src={require("./completed.png")} alt="completed" />
                   </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>6</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
+                  <td className="text-aliceblue pl-4 w-[150px]">#1256784542</td>
+                  <td className="pl-4 w-[200px]">John Doe</td>
+                  <td className="pl-4 w-[140px]">9874563210</td>
+                  <td className="pl-4 w-[150px]">₹50000</td>
+                  <td className="pl-4 w-[150px]">3 months</td>
+                  <td className="pl-4 w-[150px]">
+                    <span>Jul 26 2023</span>
                   </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>3</td>
-                  <td className="text-yellowgreen">Settled</td>                
+                  <td className="text-red pr-6 w-[80px]">Pending</td>
                 </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
+                <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
+                  <td className="pl-3 w-[30px]">
+                    <img src={require("./completed.png")} alt="completed" />
                   </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>6</td>
-                  <td className="text-yellowgreen">Settled</td>                
+                  <td className="text-aliceblue pl-4 w-[150px]">#1256784542</td>
+                  <td className="pl-4 w-[200px]">John Doe</td>
+                  <td className="pl-4 w-[140px]">9874563210</td>
+                  <td className="pl-4 w-[150px]">₹50000</td>
+                  <td className="pl-4 w-[150px]">3 months</td>
+                  <td className="pl-4 w-[150px]">
+                    <span>Jul 26 2023</span>
+                  </td>
+                  <td className="text-yellowgreen pr-6 w-[80px]">Settled</td>
                 </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
+                <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
+                  <td className="pl-3 w-[30px]">
+                    <img src={require("./completed.png")} alt="completed" />
                   </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>4</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
+                  <td className="text-aliceblue pl-4 w-[150px]">#1256784542</td>
+                  <td className="pl-4 w-[200px]">John Doe</td>
+                  <td className="pl-4 w-[140px]">9874563210</td>
+                  <td className="pl-4 w-[150px]">₹50000</td>
+                  <td className="pl-4 w-[150px]">3 months</td>
+                  <td className="pl-4 w-[150px]">
+                    <span>Jul 26 2023</span>
                   </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>2</td>
-                  <td className="text-red mr-4">Pending</td>
+                  <td className="text-yellowgreen pr-6 w-[80px]">Settled</td>
                 </tr>
               </tbody>
             </table>
           </div>
-        
+
           <Drawer
             placement="right"
             closable={false}
@@ -357,7 +295,7 @@ const Repayment
                 Client Details
               </span>
             </div>
-            
+
             <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
               <div className="flex flex-row w-full">
                 <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
@@ -373,28 +311,27 @@ const Repayment
                   </span>
                   <span className="text-lg font-normal">+91 6376078722</span>
                 </div>
-                
-                <div>
-                
-                </div>
-             
 
-
+                <div></div>
               </div>
-              
+
               <div className="flex flex-col w-full mt-8">
                 <div className="flex flex-row justify-around">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1 ">
                       Addressline 1
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">ABC Ground Hello World</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      ABC Ground Hello World
+                    </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Addressline 2
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">ABC Ground</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      ABC Ground
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-row w-full justify-around mt-10">
@@ -402,144 +339,130 @@ const Repayment
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       City
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">Gadag</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      Gadag
+                    </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       State
                     </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">Karnataka</span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">
+                      Karnataka
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-row w-full justify-around mt-10">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Pan Card No
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">A54123</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      A54123
+                    </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Aadhar No
                     </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">9876543210</span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">
+                      9876543210
+                    </span>
                   </div>
                 </div>
 
                 <div className="flex flex-row w-full justify-around mt-10">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                      Approved on 
+                      Approved on
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">22 July 2023</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      22 July 2023
+                    </span>
                   </div>
                   <div className="flex flex-col w-[40%] items-center justify-start ml-auto mr-[90px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Approved Limit
                     </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">₹50000</span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">
+                      ₹50000
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
 
+            <div className="flex flex-row ml-5 mt-3">
+              <span className="text-4xl font-extrabold mt-4">Loan Details</span>
+            </div>
+            <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+              <div className="flex flex-col w-full m-3">
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-aliceblue text-left    ">
+                      Loan Amount
+                    </span>
+                    <span className="text-[25px] text-aliceblue font-normal  ">
+                      ₹50000
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-aliceblue text-left    ">
+                      Interest rate per month
+                    </span>
+                    <span className="text-[25px] text-aliceblue font-normal  ">
+                      1.5%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-aliceblue text-left    ">
+                      Tensure
+                    </span>
+                    <span className="text-[25px] text-aliceblue font-normal  ">
+                      6 mos
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-black text-left    ">
+                      EMI
+                    </span>
+                    <span className="text-[25px] text-black font-normal  ">
+                      ₹8333
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-              Loan Details
-            </span>
-          </div>
-          <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-            <div className="flex flex-col w-full m-3">
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-aliceblue text-left    ">
-                    Loan Amount
-                  </span>
-                  <span className="text-[25px] text-aliceblue font-normal  ">
-                    ₹50000
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-aliceblue text-left    ">
-                    Interest rate per month 
-                  </span>
-                  <span className="text-[25px] text-aliceblue font-normal  ">
-                    1.5%
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-aliceblue text-left    ">
-                    Tensure 
-                  </span>
-                  <span className="text-[25px] text-aliceblue font-normal  ">
-                    6 mos
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-black text-left    ">
-                    EMI
-                  </span>
-                  <span className="text-[25px] text-black font-normal  ">
-                    ₹8333
-                  </span>
-                </div>
-              </div>
-
-
+              <span className="text-4xl font-extrabold mt-4">EMI Dates</span>
             </div>
-          </div>
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+              <span className="ml-4 text-lg font-semibold">22 July 2023</span>
 
-          <div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-            EMI Dates 
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="ml-4 text-lg font-semibold">
-            22 July 2023
-            </span>
+              <span className="mr-auto ml-6 text-lg font-semibold">₹8333</span>
+              <span className="text-lg text-yellowgreen ml-auto mr-4 ">
+                Settled
+              </span>
+            </div>
 
-            <span className="mr-auto ml-6 text-lg font-semibold">
-            ₹8333
-            </span>
-            <span className='text-lg text-yellowgreen ml-auto mr-4 '>
-            Settled
-            </span>
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+              <span className="ml-4 text-lg font-semibold">22 July 2023</span>
 
-          </div>
+              <span className="mr-auto ml-6 text-lg font-semibold">₹8333</span>
+              <span className="text-lg text-red ml-auto mr-4 ">Pending</span>
+            </div>
 
-
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="ml-4 text-lg font-semibold">
-            22 July 2023
-            </span>
-
-            <span className="mr-auto ml-6 text-lg font-semibold">
-            ₹8333
-            </span>
-            <span className='text-lg text-red ml-auto mr-4 '>
-            Pending
-            </span>
-
-          </div>
-
-          
-
-{/* 
+            {/* 
           <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
                 <Divider className="bg-blue mr-auto pt-0 " />
                 <div className="flex justify-end">
@@ -557,7 +480,6 @@ const Repayment
                   </button>
                 </div>
               </div> */}
-
           </Drawer>
 
           {/* <Drawer
@@ -589,8 +511,7 @@ const Repayment
             <span className="text-4xl font-bold">Set Credit Limit</span>
           </div> */}
 
-
-{/* 
+          {/* 
 <div className="flex flex-row ml-5 mt-3">
             <span className="text-4xl font-extrabold mt-4">
             Fund Account
@@ -638,16 +559,13 @@ const Repayment
             </div>
           </div> */}
 
-
-          
-         
           {/* <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-gold bg-lightBlue rounded-lg ml-6 mt-40">
             <span className="mr-auto ml-4 text-lg font-semibold text-gold">
             Amount to be received is ₹50000
             </span>
             
           </div> */}
- 
+
           {/* <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
             <Divider className="bg-blue mr-auto pt-0 " />
             <div className="flex justify-end">
@@ -667,9 +585,7 @@ const Repayment
           </div>
         </Drawer> */}
 
-
-
-{/*         
+          {/*         
         <Drawer
           placement="right"
           closable={false}
