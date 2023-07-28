@@ -2,6 +2,14 @@ import React from "react";
 import Logo from "./curecoinHome.jpg";
 import { useNavigate } from "react-router-dom";
 const Sidebar = () => {
+  const [selectedTab, setSelectedTab] = React.useState(() => {
+    return sessionStorage.getItem("selectedTab") || "dashboard";
+  });
+
+  React.useEffect(() => {
+    sessionStorage.setItem("selectedTab", selectedTab);
+  }, [selectedTab]);
+
   let navigate = useNavigate();
   return (
     <>
@@ -11,11 +19,18 @@ const Sidebar = () => {
           src={Logo}
           alt="logo"
         />
-        <div className="flex flex-col justify-start text-left">
-          <ul className="font-normal text-xl leading-[70px] text-left pl-0 mr-auto ml-auto">
+        <div className="flex flex-col w-full justify-start text-left">
+          <ul className="font-normal text-[20px] leading-[70px] text-left pl-0 mr-auto ml-2">
             <li
-              className="flex cursor-pointer items-center text-white"
-              onClick={() => navigate("/homepage")}
+              className={`flex flex-row w-[220px] cursor-pointer items-center text-white`}
+              onClick={() => {
+                setSelectedTab("dashboard")
+                navigate("/dashboard")}}
+                style={
+                  selectedTab === "dashboard"
+                    ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
+                    : {}
+                }
             >
               {" "}
               <div className=" flex mx-2 items-center">
@@ -59,32 +74,53 @@ const Sidebar = () => {
               Dashboard
             </li>
             <li
-              className="flex justify-start cursor-pointer items-center text-white"
-              onClick={() => navigate("/customers")}
+              className="flex  justify-start cursor-pointer items-center text-white"
+              onClick={() =>{ 
+                setSelectedTab("approval")
+                navigate("/approvedcustomer")}}
+                style={
+                  selectedTab === "approval"
+                    ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
+                    : {}
+                }
             >
               {" "}
-              <div className="flex items-center mx-2">
-                <img src={require("./approvals.png")} alt="approvals" />
+              <div className=" flex items-center mx-2">
+              <img src={require("./approvals.png")} alt="approvals" />
               </div>
               Approvals
             </li>
             <li
               className="flex justify-start cursor-pointer items-center text-white"
-              onClick={() => navigate("/customers")}
+              onClick={() =>{ 
+                setSelectedTab("repayments")
+                navigate("/repay")}}
+                style={
+                  selectedTab === "repayments"
+                    ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
+                    : {}
+                }
             >
               {" "}
               <div className="flex items-center mx-2">
-                <img src={require("./repayment.png")} alt="repayment" />
+                <img src={require("./repayment.png")} alt="repayments" />
               </div>
               Repayments
             </li>
             <li
               className="flex justify-start cursor-pointer items-center text-white"
-              onClick={() => navigate("/customers")}
+              onClick={() =>{ 
+                setSelectedTab("clients") 
+                navigate("/customers")}}
+                style={
+                  selectedTab === "clients"
+                    ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
+                    : {}
+                }
             >
               {" "}
               <div className="flex items-center mx-2">
-                <img src={require("./customers.png")} alt="customers" />
+                <img src={require("./customers.png")} alt="treatments" />
               </div>
               Clients
             </li>
