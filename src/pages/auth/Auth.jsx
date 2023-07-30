@@ -20,7 +20,7 @@ const Auth = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const response = await fetch("http://localhost:8000/Hospitals/login", {
+      const response = await fetch("http://localhost:8000/Lenders/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,24 +34,16 @@ const Auth = () => {
       console.log(json);
       if (json.status === "Success") {
         localStorage.setItem("token", json.token);
-        if (json.navigate) {
-          navigate("/homepage");
-        } else {
-          navigate("/addhospinfo");
-        }
-      } else if (json.reply === "Not Registered") {
-        toast.error("User not registered. Please Try Again!",{
-          position:"top-right"
-        })
-      }
-      else
-      {
-        toast.error(<>Invalid Credentials.<br/> Please Try Again!</>,{
-          position:"top-right",
-          allowHtml:"true"
-        })
-      }
-    } catch (err) {
+        // if (json.navigate) {
+          navigate("/dashboard");
+        // } else {
+        //   navigate("/addhospinfo");
+        // }
+      } 
+    } catch (json) {
+      toast.error(json.reply,{
+        position:"top-right"
+      })
       showError();
     }
     setSubmitting(false);
