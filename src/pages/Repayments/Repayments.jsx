@@ -52,6 +52,33 @@ const Repayment = () => {
     setSelectClient(true);
   };
 
+
+  const [repayData, setRepayData] = useState("");
+  console.log("Repayment Data", repayData)
+  const getRepay= async ()=>{ 
+    const response = await fetch("http://localhost:8000/Lenders/repayments",{
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${localStorage.getItem('token')}`
+      },withCredentials: true,
+  
+    });
+   
+    const json = await response.json();
+    // console.log("MEssage ",json.message)
+    if(json.status === "Success")
+    {
+      setRepayData(json.message);
+    }else{
+      alert("Data not found")
+    }
+    
+  }
+useEffect(()=>{
+  getRepay();
+},[]);
+
   return (
     <>
       <div className="flex w-full">

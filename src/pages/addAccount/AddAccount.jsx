@@ -26,27 +26,27 @@ const AddAccount = () => {
       return;
     }
     try {
-      const response = await axios.patch(
-        "http://localhost:8000/Hospitals/addBankAcc",
-        {
-          accnumber: bankDetails.accno,
-          ifsccode: bankDetails.ifsc,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
-      const json = await response.data;
+    const response = await fetch("http://localhost:8000/Lenders/addBankAcc", {
+      method:"PATCH",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${localStorage.getItem('token')}`
+      },
+      withCredentials: true,
+      body: JSON.stringify({
+        accnumber: bankDetails.accno,
+        ifsccode: bankDetails.ifsc,
+      }),
+    });
+      console.log("response by account", response)
+      const json = await response.json();
       console.log(json);
       if (json.status === "Success") {
-        navigate("/homepage");
+        navigate("/dashboard");
       }
       else
       {
+        console.log("Error")
         toast.error(json.message,{
           position:"top-right"
         })
@@ -56,6 +56,9 @@ const AddAccount = () => {
     }
     setSubmitting(false);
   };
+
+
+
   const handleChange = (e) => {
     setBankDetails({ ...bankDetails, [e.target.name]: e.target.value });
   };
