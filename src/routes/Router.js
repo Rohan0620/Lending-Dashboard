@@ -12,7 +12,7 @@ import Dashboard from '../pages/Dashboard/Dashboard'
 
 import Loans from '../pages/Loans/Loans'
 
-import PendingCustomer from '../pages/PendingCustomer/PendingCustomer'
+import PendingCustomer from '../pages/PendingCustomer/Pending'
 import Repayment from '../pages/Repayments/Repayments'
 const Router = () => {
   return (
