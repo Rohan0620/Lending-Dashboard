@@ -238,8 +238,8 @@ useEffect(()=>{
                   <td className="w-[200px]">Name</td>
                   <td className="pl-4 w-[140px]">Phone No</td>
                   <td className="pl-4 w-[150px]">Amount</td>
-                  <td className="pl-4 w-[150px]">Tenure</td>
-                  <td className="pl-4 w-[140px]">Date</td>
+                  <td className="pl-4 w-[150px]">Date</td>
+                  <td className="pl-4 w-[100px]">EMI</td>
                   <td className="pr-4 w-[100px]">Status</td>
                 </tr>
               </thead>
@@ -248,42 +248,42 @@ useEffect(()=>{
                   <td className="pl-3 w-[30px]">
                     <img src={require("./completed.png")} alt="completed" />
                   </td>
-                  <td className="text-aliceblue pl-4 w-[150px]">#1256784542</td>
+                  <td className="text-aliceblue pl-4 w-[150px] cursor-pointer" onClick={handleClick}>#1256784542</td>
                   <td className="pl-4 w-[200px]">John Doe</td>
                   <td className="pl-4 w-[140px]">9874563210</td>
                   <td className="pl-4 w-[150px]">₹50000</td>
-                  <td className="pl-4 w-[150px]">3 months</td>
-                  <td className="pl-4 w-[150px]">
+                  <td className="pl-4 w-[180px]">
                     <span>Jul 26 2023</span>
                   </td>
+                  <td className="pr-3 w-[100px]">1</td>
                   <td className="text-red pr-6 w-[80px]">Pending</td>
                 </tr>
                 <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
                   <td className="pl-3 w-[30px]">
                     <img src={require("./completed.png")} alt="completed" />
                   </td>
-                  <td className="text-aliceblue pl-4 w-[150px]">#1256784542</td>
+                  <td className="text-aliceblue pl-4 w-[150px] cursor-pointer" onClick={handleClick}>#1256784542</td>
                   <td className="pl-4 w-[200px]">John Doe</td>
                   <td className="pl-4 w-[140px]">9874563210</td>
                   <td className="pl-4 w-[150px]">₹50000</td>
-                  <td className="pl-4 w-[150px]">3 months</td>
-                  <td className="pl-4 w-[150px]">
+                  <td className="pl-4 w-[180px]">
                     <span>Jul 26 2023</span>
                   </td>
-                  <td className="text-yellowgreen pr-6 w-[80px]">Settled</td>
+                  <td className="pr-3 w-[100px]">1</td>
+                  <td className="text-red pr-6 w-[80px]">Pending</td>
                 </tr>
                 <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
                   <td className="pl-3 w-[30px]">
                     <img src={require("./completed.png")} alt="completed" />
                   </td>
-                  <td className="text-aliceblue pl-4 w-[150px]">#1256784542</td>
+                  <td className="text-aliceblue pl-4 w-[150px] cursor-pointer" onClick={handleClick}>#1256784542</td>
                   <td className="pl-4 w-[200px]">John Doe</td>
                   <td className="pl-4 w-[140px]">9874563210</td>
                   <td className="pl-4 w-[150px]">₹50000</td>
-                  <td className="pl-4 w-[150px]">3 months</td>
-                  <td className="pl-4 w-[150px]">
+                  <td className="pl-4 w-[180px]">
                     <span>Jul 26 2023</span>
                   </td>
+                  <td className="pr-3 w-[100px]">1</td>
                   <td className="text-yellowgreen pr-6 w-[80px]">Settled</td>
                 </tr>
               </tbody>

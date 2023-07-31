@@ -77,7 +77,7 @@ const Sidebar = () => {
               className="flex  justify-start cursor-pointer items-center text-white"
               onClick={() =>{ 
                 setSelectedTab("approval")
-                navigate("/approvedcustomer")}}
+                navigate("/all_loans")}}
                 style={
                   selectedTab === "approval"
                     ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
@@ -111,7 +111,7 @@ const Sidebar = () => {
               className="flex justify-start cursor-pointer items-center text-white"
               onClick={() =>{ 
                 setSelectedTab("clients") 
-                navigate("/customers")}}
+                navigate("/approvedcustomer")}}
                 style={
                   selectedTab === "clients"
                     ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
