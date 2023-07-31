@@ -11,7 +11,7 @@ const PendingCustomer = () => {
   const [pendingCustomers, setPendingCustomers] = React.useState([]);
   const [selectedCustomer, setSelectedCustomer] = React.useState("");
   const [selectedImage, setSelectedImage] = React.useState(null);
-  const [selectedCredit, setSelectedcredit] = React.useState('');
+  const [selectedCredit, setSelectedcredit] = React.useState("");
 
   const onClose = () => {
     setSelectClient(false);
@@ -41,27 +41,29 @@ const PendingCustomer = () => {
     setSelectClient(true);
   };
 
-  const handleSubmit = async (id) =>{
+  const handleSubmit = async (id) => {
     try {
-      const response = await axios.patch(`http://localhost:8000/Lenders/aproove/${id}`,{
-        creditLimit:selectedCredit
-      },
-       {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+      const response = await axios.patch(
+        `http://localhost:8000/Lenders/aproove/${id}`,
+        {
+          creditLimit: selectedCredit,
         },
-        withCredentials:true
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          withCredentials: true,
+        }
+      );
       const data = response.data;
-      if(data.status === "success")
-      {
-        setShowCreditsLimit(false)
-        setShowApproved(true)
+      if (data.status === "success") {
+        setShowCreditsLimit(false);
+        setShowApproved(true);
       }
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   const fetchPendingCustomers = async () => {
     try {
@@ -244,12 +246,13 @@ const PendingCustomer = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 align-middle p-5 pt-10 gap-5 ml-4">
+        <div className="grid grid-cols-2 align-middle p-5 pt-[60px] gap-5 ml-4">
           {pendingCustomers?.length > 0 ? (
             pendingCustomers.map((pendingCustomer) => (
               <div
-                className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2"
+                className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300"
                 key={pendingCustomer._id}
+                onClick={() => handleClick(pendingCustomer._id)}
               >
                 <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
                   <img
@@ -267,10 +270,7 @@ const PendingCustomer = () => {
                   </span>
                 </div>
                 <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-                  <span
-                    className="text-right ml-auto cursor-pointer"
-                    onClick={() => handleClick(pendingCustomer._id)}
-                  >
+                  <span className="ml-auto">
                     <img src={require("./right.png")} alt="user" />
                   </span>
                   <span className="text-lg text-red">Pending</span>
@@ -546,8 +546,11 @@ const PendingCustomer = () => {
             </div>
           </div>
           {selectedImage && (
-            <div className="mt-4 ml-6 z-10">
-              <img src={selectedImage} alt="Selected Document" />
+            <div className="flex justify-center items-center z-10 mb-[100px]">
+              <img
+                src={`http://localhost:8000/${selectedImage}`}
+                alt="Selected Document"
+              />
             </div>
           )}
           <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
@@ -593,7 +596,6 @@ const PendingCustomer = () => {
               />
             </svg>
           </div>
-          {/* <form onSubmit={()=>handleSubmit(selectedCustomer._id)}> */}
           <div className="block px-5 pt-10">
             <span className="text-4xl font-bold">Set Credit Limit</span>
           </div>
@@ -653,7 +655,7 @@ const PendingCustomer = () => {
                   className="w-[575px] h-[50px] font-Poppins text-2xl text-blue border-1 border-solid border-blue placeholder-blue bg-white border-x-0 border-t-0"
                   placeholder="Credit Limit"
                   value={selectedCredit}
-                  onChange={(e)=>setSelectedcredit(e.target.value)}
+                  onChange={(e) => setSelectedcredit(e.target.value)}
                 />
               </div>
             </div>
@@ -669,14 +671,13 @@ const PendingCustomer = () => {
               </button>
               <button
                 className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
-                onClick={()=>handleSubmit(selectedCustomer._id)}
+                onClick={() => handleSubmit(selectedCustomer._id)}
                 type="submit"
               >
                 <span className="text-xl font-bold">NEXT</span>
               </button>
             </div>
           </div>
-          {/* </form> */}
         </Drawer>
 
         <Drawer
