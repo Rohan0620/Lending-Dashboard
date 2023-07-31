@@ -17,28 +17,54 @@ const HospitalInfo = () => {
       position: "top-right",
     });
   };
+
+
+  // const response = await fetch("http://localhost:8000/addhospinfo",{
+  //   method:"PATCH",
+  //   headers:{
+  //     "Content-Type":"application/json",
+  //     "Authorization":`Bearer ${localStorage.getItem('token')}`
+  //   },
+  //   body: JSON.stringify({
+  //     hospitalName: data.hospitalName,
+  //     inChargeName: data.inChargeName,
+  //     category:data.category
+  //   }),
+  // })
+
+
+
+
+
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true);
-    try {
-      const response = await axios.patch(
-        "http://localhost:8000/Hospitals/addhospinfo",
-        {
-          lenderName: data.lenderName,
-          inChargeName: data.inChargeName,
-          category: data.category,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
-      const json = await response.data;
+    // setSubmitting(true);
+    // try {
+      const response = await fetch("http://localhost:8000/Lenders/addlenderinfo",{
+          method: "PATCH",
+          headers:{
+                "Content-Type":"application/json",
+                "Authorization":`Bearer ${localStorage.getItem('token')}`
+              },
+              withCredentials: true,
+
+              body: JSON.stringify({
+                lenderName: data.lenderName,
+                inChargeName: data.inChargeName,
+                category: data.category,
+                  }),
+        });
+
+      console.log("Respone", response);
+      const json = await response.json();
+      console.log("Json",json);
+
       if (json.status === "Success") {
-        navigate("/addhosploc");
+        console.log("Success");
+        navigate("/addlenderloc");
       }
       else
       {
@@ -46,10 +72,10 @@ const HospitalInfo = () => {
           position:"top-right"
         })
       }
-    } catch (json) {
-      showError(json.message);
-    }
-    setSubmitting(false);
+    // } catch (json) {
+    //   showError(json.message);
+    // }
+    // setSubmitting(false);
   };
 
   const handleChange = (e) => {

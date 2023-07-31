@@ -24,7 +24,7 @@ const LenderLocation = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const response = await axios.patch("http://localhost:8000/Hospitals/addhosploc", {
+      const response = await axios.patch("http://localhost:8000/Lenders/addlenderloc", {
         line1: address.line1,
         line2: address.line2,
         state: address.state,
