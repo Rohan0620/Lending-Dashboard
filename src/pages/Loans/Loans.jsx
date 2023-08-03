@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import "./loans.css";
 import { Divider, Drawer } from "antd";
+import axios from "axios";
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -49,14 +50,68 @@ const Loans = () => {
 
     setShowClientdDtails(false);
   };
-  const handleClick = () => {
+
+  const [emiData, setEmi] = useState("");
+  const [allEmi, setAllEmis] = useState(null);
+  // console.log("Length of all EMI",Object.values(allEmi).length);
+  // console.log("EMI DATA===>",emiData.customerId.name)
+
+  const handleClick = async (id) => {
+    console.log("Params id", id);
     setSelectClient(!selectClient);
+    var paramId = id.replace("#", "");
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/Lenders/selectrepayments?trnId=%23${paramId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      // console.log("R===>",response)
+      const data = response.data;
+      console.log("All Emis", data.data.EmiDates);
+      setAllEmis(data.data.EmiDates);
+      setEmi(data.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const onCloseCredits = () => {
     setShowCreditsLimit(false);
     setSelectClient(true);
   };
+
+  
+  const [allLoans, setLoanData] = useState("");
+  const [status, setStats] = useState("");
+  const getDetails = async () => {
+    const response = await fetch("http://localhost:8000/Lenders/aproovals", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+
+    const json = await response.json();
+    console.log('JSON',json)
+    setStats(json.status)
+    if (json.status === "Success") {
+      setLoanData(json.data.transactions);
+      console.log("hello json", json.data.transactions);
+    } else {
+      // alert("Data not found");
+      console.log("Data not found");
+    }
+  };
+  useEffect(() => {
+    getDetails();
+  }, []);
+
 
   return (
     <>
@@ -207,6 +262,9 @@ const Loans = () => {
           <div className="flex w-[80vww] justify-center p-7">
             <table cellSpacing="0" className="w-full mt-4">
               <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+              {/* {allLoans.length > 0 ? (
+                  allLoans.map((transactions) => (
+                <> */}
                 <tr className=" first-row border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
                   <td>
                     <img src={require("./status.png")} alt="status" />
@@ -219,107 +277,39 @@ const Loans = () => {
                   <td>Date</td>
                   <td className="mr-4">Status</td>
                 </tr>
+                {allLoans.length > 0 ? (
+                  allLoans.map((transactions) => (
+                <>
                 <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-5">
                   <td>
                     <img src={require("./processing.png")} alt="processing" />
                   </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-                  {/* <td className="text-center h-[50px] w-[230px]">
+                  <td className="text-aliceblue" onClick={()=>handleClick(transactions.trnId)} style={{cursor:'pointer'}}> {transactions.trnId}</td>
+                  <td>{transactions.customerId.name}</td>
+                  <td>{transactions.customerId.phone}</td>
+                  <td className="text-center h-[50px] w-[230px]">{transactions.tenure}{status === "Success"? " months": " " }</td>
+                  {/* <td className="text-center h-[50px] w-[230px]"> transactions.tenure === " " ? " ": 
                     <div className="ml-10 block text-xl text-blue text-center border-solid border-1 border-blue bg-lightBlue rounded-2xl h-[40px]">
                       Kidney Surgery
                     </div>
                   </td> */}
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-yellowgreen">Settled</td>                
+                  <td>{transactions.amount}</td>
+                  <td>{transactions.date}</td>
+                  <td
+                        className={
+                          transactions.lenderStatus === true
+                            ? "text-green pr-6 w-[80px]"
+                            : "text-red pr-6 w-[80px]"
+                        }
+                      >
+                        {transactions.lenderStatus === true ? "Settled" : "Pending"}
+                      </td>             
                 </tr>
-                <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}>#1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./completed.png")} alt="completed" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
+              
+                </> ))
+                  ) : (
+                    <div> No Loans data found</div>
+                  )}
               </tbody>
             </table>
           </div>
@@ -351,12 +341,13 @@ const Loans = () => {
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </div>
+
             <div className="flex flex-row ml-5 mt-3">
               <span className="text-4xl font-extrabold mt-4">
                 Client Details
               </span>
             </div>
-            
+
             <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
               <div className="flex flex-row w-full">
                 <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
@@ -368,32 +359,35 @@ const Loans = () => {
                 </div>
                 <div className="flex flex-col m-4 mt-9">
                   <span className="text-[22px] text-left font-semibold mr-auto">
-                    John Doe
+                    {emiData ? emiData.customerId.name : "-"}
                   </span>
-                  <span className="text-lg font-normal">+91 6376078722</span>
+                  {emiData ? emiData.customerId.phone : "-"}
                 </div>
-                
-                <div>
-                
-                </div>
-             
 
-
+                <div></div>
               </div>
-              
+
               <div className="flex flex-col w-full mt-8">
                 <div className="flex flex-row justify-around">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1 ">
-                      Addressline 1
+                      Address Line1
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">ABC Ground Hello World</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData
+                        ? emiData.customerId.customerLocation.line1
+                        : "-"}
+                    </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                      Addressline 2
+                      Address Line2
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">ABC Ground</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData
+                        ? emiData.customerId.customerLocation.line2
+                        : "-"}
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-row w-full justify-around mt-10">
@@ -401,152 +395,158 @@ const Loans = () => {
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       City
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">Gadag</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData ? emiData.customerId.customerLocation.residenceType : "-"}
+                    </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       State
                     </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">Karnataka</span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">
+                      {emiData
+                        ? emiData.customerId.customerLocation.state
+                        : "-"}
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-row w-full justify-around mt-10">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Pan Card No
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">A54123</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData ? emiData.customerId.panNumber : "-"}
+                    </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Aadhar No
                     </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">9876543210</span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">
+                      {emiData ? emiData.customerId.aadhaar : "-"}
+                    </span>
                   </div>
                 </div>
 
                 <div className="flex flex-row w-full justify-around mt-10">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                      Approved on 
+                      Approved on
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">22 July 2023</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData
+                        ? new Date(
+                            emiData.customerId.aproovedDate
+                          ).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : ""}
+                    </span>
                   </div>
                   <div className="flex flex-col w-[40%] items-center justify-start ml-auto mr-[90px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Approved Limit
                     </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">₹50000</span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">
+                      ₹{emiData ? emiData.customerId.creditLimit : "-"}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
 
+            <div className="flex flex-row ml-5 mt-3">
+              <span className="text-4xl font-extrabold mt-4">Loan Details</span>
+            </div>
+            <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+              <div className="flex flex-col w-full m-3">
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-aliceblue text-left    ">
+                      Loan Amount
+                    </span>
+                    <span className="text-[25px] text-aliceblue font-normal  ">
+                      ₹{emiData ? emiData.amount : "-"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-aliceblue text-left    ">
+                      Interest rate per month
+                    </span>
+                    <span className="text-[25px] text-aliceblue font-normal  ">
+                      1.5%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-aliceblue text-left    ">
+                      Tensure(months)
+                    </span>
+                    <span className="text-[25px] text-aliceblue font-normal  ">
+                      {emiData ? emiData.tenure : "-"} 
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-black text-left    ">
+                      EMI
+                    </span>
+                    <span className="text-[25px] text-black font-normal  ">
+                      ₹8333
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-              Loan Details
-            </span>
-          </div>
-          <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-            <div className="flex flex-col w-full m-3">
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-aliceblue text-left    ">
-                    Loan Amount
-                  </span>
-                  <span className="text-[25px] text-aliceblue font-normal  ">
-                    ₹50000
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-aliceblue text-left    ">
-                    Interest rate per month 
-                  </span>
-                  <span className="text-[25px] text-aliceblue font-normal  ">
-                    1.5%
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-aliceblue text-left    ">
-                    Tensure 
-                  </span>
-                  <span className="text-[25px] text-aliceblue font-normal  ">
-                    6 mos
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-black text-left    ">
-                    EMI
-                  </span>
-                  <span className="text-[25px] text-black font-normal  ">
-                    ₹8333
-                  </span>
-                </div>
-              </div>
-
-
+              <span className="text-4xl font-extrabold mt-4">EMI Dates</span>
             </div>
-          </div>
+            {allEmi ? allEmi.map((emi) => (
+              <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+                <span className="ml-4 text-lg font-semibold">
+                  { new Date(
+                        emi.date
+                      ).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })
+                    }
+                </span>
 
-          <div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-            EMI Dates 
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 July 2023
-            </span>
-            <span className='text-lg ml-auto mr-4 '>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 August 2023
-            </span>
-          <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 September 2023
-            </span>
-          <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 October 2023
-            </span>
-          <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 November 2023
-            </span>
-            <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
+                <span className="mr-auto ml-6 text-lg font-semibold">
+                  ₹{emi.amount}
+                </span>
+                <span className={ emi.status === true ? "text-lg text-yellowgreen ml-auto mr-4":"text-lg text-red ml-auto mr-4 "}>
+                {emi.status === true ? "Settled" : "Pending"}
+                </span>
+
+              
+              </div>
+            ))
+          :(
+            <h2>No emis</h2>
+          )
+          }
+
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+              <span className="ml-4 text-lg font-semibold">22 July 2023</span>
+
+              <span className="mr-auto ml-6 text-lg font-semibold">₹8333</span>
+              <span className="text-lg text-red ml-auto mr-4 ">Pending</span>
+            </div>
+          
 
 
           <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
