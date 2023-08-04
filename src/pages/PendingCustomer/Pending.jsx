@@ -503,7 +503,7 @@ const PendingCustomer = () => {
             </div>
             <div
               className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
-              onClick={() => setSelectedImage(selectedCustomer.pan)}
+              onClick={() => {console.log("clicked"); setSelectedImage(selectedCustomer.pan)}}
             >
               <span className="mr-auto ml-4 text-lg font-semibold">
                 PAN Card
@@ -512,7 +512,8 @@ const PendingCustomer = () => {
                 <img src={require("./arrow.png")} alt="arrow" />
               </span>
             </div>
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer">
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
+             onClick={() => {console.log("clicked"); setSelectedImage(selectedCustomer.salarySlip)}}>
               <span className="mr-auto ml-4 text-lg font-semibold">
                 Salary Slip
               </span>
@@ -520,7 +521,8 @@ const PendingCustomer = () => {
                 <img src={require("./arrow.png")} alt="arrow" />
               </span>
             </div>
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer">
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
+             onClick={() => {console.log("clicked"); setSelectedImage(selectedCustomer.bankStatements)}}>
               <span className="mr-auto ml-4 text-lg font-semibold">
                 Bank Statement
               </span>
@@ -528,7 +530,8 @@ const PendingCustomer = () => {
                 <img src={require("./arrow.png")} alt="arrow" />
               </span>
             </div>
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer">
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
+             onClick={() => {console.log("clicked"); setSelectedImage(selectedCustomer.incomeTax)}}>
               <span className="mr-auto ml-4 text-lg font-semibold">
                 Income Tax Return
               </span>
@@ -536,7 +539,8 @@ const PendingCustomer = () => {
                 <img src={require("./arrow.png")} alt="arrow" />
               </span>
             </div>
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer">
+            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
+             onClick={() => {console.log("clicked"); setSelectedImage(selectedCustomer.addressProof)}}>
               <span className="mr-auto ml-4 text-lg font-semibold">
                 Address Proof
               </span>
