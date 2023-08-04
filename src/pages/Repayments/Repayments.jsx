@@ -3,7 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import "./repay.css";
 import axios from "axios";
 import { Divider, Drawer } from "antd";
-
+import '../../styles/Shimmering.css'
 const Repayment = () => {
   const [selectClient, setSelectClient] = React.useState(false);
   const [showClientdDtails, setShowClientdDtails] = React.useState(false);
@@ -11,6 +11,8 @@ const Repayment = () => {
 
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
+  const [loading, setLoading] = React.useState(true);
+
 
   const handleApprove = () => {
     setShowApproved(true);
@@ -93,6 +95,7 @@ const Repayment = () => {
 
     const json = await response.json();
     if (json.status === "Success") {
+      setLoading(false)
       setRepayData(json.message);
       console.log("hello json", json.message);
     } else {
@@ -107,11 +110,11 @@ const Repayment = () => {
 
   return (
     <>
-      <div className="flex w-full">
-        <div>
+      <div className="flex w-full relative">
+        <div className="fixed top-0 bottom-0 ">
           <Sidebar />
         </div>
-        <div className="w-full mt-[50px] relative">
+        <div className="w-full mt-[50px] ml-[270px] ">
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-rowtext-black px-5">
               <div className="flex flex-col justify-center items-start px-6">
@@ -253,6 +256,38 @@ const Repayment = () => {
               </div>
             </div>
           </div>
+          {loading ? (
+            <div className="flex pl-10 pr-12">
+            <table cellSpacing="0" className="w-full mt-4">
+              <thead>
+                <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                  <td className="pl-4 w-[30px]">
+                    <img src={require("./status.png")} alt="status" />
+                  </td>
+                  <td className="pl-4 w-[150px]">Loan ID</td>
+                  <td className="w-[200px]">Name</td>
+                  <td className="pl-4 w-[140px]">Phone No</td>
+                  <td className="pl-4 w-[150px]">Amount</td>
+                  <td className="pl-4 w-[150px]">Date</td>
+                  <td className="pl-4 w-[100px]">EMI</td>
+                  <td className="pr-4 w-[100px]">Status</td>
+                </tr>
+              </thead>
+              <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+              <tr
+                className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
+              >
+                <td colSpan="8"></td>
+              </tr>
+              <tr
+                className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
+              >
+                <td colSpan="8"></td>
+              </tr>
+              </tbody>
+              </table>
+            </div>
+          ) : (
           <div className="flex pl-10 pr-12">
             <table cellSpacing="0" className="w-full mt-4">
               <thead>
@@ -315,7 +350,7 @@ const Repayment = () => {
                 )}
               </tbody>
             </table>
-          </div>
+          </div>)}
 
           <Drawer
             placement="right"

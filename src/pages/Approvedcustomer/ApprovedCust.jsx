@@ -19,7 +19,6 @@ const ApprovedCust = () => {
   const [loading, setLoading] = React.useState(true);
   const [drawers, setDrawers] = React.useState(false);
 
-
   const { isFormSubmitted } = useContext(FormContext);
   const handleClientDetails = () => {
     setShowClientdDtails(true);
@@ -34,11 +33,11 @@ const ApprovedCust = () => {
     setShowClientdDtails(false);
   };
 
-  console.log("state data", custDetails)
+  console.log("state data", custDetails);
   const handleClick = async (id) => {
     setShowClientdDtails(true);
     setSelectClient(!selectClient);
-    console.log("ID34==>",id);
+    console.log("ID34==>", id);
     // console.log(custDetails);
     try {
       const response = await axios.get(
@@ -58,7 +57,6 @@ const ApprovedCust = () => {
     }
   };
 
-
   const fetchCustomers = async () => {
     try {
       const response = await axios.get(
@@ -72,7 +70,7 @@ const ApprovedCust = () => {
       );
       setLoading(false);
       const data = response.data;
-      console.log("data in json", data)
+      console.log("data in json", data);
       setCustomers(data.message);
       console.log("A---->", data.message);
     } catch (err) {
@@ -81,13 +79,11 @@ const ApprovedCust = () => {
   };
   React.useEffect(() => {
     fetchCustomers();
-    if(isFormSubmitted)
-    {
-      setDrawers(false)
-      fetchCustomers()
+    if (isFormSubmitted) {
+      setDrawers(false);
+      fetchCustomers();
     }
   }, [isFormSubmitted]);
-
 
   return (
     <div className="flex w-full">
@@ -97,25 +93,35 @@ const ApprovedCust = () => {
           <div className="flex text-black">
             {/* <span className="text-3xl font-bold text-left"></span> */}
             {/* <div className="flex mr-6">Help</div> */}
-            
 
             <div className="flex justify-start items-center">
-            <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-              <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg border-2 border-blue bg-blue text-white">
-                <div className="flex">
-                  
+              <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
+                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg border-2 border-blue bg-blue text-white">
+                  <div className="flex"></div>
+                  <div className="flex mr-2">
+                    <Link
+                      className="approve-link no-underline text-white"
+                      to="/approvedcustomer"
+                    >
+                      Approved
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex mr-2"><Link className="approve-link no-underline text-white"to="/approvedcustomer">Approved</Link></div>
-              </div>
 
-              {/* Pending Link */}
-              <div className="flex w-[50%] justify-evenly rounded-r-lg items-center border-1 border-solid border-blue bg-white text-black">
-                
-                <div className="flex mr-0"><Link className="approve-link no-underline text-black"to="/pendingcustomer">Pending</Link></div>
+                {/* Pending Link */}
+                <div className="flex w-[50%] justify-evenly rounded-r-lg items-center border-1 border-solid border-blue bg-white text-black">
+                  <div className="flex mr-0">
+                    <Link
+                      className="approve-link no-underline text-black"
+                      to="/pendingcustomer"
+                    >
+                      Pending
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-            
+
             {/* <button className="approve-btn  "> Approved</button> */}
           </div>
           <div className=" flex w-[900px] h-[37px]  mt-1 rounded-lg border-1 border-solid border-blue bg-transparent justify-start items-center relative">
@@ -245,13 +251,6 @@ const ApprovedCust = () => {
           </div>
         </div>
 
-
-
-
-
-
-
-
         {loading ? (
           <div className="grid grid-cols-2 align-middle py-[60px] px-[68px] gap-5">
             <div className="flex w-[745px] h-[105px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
@@ -275,43 +274,52 @@ const ApprovedCust = () => {
               </div>
             </div>
           </div>
-        ) : 
-        <div className="grid grid-cols-2 align-middle p-10 gap-5">
-        {customers ? customers.map((cust) =>(
-
-       
-        <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
-            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-              <img src={require("./user.png")} alt="user" />
-            </div>
-            <div className="flex flex-col justify-center items-center p-6 " >
-              <span className="text-xl text-left font-semibold mr-auto">
-               { cust.name}
-              </span>
-              <span className="text-lg">{cust.phone}</span>
-            </div>
-            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-              <span className="text-right ml-auto cursor-pointer" onClick={()=>handleClick(cust._id)}>
-                <img src={require("./right.png")} alt="user" />
-              </span>
-              {
-              cust.status ? <span className="text-lg text-yellowgreen" onClick={()=>handleClick(cust._id)}>Approved</span>
-              :
-              <span className="text-lg text-red" onClick={()=>handleClick(cust._id)}>Pending</span>
-            }
-            </div>
+        ) : (
+          <div className="grid grid-cols-2 align-middle p-10 gap-5">
+            {customers ? (
+              customers.map((cust) => (
+                <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
+                  <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+                    <img src={require("./user.png")} alt="user" />
+                  </div>
+                  <div className="flex flex-col justify-center items-center p-6 ">
+                    <span className="text-xl text-left font-semibold mr-auto">
+                      {cust.name}
+                    </span>
+                    <span className="text-lg">{cust.phone}</span>
+                  </div>
+                  <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+                    <span
+                      className="text-right ml-auto cursor-pointer"
+                      onClick={() => handleClick(cust._id)}
+                    >
+                      <img src={require("./right.png")} alt="user" />
+                    </span>
+                    {cust.status ? (
+                      <span
+                        className="text-lg text-yellowgreen"
+                        onClick={() => handleClick(cust._id)}
+                      >
+                        Approved
+                      </span>
+                    ) : (
+                      <span
+                        className="text-lg text-red"
+                        onClick={() => handleClick(cust._id)}
+                      >
+                        Pending
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div>No data found</div>
+            )}
           </div>
-           ))
-           :(<div>No data found</div>)
-}
- </div>
-        }
+        )}
 
-          
-
-
-
-<Drawer
+        <Drawer
           placement="right"
           closable={false}
           onClose={onClose}
@@ -342,7 +350,9 @@ const ApprovedCust = () => {
             <span className="text-4xl font-extrabold mt-4">Client Details</span>
           </div>
           {custDetails === null ? (
-            <div className="transition ease-in delay-300 "><Spinner size="xl" color="blue.500"/></div>
+            <div className="transition ease-in delay-300 ">
+              <Spinner size="xl" color="blue.500" />
+            </div>
           ) : (
             <div>
               <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
@@ -359,22 +369,20 @@ const ApprovedCust = () => {
                       {custDetails.data.name ? custDetails.data.name : "-"}
                     </span>
                     <span className="text-lg font-normal">
-                      {custDetails.data.phone
-                        ? custDetails.data.phone
-                        : ""}
+                      {custDetails.data.phone ? custDetails.data.phone : ""}
                     </span>
                   </div>
 
-
                   <div className="flex flex-col w-[30%] items-center justify-start mt-[3rem] ml-auto pr-12">
-                {/* <span className="text-[18px] text-left text-red font-semibold ml-auto m-1">
+                    {/* <span className="text-[18px] text-left text-red font-semibold ml-auto m-1">
                   Pending
                 </span> */}
-                {custDetails.status ? <span className="text-lg text-yellowgreen">Approved</span>
-              :
-              <span className="text-lg text-red">Pending</span>
-            }
-              </div>
+                    {custDetails.status ? (
+                      <span className="text-lg text-yellowgreen">Approved</span>
+                    ) : (
+                      <span className="text-lg text-red">Pending</span>
+                    )}
+                  </div>
                 </div>
                 <div className="flex flex-col w-full mt-8">
                   <div className="flex flex-row justify-around">
@@ -393,7 +401,7 @@ const ApprovedCust = () => {
                         Addressline 2
                       </span>
                       <span className="text-lg font-normal mr-auto m-1">
-                      {custDetails.data.customerLocation.line2
+                        {custDetails.data.customerLocation.line2
                           ? custDetails.data.customerLocation.line2
                           : ""}
                       </span>
@@ -405,7 +413,7 @@ const ApprovedCust = () => {
                         City
                       </span>
                       <span className="text-lg font-normal mr-auto m-1">
-                      {custDetails.data.customerLocation.residenceType
+                        {custDetails.data.customerLocation.residenceType
                           ? custDetails.data.customerLocation.residenceType
                           : ""}
                       </span>
@@ -415,7 +423,7 @@ const ApprovedCust = () => {
                         State
                       </span>
                       <span className="text-lg text-left font-normal mr-auto m-1">
-                      {custDetails.data.customerLocation.state
+                        {custDetails.data.customerLocation.state
                           ? custDetails.data.customerLocation.state
                           : ""}
                       </span>
@@ -456,8 +464,6 @@ const ApprovedCust = () => {
                     </div>
                   </div>
 
-
-
                   <div className="flex flex-row w-full justify-around mt-10">
                     <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
                       <span className="text-[18px] text-left font-semibold mr-auto m-1">
@@ -481,7 +487,6 @@ const ApprovedCust = () => {
                       </span>
                     </div>
                   </div>
-
                 </div>
               </div>
               {custDetails.status ? (
@@ -503,13 +508,16 @@ const ApprovedCust = () => {
                     <div className="block relative">
                       <Progress
                         percent={
-                          (custDetails.data.creditUsed / custDetails.data.creditLimit) *
+                          (custDetails.data.creditUsed /
+                            custDetails.data.creditLimit) *
                           100
                         }
                         size={[600, 30]}
                         showInfo={false}
                       />
-                      {custDetails.data.creditUsed > 0 && custDetails.data.creditUsed<custDetails.data.creditLimit? (
+                      {custDetails.data.creditUsed > 0 &&
+                      custDetails.data.creditUsed <
+                        custDetails.data.creditLimit ? (
                         <span
                           style={{
                             position: "absolute",
@@ -551,7 +559,8 @@ const ApprovedCust = () => {
                   {custDetails.data.creditUsed ? (
                     <div className="w-[600px] h-[55px] bg-lightBlue border-1 border-solid border-blue rounded-lg flex flex-row items-center ml-6 mt-6">
                       <span className="text-xl ml-5">
-                        Treatment ID - {custDetails.data.pendingTransaction.treatmentCode}
+                        Treatment ID -{" "}
+                        {custDetails.data.pendingTransaction.treatmentCode}
                       </span>
                       <span className="ml-auto mr-5 text-red text-xl">
                         Pending
@@ -573,10 +582,6 @@ const ApprovedCust = () => {
             </div>
           )}
         </Drawer>
-
-
-          
-         
       </div>
     </div>
   );

@@ -12,6 +12,8 @@ const PendingCustomer = () => {
   const [selectedCustomer, setSelectedCustomer] = React.useState("");
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [selectedCredit, setSelectedcredit] = React.useState("");
+  const [loading, setLoading] = React.useState(true);
+
 
   const onClose = () => {
     setSelectClient(false);
@@ -73,6 +75,7 @@ const PendingCustomer = () => {
         },
       });
       const data = response.data;
+      setLoading(false)
       setPendingCustomers(data.data);
     } catch (err) {
       console.error(err);
@@ -246,6 +249,30 @@ const PendingCustomer = () => {
             </div>
           </div>
         </div>
+        {loading ? (
+          <div className="grid grid-cols-2 align-middle p-5 pt-[60px] gap-5">
+            <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+              <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
+              <div className="flex flex-col justify-center items-center p-5">
+                <div className="w-[180px] h-[20px] mb-1 shimmer" />
+                <div className="w-[150px] h-[18px] shimmer" />
+              </div>
+              <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+                <div className="w-[30px] h-[30px] shimmer" />
+              </div>
+            </div>
+            <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+              <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
+              <div className="flex flex-col justify-center items-center p-5">
+                <div className="w-[180px] h-[20px] mb-1 shimmer" />
+                <div className="w-[150px] h-[18px] shimmer" />
+              </div>
+              <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+                <div className="w-[30px] h-[30px] shimmer" />
+              </div>
+            </div>
+          </div>
+        ) : (
         <div className="grid grid-cols-2 align-middle p-5 pt-[60px] gap-5 ml-4">
           {pendingCustomers?.length > 0 ? (
             pendingCustomers.map((pendingCustomer) => (
@@ -281,6 +308,7 @@ const PendingCustomer = () => {
             <div>No pending customers</div>
           )}
         </div>
+        )}
         <Drawer
           placement="right"
           closable={false}

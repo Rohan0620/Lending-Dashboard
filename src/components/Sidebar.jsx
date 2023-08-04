@@ -6,14 +6,15 @@ const Sidebar = () => {
     return sessionStorage.getItem("selectedTab") || "dashboard";
   });
 
-  React.useEffect(() => {
-    sessionStorage.setItem("selectedTab", selectedTab);
-  }, [selectedTab]);
+  const handleTabClick = (tabName) => {
+    setSelectedTab(tabName);
+    sessionStorage.setItem("selectedTab", tabName);
+  };
 
   let navigate = useNavigate();
   return (
     <>
-      <div className="w-[250px] bg-blue h-screen p-2  pt-8 duration-300 font-Poppins">
+      <div className="w-[250px] bg-blue p-2 h-screen  pt-8 duration-300 font-Poppins">
         <img
           className="w-[176px] h-[26px] mt-8 mb-[40px]"
           src={Logo}
@@ -24,7 +25,7 @@ const Sidebar = () => {
             <li
               className={`flex flex-row w-[220px] cursor-pointer items-center text-white`}
               onClick={() => {
-                setSelectedTab("dashboard")
+                handleTabClick("dashboard")
                 navigate("/dashboard")}}
                 style={
                   selectedTab === "dashboard"
@@ -76,7 +77,7 @@ const Sidebar = () => {
             <li
               className="flex  justify-start cursor-pointer items-center text-white"
               onClick={() =>{ 
-                setSelectedTab("approval")
+                handleTabClick("approval")
                 navigate("/all_loans")}}
                 style={
                   selectedTab === "approval"
@@ -93,7 +94,7 @@ const Sidebar = () => {
             <li
               className="flex justify-start cursor-pointer items-center text-white"
               onClick={() =>{ 
-                setSelectedTab("repayments")
+                handleTabClick("repayments")
                 navigate("/repay")}}
                 style={
                   selectedTab === "repayments"
@@ -110,7 +111,7 @@ const Sidebar = () => {
             <li
               className="flex justify-start cursor-pointer items-center text-white"
               onClick={() =>{ 
-                setSelectedTab("clients") 
+                handleTabClick("clients") 
                 navigate("/approvedcustomer")}}
                 style={
                   selectedTab === "clients"
