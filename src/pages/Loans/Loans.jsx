@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import  { useEffect, useState,useRef } from "react";
 import Sidebar from "../../components/Sidebar";
 import "./loans.css";
 import { Divider, Drawer } from "antd";
+import axios from "axios";
+import { io } from 'socket.io-client';
+
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -11,27 +15,104 @@ const Loans = () => {
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
   
+  const socketRef = useRef(null);
 
   const handleApprove = () => {
     setShowApproved(true);
     setShowCreditsLimit(false);
   };
-  
-  
-  const onFundAccount=()=>{
-    setSelectClient(false);
-    setShowCreditsLimit(true);
 
+  
+  const connectSocket = (idd)=>{
+    const serverURL = `ws://localhost:8000/?trnId=%23${idd}`; 
+    const socket = io(serverURL);
+    socket.on('message', (data) => {
+      console.log('Received message:', data);
+    });
   }
-  // const offCanvasRef = React.useRef(null);
 
-  // useEffect(() => {
-  //   if (selectClient) {
-  //     offCanvasRef.current.classList.add(`.invisible.show`); // Add CSS class to show OffCanvas
-  //   } else {
-  //     offCanvasRef.current.classList.remove(`.invisible.show`); // Remove CSS class to hide OffCanvas
-  //   }
-  // }, [selectClient]);
+
+
+  const[fundData, setFund] = useState("");
+  console.log("f", fundData.length);
+
+
+
+  console.log(socketRef.current)
+  useEffect(() => {
+    if (socketRef.current) {
+      console.log(fundData,"checking")
+      socketRef.current.on("credited", (data) => {
+        console.log("credited")
+        const newFundData = Object.assign({}, fundData, {
+          data: {
+            ...fundData.data,
+            amountReceived: data.amount,
+          },
+        });
+        console.log(newFundData)
+        setFund(newFundData);
+      });
+    }
+  }, [socketRef]);
+
+  const getFundDetails= async ()=>{
+
+    const fundId = paramIds.replace("#", "");
+    console.log("Fund ID===>",fundId)
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${IdAmt}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log("Fund data ===>",response.data)
+      setFund(response.data);
+    
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+
+
+
+
+  const onFundAccount=()=>{
+    console.log("socket api is going call")
+    const socket = io("http://localhost:8000/",{ 
+        withCredentials: true,
+        query: {
+          // Add your parameters here as key-value pairs
+          trnId:paramIds,
+        }, // Use WebSockets
+        // auth: {
+        //   token:`Bearer ${localStorage.getItem("token")}`
+        // },
+        extraHeaders:{
+          token:`Bearer ${localStorage.getItem("token")}`
+        }
+      });
+     
+  
+    socket.on("credited", (data) => {
+      console.log("Received data from server:", data);
+    });
+
+    getFundDetails();
+      setSelectClient(false);
+      setShowCreditsLimit(true);
+    
+      
+    }
+
+
+
+
   const handleClientDetails = () => {
 
     
@@ -49,14 +130,85 @@ const Loans = () => {
 
     setShowClientdDtails(false);
   };
-  const handleClick = () => {
+
+  const [emiData, setEmi] = useState("");
+  const [allEmi, setAllEmis] = useState(null);
+  const[ paramIds, setParams] = useState("");
+  const[ IdAmt, setEmiAmt] = useState("");
+  console.log("Parammmmmm===>", paramIds);
+  console.log("ID amount===>", IdAmt);
+  // console.log("Length of all EMI",Object.values(allEmi).length);
+  // console.log("EMI DATA===>",emiData.customerId.name)
+
+  const handleClick = async (id) => {
+    console.log("Params id", id);
     setSelectClient(!selectClient);
+    setParams(id);
+    var paramId = id.replace("#", "");
+
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/Lenders/selectAproovals?trnId=%23${paramId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log("R===>",response.data)
+      const data = response.data;
+      console.log("All Emis", data.data.EmiDates);
+      setAllEmis(data.data.EmiDates);
+      setEmi(data.data);
+      setEmiAmt(data.data.amount)
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const onCloseCredits = () => {
     setShowCreditsLimit(false);
     setSelectClient(true);
   };
+
+
+
+
+
+
+
+
+
+
+  
+  const [allLoans, setLoanData] = useState("");
+  const [status, setStats] = useState("");
+  const getDetails = async () => {
+    const response = await fetch("http://localhost:8000/Lenders/aproovals", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+
+    const json = await response.json();
+    console.log('JSON',json)
+    setStats(json.status)
+    if (json.status === "Success") {
+      setLoanData(json.data.transactions);
+      console.log("hello json", json.data.transactions);
+    } else {
+      // alert("Data not found");
+      console.log("Data not found");
+    }
+  };
+  useEffect(() => {
+    getDetails();
+  }, []);
+
 
   return (
     <>
@@ -207,6 +359,9 @@ const Loans = () => {
           <div className="flex w-[80vww] justify-center p-7">
             <table cellSpacing="0" className="w-full mt-4">
               <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+              {/* {allLoans.length > 0 ? (
+                  allLoans.map((transactions) => (
+                <> */}
                 <tr className=" first-row border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
                   <td>
                     <img src={require("./status.png")} alt="status" />
@@ -219,107 +374,39 @@ const Loans = () => {
                   <td>Date</td>
                   <td className="mr-4">Status</td>
                 </tr>
+                {allLoans.length > 0 ? (
+                  allLoans.map((transactions) => (
+                <>
                 <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-5">
                   <td>
                     <img src={require("./processing.png")} alt="processing" />
                   </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-                  {/* <td className="text-center h-[50px] w-[230px]">
+                  <td className="text-aliceblue" onClick={()=>handleClick(transactions.trnId)} style={{cursor:'pointer'}}> {transactions.trnId}</td>
+                  <td>{transactions.customerId.name}</td>
+                  <td>{transactions.customerId.phone}</td>
+                  <td className="text-center h-[50px] w-[230px]">{transactions.tenure}{status === "Success"? " months": " " }</td>
+                  {/* <td className="text-center h-[50px] w-[230px]"> transactions.tenure === " " ? " ": 
                     <div className="ml-10 block text-xl text-blue text-center border-solid border-1 border-blue bg-lightBlue rounded-2xl h-[40px]">
                       Kidney Surgery
                     </div>
                   </td> */}
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-yellowgreen">Settled</td>                
+                  <td>{transactions.treatmentCost}</td>
+                  <td>{transactions.date}</td>
+                  <td
+                        className={
+                          transactions.lenderStatus === true
+                            ? "text-green pr-6 w-[80px]"
+                            : "text-red pr-6 w-[80px]"
+                        }
+                      >
+                        {transactions.lenderStatus === true ? "Settled" : "Pending"}
+                      </td>             
                 </tr>
-                <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}>#1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./completed.png")} alt="completed" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-yellowgreen">Settled</td>                
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
-                <tr className=" items-center text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-8">
-                  <td>
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue" onClick={handleClick} style={{cursor:'pointer'}}> #1256784542</td>
-                  <td>John doe</td>
-                  <td>9874563210</td>
-                  <td className="text-center h-[50px] w-[230px]">3 months</td>
-
-                  
-                  <td>5000</td>
-                  <td>21 Jun 2022</td>
-                  <td className="text-red mr-4">Pending</td>
-                </tr>
+              
+                </> ))
+                  ) : (
+                    <div> No Loans data found</div>
+                  )}
               </tbody>
             </table>
           </div>
@@ -351,12 +438,13 @@ const Loans = () => {
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </div>
+
             <div className="flex flex-row ml-5 mt-3">
               <span className="text-4xl font-extrabold mt-4">
                 Client Details
               </span>
             </div>
-            
+
             <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
               <div className="flex flex-row w-full">
                 <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
@@ -368,32 +456,35 @@ const Loans = () => {
                 </div>
                 <div className="flex flex-col m-4 mt-9">
                   <span className="text-[22px] text-left font-semibold mr-auto">
-                    John Doe
+                    {emiData ? emiData.customerId.name : "-"}
                   </span>
-                  <span className="text-lg font-normal">+91 6376078722</span>
+                  {emiData ? emiData.customerId.phone : "-"}
                 </div>
-                
-                <div>
-                
-                </div>
-             
 
-
+                <div></div>
               </div>
-              
+
               <div className="flex flex-col w-full mt-8">
                 <div className="flex flex-row justify-around">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1 ">
-                      Addressline 1
+                      Address Line1
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">ABC Ground Hello World</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData
+                        ? emiData.customerId.customerLocation.line1
+                        : "-"}
+                    </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                      Addressline 2
+                      Address Line2
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">ABC Ground</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData
+                        ? emiData.customerId.customerLocation.line2
+                        : "-"}
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-row w-full justify-around mt-10">
@@ -401,171 +492,178 @@ const Loans = () => {
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       City
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">Gadag</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData ? emiData.customerId.customerLocation.residenceType : "-"}
+                    </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       State
                     </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">Karnataka</span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">
+                      {emiData
+                        ? emiData.customerId.customerLocation.state
+                        : "-"}
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-row w-full justify-around mt-10">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Pan Card No
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">A54123</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData ? emiData.customerId.panNumber : "-"}
+                    </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Aadhar No
                     </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">9876543210</span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">
+                      {emiData ? emiData.customerId.aadhaar : "-"}
+                    </span>
                   </div>
                 </div>
 
                 <div className="flex flex-row w-full justify-around mt-10">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                      Approved on 
+                      Approved on
                     </span>
-                    <span className="text-lg font-normal mr-auto m-1">22 July 2023</span>
+                    <span className="text-lg font-normal mr-auto m-1">
+                      {emiData
+                        ? new Date(
+                            emiData.customerId.aproovedDate
+                          ).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : ""}
+                    </span>
                   </div>
                   <div className="flex flex-col w-[40%] items-center justify-start ml-auto mr-[90px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
                       Approved Limit
                     </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">₹50000</span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">
+                      ₹{emiData ? emiData.customerId.creditLimit : "-"}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
 
+            <div className="flex flex-row ml-5 mt-3">
+              <span className="text-4xl font-extrabold mt-4">Loan Details</span>
+            </div>
+            <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+              <div className="flex flex-col w-full m-3">
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-aliceblue text-left    ">
+                      Loan Amount
+                    </span>
+                    <span className="text-[25px] text-aliceblue font-normal  ">
+                      ₹{emiData ? emiData.amount : "-"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-aliceblue text-left    ">
+                      Interest rate per month
+                    </span>
+                    <span className="text-[25px] text-aliceblue font-normal  ">
+                      1.5%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-aliceblue text-left    ">
+                      Tensure(months)
+                    </span>
+                    <span className="text-[25px] text-aliceblue font-normal  ">
+                      {emiData ? emiData.tenure : "-"} 
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between mb-4">
+                  <div className="flex flex-row  w-[100%] justify-between  ">
+                    <span className="text-[25px] text-black text-left    ">
+                      EMI
+                    </span>
+                    <span className="text-[25px] text-black font-normal  ">
+                      ₹8333
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-              Loan Details
-            </span>
-          </div>
-          <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-            <div className="flex flex-col w-full m-3">
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-aliceblue text-left    ">
-                    Loan Amount
-                  </span>
-                  <span className="text-[25px] text-aliceblue font-normal  ">
-                    ₹50000
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-aliceblue text-left    ">
-                    Interest rate per month 
-                  </span>
-                  <span className="text-[25px] text-aliceblue font-normal  ">
-                    1.5%
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-aliceblue text-left    ">
-                    Tensure 
-                  </span>
-                  <span className="text-[25px] text-aliceblue font-normal  ">
-                    6 mos
-                  </span>
-                </div>
-              </div>
-
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-row  w-[100%] justify-between  ">
-                  <span className="text-[25px] text-black text-left    ">
-                    EMI
-                  </span>
-                  <span className="text-[25px] text-black font-normal  ">
-                    ₹8333
-                  </span>
-                </div>
-              </div>
-
-
+              <span className="text-4xl font-extrabold mt-4">EMI Dates</span>
             </div>
-          </div>
+            {allEmi ? 
+           
+            allEmi.map((emi) => (
+              <>
+              <div className="w-[600px] ">
+              <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+                <span className="ml-4 text-lg font-semibold">
+                  { new Date(
+                        emi.date
+                      ).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })
+                    }
+                </span>
 
-          <div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-            EMI Dates 
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 July 2023
-            </span>
-            <span className='text-lg ml-auto mr-4 '>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 August 2023
-            </span>
-          <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 September 2023
-            </span>
-          <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 October 2023
-            </span>
-          <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
-          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-            <span className="mr-auto ml-4 text-lg font-semibold">
-            22 November 2023
-            </span>
-            <span className='text-lg ml-auto mr-4'>
-            ₹8333
-            </span>
-          </div>
+                <span className="ml-auto mr-4 text-lg font-semibold">
+                  ₹{emi.amount}
+                </span>
+            
 
+              
+              </div>
+              </div>
+              </> ))
+               
+               :(
+                 <h2>No emis</h2>
+               )
+}
 
-          <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
-                <Divider className="bg-blue mr-auto pt-0 " />
-                <div className="flex justify-end">
+              
+          
+         
+          <div className="w-full bottom-2  right-0 bg-white ">
+                <Divider className="bg-blue mr-auto mt-12 pt- " />
+                <div className="flex justify-end items-center">
                   <button
-                    className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-4"
+                    className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-2 "
                     onClick={onClose}
                   >
                     <span className="text-xl font-bold">CANCEL</span>
                   </button>
                   <button
-                    className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
+                    className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-2 "
                     onClick={onFundAccount}
                   >
                     <span className="text-xl font-bold">PROCEED</span>
                   </button>
                 </div>
               </div>
+              
+              
+             
 
           </Drawer>
 
@@ -604,6 +702,7 @@ const Loans = () => {
             Fund Account
             </span>
           </div>
+
           <div className="flex w-[600px] h-[220px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
             <div className="flex flex-col w-full mt-8">
               <div className="flex flex-row justify-around">
@@ -612,7 +711,7 @@ const Loans = () => {
                   Account No
                   </span>
                   <span className="text-lg font-normal mr-auto m-1">
-                  1234556777788
+                  {fundData ? fundData.data.accountNumber: "-"}
                   </span>
                 </div>
                 <div className="flex flex-col w-[35%] items-center justify-start ml-auto mr-[130px]">
@@ -620,7 +719,7 @@ const Loans = () => {
                     IFSC Code
                   </span>
                   <span className="text-lg font-normal mr-auto m-1">
-                  SBI0009373
+                  {fundData ? fundData.data.ifsc:"-"}
                   </span>
                 </div>
               </div>
@@ -629,7 +728,7 @@ const Loans = () => {
                   <span className="text-[18px] text-left font-semibold mr-auto m-1">
                   UPI id
                   </span>
-                  <span className="text-lg font-normal mr-auto m-1">upi@okaxis</span>
+                  <span className="text-lg font-normal mr-auto m-1">{fundData ? fundData.data.upiId:"-"}</span>
                 </div>
 
                 <div className="flex flex-col w-[35%] items-center justify-start ml-auto mr-[130px]">
@@ -637,7 +736,7 @@ const Loans = () => {
                   Amount Received
                   </span>
                   <span className="text-lg font-normal mr-auto m-1">
-                  ₹28000
+                  {fundData ? fundData.data.amountReceived: "-"}
                   </span>
                 </div>
               </div>
@@ -645,6 +744,8 @@ const Loans = () => {
               
             </div>
           </div>
+          
+           
 
 
           
