@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import  { useEffect, useState,useRef } from "react";
 import Sidebar from "../../components/Sidebar";
 import "./loans.css";
 import { Divider, Drawer } from "antd";
 import axios from "axios";
 import { io } from 'socket.io-client';
+
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -13,14 +15,13 @@ const Loans = () => {
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
   
+  const socketRef = useRef(null);
 
   const handleApprove = () => {
     setShowApproved(true);
     setShowCreditsLimit(false);
   };
 
-
-  
   
   const connectSocket = (idd)=>{
     const serverURL = `ws://localhost:8000/?trnId=%23${idd}`; 
@@ -34,6 +35,27 @@ const Loans = () => {
 
   const[fundData, setFund] = useState("");
   console.log("f", fundData.length);
+
+
+
+  console.log(socketRef.current)
+  useEffect(() => {
+    if (socketRef.current) {
+      console.log(fundData,"checking")
+      socketRef.current.on("credited", (data) => {
+        console.log("credited")
+        const newFundData = Object.assign({}, fundData, {
+          data: {
+            ...fundData.data,
+            amountReceived: data.amount,
+          },
+        });
+        console.log(newFundData)
+        setFund(newFundData);
+      });
+    }
+  }, [socketRef]);
+
   const getFundDetails= async ()=>{
 
     const fundId = paramIds.replace("#", "");
@@ -91,22 +113,6 @@ const Loans = () => {
 
 
 
-  // const onFundAccount=(id,amt)=>{
-
-  //   setSelectClient(false);
-  //   setShowCreditsLimit(true);
-  //   // const URL = `http://localhost:8000/?trnId=%23${id}`
-  //   connectSocket(id);
-  // }
-  // const offCanvasRef = React.useRef(null);
-
-  // useEffect(() => {
-  //   if (selectClient) {
-  //     offCanvasRef.current.classList.add(`.invisible.show`); // Add CSS class to show OffCanvas
-  //   } else {
-  //     offCanvasRef.current.classList.remove(`.invisible.show`); // Remove CSS class to hide OffCanvas
-  //   }
-  // }, [selectClient]);
   const handleClientDetails = () => {
 
     
@@ -143,7 +149,7 @@ const Loans = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8000/Lenders/selectrepayments?trnId=%23${paramId}`,
+        `http://localhost:8000/Lenders/selectAproovals?trnId=%23${paramId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -384,7 +390,7 @@ const Loans = () => {
                       Kidney Surgery
                     </div>
                   </td> */}
-                  <td>{transactions.amount}</td>
+                  <td>{transactions.treatmentCost}</td>
                   <td>{transactions.date}</td>
                   <td
                         className={
@@ -620,13 +626,10 @@ const Loans = () => {
                     }
                 </span>
 
-                <span className="mr-auto ml-6 text-lg font-semibold">
+                <span className="ml-auto mr-4 text-lg font-semibold">
                   ₹{emi.amount}
-                  {/* {setEmiAmt(emi.amount)} */}
                 </span>
-                <span className={ emi.status === true ? "text-lg text-yellowgreen ml-auto mr-4":"text-lg text-red ml-auto mr-4 "}>
-                {emi.status === true ? "Settled" : "Pending"}
-                </span>
+            
 
               
               </div>
