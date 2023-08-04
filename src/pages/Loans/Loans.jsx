@@ -3,6 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import "./loans.css";
 import { Divider, Drawer } from "antd";
 import axios from "axios";
+import { io } from 'socket.io-client';
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -17,13 +18,86 @@ const Loans = () => {
     setShowApproved(true);
     setShowCreditsLimit(false);
   };
-  
-  
-  const onFundAccount=()=>{
-    setSelectClient(false);
-    setShowCreditsLimit(true);
 
+
+  
+  
+  const connectSocket = (idd)=>{
+    const serverURL = `ws://localhost:8000/?trnId=%23${idd}`; 
+    const socket = io(serverURL);
+    socket.on('message', (data) => {
+      console.log('Received message:', data);
+    });
   }
+
+
+
+  const[fundData, setFund] = useState("");
+  console.log("f", fundData.length);
+  const getFundDetails= async ()=>{
+
+    const fundId = paramIds.replace("#", "");
+    console.log("Fund ID===>",fundId)
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${IdAmt}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log("Fund data ===>",response.data)
+      setFund(response.data);
+    
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+
+
+
+
+  const onFundAccount=()=>{
+    console.log("socket api is going call")
+    const socket = io("http://localhost:8000/",{ 
+        withCredentials: true,
+        query: {
+          // Add your parameters here as key-value pairs
+          trnId:paramIds,
+        }, // Use WebSockets
+        // auth: {
+        //   token:`Bearer ${localStorage.getItem("token")}`
+        // },
+        extraHeaders:{
+          token:`Bearer ${localStorage.getItem("token")}`
+        }
+      });
+     
+  
+    socket.on("credited", (data) => {
+      console.log("Received data from server:", data);
+    });
+
+    getFundDetails();
+      setSelectClient(false);
+      setShowCreditsLimit(true);
+    
+      
+    }
+
+
+
+
+  // const onFundAccount=(id,amt)=>{
+
+  //   setSelectClient(false);
+  //   setShowCreditsLimit(true);
+  //   // const URL = `http://localhost:8000/?trnId=%23${id}`
+  //   connectSocket(id);
+  // }
   // const offCanvasRef = React.useRef(null);
 
   // useEffect(() => {
@@ -53,13 +127,20 @@ const Loans = () => {
 
   const [emiData, setEmi] = useState("");
   const [allEmi, setAllEmis] = useState(null);
+  const[ paramIds, setParams] = useState("");
+  const[ IdAmt, setEmiAmt] = useState("");
+  console.log("Parammmmmm===>", paramIds);
+  console.log("ID amount===>", IdAmt);
   // console.log("Length of all EMI",Object.values(allEmi).length);
   // console.log("EMI DATA===>",emiData.customerId.name)
 
   const handleClick = async (id) => {
     console.log("Params id", id);
     setSelectClient(!selectClient);
+    setParams(id);
     var paramId = id.replace("#", "");
+
+
     try {
       const response = await axios.get(
         `http://localhost:8000/Lenders/selectrepayments?trnId=%23${paramId}`,
@@ -69,11 +150,12 @@ const Loans = () => {
           },
         }
       );
-      // console.log("R===>",response)
+      console.log("R===>",response.data)
       const data = response.data;
       console.log("All Emis", data.data.EmiDates);
       setAllEmis(data.data.EmiDates);
       setEmi(data.data);
+      setEmiAmt(data.data.amount)
     } catch (err) {
       console.error(err);
     }
@@ -83,6 +165,15 @@ const Loans = () => {
     setShowCreditsLimit(false);
     setSelectClient(true);
   };
+
+
+
+
+
+
+
+
+
 
   
   const [allLoans, setLoanData] = useState("");
@@ -512,7 +603,11 @@ const Loans = () => {
             <div className="flex flex-row ml-5 mt-3">
               <span className="text-4xl font-extrabold mt-4">EMI Dates</span>
             </div>
-            {allEmi ? allEmi.map((emi) => (
+            {allEmi ? 
+           
+            allEmi.map((emi) => (
+              <>
+              <div className="w-[600px] ">
               <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
                 <span className="ml-4 text-lg font-semibold">
                   { new Date(
@@ -527,6 +622,7 @@ const Loans = () => {
 
                 <span className="mr-auto ml-6 text-lg font-semibold">
                   ₹{emi.amount}
+                  {/* {setEmiAmt(emi.amount)} */}
                 </span>
                 <span className={ emi.status === true ? "text-lg text-yellowgreen ml-auto mr-4":"text-lg text-red ml-auto mr-4 "}>
                 {emi.status === true ? "Settled" : "Pending"}
@@ -534,38 +630,37 @@ const Loans = () => {
 
               
               </div>
-            ))
-          :(
-            <h2>No emis</h2>
-          )
-          }
+              </div>
+              </> ))
+               
+               :(
+                 <h2>No emis</h2>
+               )
+}
 
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-              <span className="ml-4 text-lg font-semibold">22 July 2023</span>
-
-              <span className="mr-auto ml-6 text-lg font-semibold">₹8333</span>
-              <span className="text-lg text-red ml-auto mr-4 ">Pending</span>
-            </div>
+              
           
-
-
-          <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
-                <Divider className="bg-blue mr-auto pt-0 " />
-                <div className="flex justify-end">
+         
+          <div className="w-full bottom-2  right-0 bg-white ">
+                <Divider className="bg-blue mr-auto mt-12 pt- " />
+                <div className="flex justify-end items-center">
                   <button
-                    className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-4"
+                    className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-2 "
                     onClick={onClose}
                   >
                     <span className="text-xl font-bold">CANCEL</span>
                   </button>
                   <button
-                    className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
+                    className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-2 "
                     onClick={onFundAccount}
                   >
                     <span className="text-xl font-bold">PROCEED</span>
                   </button>
                 </div>
               </div>
+              
+              
+             
 
           </Drawer>
 
@@ -604,6 +699,7 @@ const Loans = () => {
             Fund Account
             </span>
           </div>
+
           <div className="flex w-[600px] h-[220px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
             <div className="flex flex-col w-full mt-8">
               <div className="flex flex-row justify-around">
@@ -612,7 +708,7 @@ const Loans = () => {
                   Account No
                   </span>
                   <span className="text-lg font-normal mr-auto m-1">
-                  1234556777788
+                  {fundData ? fundData.data.accountNumber: "-"}
                   </span>
                 </div>
                 <div className="flex flex-col w-[35%] items-center justify-start ml-auto mr-[130px]">
@@ -620,7 +716,7 @@ const Loans = () => {
                     IFSC Code
                   </span>
                   <span className="text-lg font-normal mr-auto m-1">
-                  SBI0009373
+                  {fundData ? fundData.data.ifsc:"-"}
                   </span>
                 </div>
               </div>
@@ -629,7 +725,7 @@ const Loans = () => {
                   <span className="text-[18px] text-left font-semibold mr-auto m-1">
                   UPI id
                   </span>
-                  <span className="text-lg font-normal mr-auto m-1">upi@okaxis</span>
+                  <span className="text-lg font-normal mr-auto m-1">{fundData ? fundData.data.upiId:"-"}</span>
                 </div>
 
                 <div className="flex flex-col w-[35%] items-center justify-start ml-auto mr-[130px]">
@@ -637,7 +733,7 @@ const Loans = () => {
                   Amount Received
                   </span>
                   <span className="text-lg font-normal mr-auto m-1">
-                  ₹28000
+                  {fundData ? fundData.data.amountReceived: "-"}
                   </span>
                 </div>
               </div>
@@ -645,6 +741,8 @@ const Loans = () => {
               
             </div>
           </div>
+          
+           
 
 
           
