@@ -1,0 +1,349 @@
+ <Drawer
+           placement="right"
+           closable={false}
+           onClose={onClose}
+           open={selectClient}
+           key="right"
+           width={700}
+          >
+            <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
+              <svg
+                className="h-8 w-8 text-black cursor-pointer"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                onClick={onClose}
+              >
+                {" "}
+                <path stroke="none" d="M0 0h24v24H0z" />{" "}
+                <line x1="18" y1="6" x2="6" y2="18" />{" "}
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </div>
+            <div className="flex flex-row ml-5 mt-3">
+              <span className="text-4xl font-extrabold mt-4">
+                Client Details
+              </span>
+            </div>
+            <div className=" flex w-[600px] h-[37px] ml-5 mt-6 rounded-lg border-solid border-1 border-aliceblue bg-transparent justify-center items-center">
+              <div className="flex ml-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="26"
+                  height="28"
+                  viewBox="0 0 26 28"
+                  fill="none"
+                >
+                  <g clipPath="url(#clip0_305_150)">
+                    <path
+                      d="M10.7994 19.8333C14.833 19.8333 18.1029 16.177 18.1029 11.6667C18.1029 7.15634 14.833 3.5 10.7994 3.5C6.76575 3.5 3.49585 7.15634 3.49585 11.6667C3.49585 16.177 6.76575 19.8333 10.7994 19.8333Z"
+                      stroke="#1866F9"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M22.2763 24.5L16.0161 17.5"
+                      stroke="#1866F9"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_305_150">
+                      <rect
+                        width="25.0406"
+                        height="28"
+                        fill="white"
+                        transform="translate(0.365723)"
+                      />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+              <div className="flex justify-start items-center">
+                <input
+                  type="search"
+                  className="block text-lg w-[550px] px-2 py-[0.20rem] leading-[1.6] border-none outline-none placeholder:text-aliceblue "
+                  id="searchBar"
+                  placeholder="Search.."
+                />
+              </div>
+            </div>
+            <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+              <div className="flex flex-row w-full">
+                <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
+                  <img
+                    className="w-[75px] "
+                    src={require("./user.png")}
+                    alt="user"
+                  />
+                </div>
+                <div className="flex flex-col m-4 mt-9">
+                  <span className="text-[22px] text-left font-semibold mr-auto">
+                    John Doe
+                  </span>
+                  <span className="text-lg font-normal">+91 6376078722</span>
+                </div>
+                
+                <div>
+                
+                </div>
+                <div className="flex flex-col w-[30%] items-center justify-start mt-[3rem] ml-auto mr-[130px]">
+                    <span className="text-[18px] text-left text-yellowgreen font-semibold ml-auto mr-auto m-1">
+                    Approved
+                    </span>
+                    {/* <span className="text-lg font-normal  ml-auto mr-auto m-1">ABC Ground</span> */}
+                  </div>
+
+
+              </div>
+              
+              <div className="flex flex-col w-full mt-8">
+                <div className="flex flex-row justify-around">
+                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1 ">
+                      Addressline 1
+                    </span>
+                    <span className="text-lg font-normal mr-auto m-1">ABC Ground Hello World</span>
+                  </div>
+                  <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                      Addressline 2
+                    </span>
+                    <span className="text-lg font-normal mr-auto m-1">ABC Ground</span>
+                  </div>
+                </div>
+                <div className="flex flex-row w-full justify-around mt-10">
+                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                      City
+                    </span>
+                    <span className="text-lg font-normal mr-auto m-1">Gadag</span>
+                  </div>
+                  <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                      State
+                    </span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">Karnataka</span>
+                  </div>
+                </div>
+                <div className="flex flex-row w-full justify-around mt-10">
+                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                      Marital Status
+                    </span>
+                    <span className="text-lg font-normal mr-auto m-1">Married</span>
+                  </div>
+                  <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                      Aadhar No
+                    </span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">9876543210</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-row w-full justify-around mt-10">
+                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                      Pan Card No
+                    </span>
+                    <span className="text-lg font-normal mr-auto m-1">A54123</span>
+                  </div>
+                  <div className="flex flex-col w-[40%] items-center justify-start ml-auto mr-[90px]">
+                    <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                      Employment Type
+                    </span>
+                    <span className="text-lg text-left font-normal mr-auto m-1">9876543210</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div className="flex flex-col  ml-5 mt-3">
+              <span className="text-4xl font-extrabold mt-4">
+                Credit Limit 
+              </span>
+              <span className="text-end mb-5 text-xl">Total Limit $ 42000 </span>
+            <Progress className="text-xl smt-4" type='line' percent={60} strokeColor='blue' strokeWidth={50} />
+            <div className="flex flex-row justify-between align-top">
+            <span className="text-xl smt-4">$0</span>
+            <span className="text-xl smt-4">$10000</span>
+            </div>
+
+            </div>
+
+            <div className="flex flex-col  ml-5 mt-3">
+            <span className="text-4xl font-extrabold mt-4">
+                Ongoing Loans
+            </span>
+            <div className="flex w-[100%] h-[70px] mt-5 border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                Loan ID-543478
+              </span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+             
+              <span className="text-lg text-red">Approved</span>
+            </div>
+          </div>
+
+
+            </div>
+          </Drawer>
+
+
+
+
+
+<div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 ">
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user"  />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+          {/* ------ */}
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto ">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+
+
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer onClick={handleClick}">
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+
+
+           <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" >
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+
+
+          <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5" onClick={handleClick}>
+            <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
+              <img src={require("./user.png")} alt="user" />
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 " >
+              <span className="text-xl text-left font-semibold mr-auto">
+                John Doe
+              </span>
+              <span className="text-lg">6376078722</span>
+            </div>
+            <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+              <span className="text-right ml-auto cursor-pointer" onClick={handleClick}>
+                <img src={require("./right.png")} alt="user" />
+              </span>
+              <span className="text-lg text-yellowgreen">Approved</span>
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
