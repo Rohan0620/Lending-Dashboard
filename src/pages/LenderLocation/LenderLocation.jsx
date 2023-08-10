@@ -73,7 +73,7 @@ const LenderLocation = () => {
         </div>
         <div className="bg-blue w-[30vw]">
             <div className="mt-[120px]">
-                <img src={require("../../image/curecoinHome.jpg")} alt="curecoin" className='w-[300px]' />
+                <img src={require("../../image/Home.png")} alt="curecoin" className='w-[300px]' />
             </div>
         <div className="flex flex-col justify-center items-center mt-6">
            <span className='text-[35px] text-white font-bold'>Branch Location</span> 

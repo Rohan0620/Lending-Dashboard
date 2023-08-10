@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "./curecoinHome.jpg";
+import Logo from "../image/Home.png";
 import { useNavigate } from "react-router-dom";
 const Sidebar = () => {
   const [selectedTab, setSelectedTab] = React.useState(() => {
@@ -16,7 +16,7 @@ const Sidebar = () => {
     <>
       <div className="w-[250px] bg-blue p-2 h-screen  pt-8 duration-300 font-Poppins">
         <img
-          className="w-[176px] h-[26px] mt-8 mb-[40px]"
+          className="w-[210px] h-[26px] mt-8 mb-[40px]"
           src={Logo}
           alt="logo"
         />

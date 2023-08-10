@@ -13,6 +13,7 @@ const Repayment = () => {
   const [showApproved, setShowApproved] = useState(false);
   const [loading, setLoading] = React.useState(true);
 
+  
 
   const handleApprove = () => {
     setShowApproved(true);
@@ -289,7 +290,7 @@ const Repayment = () => {
             </div>
           ) : (
           <div className="flex pl-10 pr-12">
-            <table cellSpacing="0" className="w-full mt-4">
+            <table cellSpacing="0" className="w-full mt-4" style={{scrollBehavior:"smooth"}}>
               <thead>
                 <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
                   <td className="pl-4 w-[30px]">
