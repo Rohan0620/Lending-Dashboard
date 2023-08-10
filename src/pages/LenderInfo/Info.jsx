@@ -100,7 +100,7 @@ const HospitalInfo = () => {
         <div className="bg-blue w-[30vw]">
           <div className="mt-[150px]">
             <img
-              src={require("../../image/curecoinHome.jpg")}
+              src={require("../../image/Home.png")}
               alt="curecoin"
               className="w-[300px]"
             />

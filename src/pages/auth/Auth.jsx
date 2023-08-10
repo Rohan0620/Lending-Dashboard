@@ -13,13 +13,10 @@ const Auth = () => {
   let navigate = useNavigate();
   const showError = () => {
     toast.error("Please try again later. Server is busy.", {
-      position: "top-center",
+      position: "top-right",
     });
   };
 
-
-
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -39,15 +36,15 @@ const Auth = () => {
       if (json.status === "Success") {
         localStorage.setItem("token", json.token);
         // if (json.navigate) {
-          navigate("/dashboard");
+        navigate("/dashboard");
         // } else {
         //   navigate("/addhospinfo");
         // }
-      } 
+      }
     } catch (json) {
-      toast.error(json.reply,{
-        position:"top-right"
-      })
+      toast.error(json.reply, {
+        position: "top-right",
+      });
       showError();
     }
     setSubmitting(false);
@@ -56,9 +53,9 @@ const Auth = () => {
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
-  React.useEffect(()=>{
-    sessionStorage.removeItem('selectedTab');
-  })
+  React.useEffect(() => {
+    sessionStorage.removeItem("selectedTab");
+  });
 
   return (
     <>
@@ -79,7 +76,7 @@ const Auth = () => {
         <div className="bg-blue w-[30vw]">
           <div className="mt-[150px]">
             <img
-              src={require("../../image/curecoinHome.jpg")}
+              src={require("../../image/Home.png")}
               alt="curecoin"
               className="w-[300px]"
             />
@@ -87,7 +84,8 @@ const Auth = () => {
           <div className="flex flex-col justify-center items-center mt-6">
             <span className="text-[35px] text-white font-bold">Sign In</span>
             <span className="text-2xl text-white mt-2">
-            Used the assigned username<br/> and password to sign in.
+              Used the assigned username
+              <br /> and password to sign in.
             </span>
           </div>
           <form
