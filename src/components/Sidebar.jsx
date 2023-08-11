@@ -9,6 +9,9 @@ const Sidebar = () => {
   const handleTabClick = (tabName) => {
     setSelectedTab(tabName);
     sessionStorage.setItem("selectedTab", tabName);
+    tabName === "help"
+      ? sessionStorage.setItem("selectedSettingTab", "help")
+      : sessionStorage.setItem("selectedSettingTab", "profile");
   };
 
   let navigate = useNavigate();
@@ -25,13 +28,17 @@ const Sidebar = () => {
             <li
               className={`flex flex-row w-[220px] cursor-pointer items-center text-white`}
               onClick={() => {
-                handleTabClick("dashboard")
-                navigate("/dashboard")}}
-                style={
-                  selectedTab === "dashboard"
-                    ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
-                    : {}
-                }
+                handleTabClick("dashboard");
+                navigate("/dashboard");
+              }}
+              style={
+                selectedTab === "dashboard"
+                  ? {
+                      backgroundColor: "rgba(255, 255, 255, 0.2)",
+                      borderRadius: 10,
+                    }
+                  : {}
+              }
             >
               {" "}
               <div className=" flex mx-2 items-center">
@@ -76,31 +83,39 @@ const Sidebar = () => {
             </li>
             <li
               className="flex  justify-start cursor-pointer items-center text-white"
-              onClick={() =>{ 
-                handleTabClick("approval")
-                navigate("/all_loans")}}
-                style={
-                  selectedTab === "approval"
-                    ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
-                    : {}
-                }
+              onClick={() => {
+                handleTabClick("approval");
+                navigate("/all_loans");
+              }}
+              style={
+                selectedTab === "approval"
+                  ? {
+                      backgroundColor: "rgba(255, 255, 255, 0.2)",
+                      borderRadius: 10,
+                    }
+                  : {}
+              }
             >
               {" "}
               <div className=" flex items-center mx-2">
-              <img src={require("./approvals.png")} alt="approvals" />
+                <img src={require("./approvals.png")} alt="approvals" />
               </div>
               Approvals
             </li>
             <li
               className="flex justify-start cursor-pointer items-center text-white"
-              onClick={() =>{ 
-                handleTabClick("repayments")
-                navigate("/repay")}}
-                style={
-                  selectedTab === "repayments"
-                    ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
-                    : {}
-                }
+              onClick={() => {
+                handleTabClick("repayments");
+                navigate("/repay");
+              }}
+              style={
+                selectedTab === "repayments"
+                  ? {
+                      backgroundColor: "rgba(255, 255, 255, 0.2)",
+                      borderRadius: 10,
+                    }
+                  : {}
+              }
             >
               {" "}
               <div className="flex items-center mx-2">
@@ -110,14 +125,18 @@ const Sidebar = () => {
             </li>
             <li
               className="flex justify-start cursor-pointer items-center text-white"
-              onClick={() =>{ 
-                handleTabClick("clients") 
-                navigate("/approvedcustomer")}}
-                style={
-                  selectedTab === "clients"
-                    ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
-                    : {}
-                }
+              onClick={() => {
+                handleTabClick("clients");
+                navigate("/approvedcustomer");
+              }}
+              style={
+                selectedTab === "clients"
+                  ? {
+                      backgroundColor: "rgba(255, 255, 255, 0.2)",
+                      borderRadius: 10,
+                    }
+                  : {}
+              }
             >
               {" "}
               <div className="flex items-center mx-2">
@@ -126,18 +145,23 @@ const Sidebar = () => {
               Clients
             </li>
             <hr className="bg-white" />
-            <li className="flex justify-start cursor-pointer items-center text-white"
-            onClick={() =>{ 
-              handleTabClick("settings") 
-              navigate("/settings")}}
+            <li
+              className="flex justify-start cursor-pointer items-center text-white"
+              onClick={() => {
+                handleTabClick("settings");
+                navigate("/settings");
+              }}
               style={
                 selectedTab === "settings"
-                  ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
+                  ? {
+                      backgroundColor: "rgba(255, 255, 255, 0.2)",
+                      borderRadius: 10,
+                    }
                   : {}
-              }>
+              }
+            >
               {" "}
-              <div className="flex items-center mx-2"
-              >
+              <div className="flex items-center mx-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -172,7 +196,21 @@ const Sidebar = () => {
             </li>
 
             <div className="flex-grow"></div>
-            <li className="flex cursor-pointer items-center text-white bottom-3 absolute">
+            <li
+              className="flex w-[220px] cursor-pointer items-center text-white bottom-3 absolute"
+              onClick={() => {
+                handleTabClick("help");
+                navigate("/settings");
+              }}
+              style={
+                selectedTab === "help"
+                  ? {
+                      backgroundColor: "rgba(255, 255, 255, 0.2)",
+                      borderRadius: 10,
+                    }
+                  : {}
+              }
+            >
               <div className="flex items-center mx-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +242,7 @@ const Sidebar = () => {
                   </defs>
                 </svg>
               </div>
-              Help Center
+              Help Centre
             </li>
           </ul>
         </div>
