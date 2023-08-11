@@ -33,22 +33,39 @@ const Loans = () => {
   console.log("f", fundData.length);
 
   console.log(socketRef.current);
-  useEffect(() => {
-    if (socketRef.current) {
-      console.log(fundData, "checking");
-      socketRef.current.on("credited", (data) => {
-        console.log("credited");
-        const newFundData = Object.assign({}, fundData, {
-          data: {
-            ...fundData.data,
-            amountReceived: data.amount,
-          },
-        });
-        console.log(newFundData);
-        setFund(newFundData);
-      });
-    }
-  }, [socketRef]);
+  // useEffect(() => {
+  //   if (socketRef.current) {
+  //     console.log(fundData, "checking");
+  //     socketRef.current.on("credited", (data) => {
+  //       console.log("credited");
+  //       const newFundData = Object.assign({}, fundData, {
+  //         data: {
+  //           ...fundData.data,
+  //           amountReceived: data.amount,
+  //         },
+  //       });
+  //       console.log(newFundData);
+  //       setFund(newFundData);
+  //     });
+  //   }
+  // }, [socketRef]);
+  if(socketRef.current)
+ {
+
+  socketRef.current.on("credited", (data) => {
+    console.log("Received data from server:", data);
+    console.log(fundData)
+    const newFundData = Object.assign({}, fundData, {
+              data: {
+                ...fundData.data,
+                amountReceived: data.amount,
+              },
+            });
+            console.log(newFundData);
+            setFund(newFundData);
+  });
+
+ }
 
   const getFundDetails = async () => {
     const fundId = paramIds.replace("#", "");
@@ -84,11 +101,7 @@ const Loans = () => {
         token: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-
-    socket.on("credited", (data) => {
-      console.log("Received data from server:", data);
-    });
-
+    socketRef.current=socket;
     getFundDetails();
     setSelectClient(false);
     setShowCreditsLimit(true);

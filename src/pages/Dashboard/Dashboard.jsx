@@ -6,30 +6,30 @@ import axios from "axios";
 import { DatePicker } from "antd";
 import moment from "moment";
 const HospitalHome = () => {
-    const [loans, setLoans] = React.useState(null);
-    const [loading, setLoading] = React.useState(false);
-    const [dashboardData, setDashboardData] = React.useState(null);
-    const [datePicker, setDatePicker] = React.useState(false);
-    const [status , setStats] = React.useState("")
-    const currentDate = new Date();
-    const [startDate, setStartDate] = React.useState(
-      new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
-    );
-    const [endDate, setEndDate] = React.useState(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
-    );
-    const backendFormatDate = (dateStr) => {
-      const dateObj = new Date(dateStr);
-      dateObj.setUTCHours(dateObj.getUTCHours() + 5);
-      dateObj.setUTCMinutes(dateObj.getUTCMinutes() + 30);
-      const year = dateObj.getUTCFullYear();
-      const month = String(dateObj.getUTCMonth() + 1).padStart(2, "0");
-      const day = String(dateObj.getUTCDate()).padStart(2, "0");
+  const [loans, setLoans] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+  const [dashboardData, setDashboardData] = React.useState(null);
+  const [datePicker, setDatePicker] = React.useState(false);
+  const [status, setStats] = React.useState("");
+  const currentDate = new Date();
+  const [startDate, setStartDate] = React.useState(
+    new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+  );
+  const [endDate, setEndDate] = React.useState(
+    new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
+  );
+  const backendFormatDate = (dateStr) => {
+    const dateObj = new Date(dateStr);
+    dateObj.setUTCHours(dateObj.getUTCHours() + 5);
+    dateObj.setUTCMinutes(dateObj.getUTCMinutes() + 30);
+    const year = dateObj.getUTCFullYear();
+    const month = String(dateObj.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getUTCDate()).padStart(2, "0");
 
-      return `${year}-${month}-${day}`;
-    };
-    const fetchLoans = async () => {
-      const response = await fetch("http://localhost:8000/Lenders/aproovals", {
+    return `${year}-${month}-${day}`;
+  };
+  const fetchLoans = async () => {
+    const response = await fetch("http://localhost:8000/Lenders/aproovals", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ const HospitalHome = () => {
     });
 
     const json = await response.json();
-    setStats(json.status)
+    setStats(json.status);
     if (json.status === "Success") {
       setLoans(json.data.transactions);
       // console.log("hello json", json.data.transactions);
@@ -47,37 +47,37 @@ const HospitalHome = () => {
       // alert("Data not found");
       console.log("Data not found");
     }
-    };
-    React.useEffect(() => {
-      if (startDate && endDate) {
-        setDatePicker(false);
-      }
-      setLoading(true);
-      fetchLoans();
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:8000/Lenders/dashboard?startDate=${backendFormatDate(
-              startDate
-            )}&endDate=${backendFormatDate(endDate)}`,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-              withCredentials: "include",
-            }
-          );
+  };
+  React.useEffect(() => {
+    if (startDate && endDate) {
+      setDatePicker(false);
+    }
+    setLoading(true);
+    fetchLoans();
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/Lenders/dashboard?startDate=${backendFormatDate(
+            startDate
+          )}&endDate=${backendFormatDate(endDate)}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            withCredentials: "include",
+          }
+        );
 
-          const data = response.data;
-          console.log(data);
-          setDashboardData(data.data);
-          setLoading(false);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      fetchData();
-    }, [startDate, endDate]);
+        const data = response.data;
+        console.log(data);
+        setDashboardData(data.data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, [startDate, endDate]);
   return (
     <>
       <div className="flex w-full relative">
@@ -94,7 +94,6 @@ const HospitalHome = () => {
             </div>
             <div className="flex justify-start items-center mr-10">
               <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-                
                 <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white">
                   <div className="flex">
                     <svg
@@ -129,9 +128,13 @@ const HospitalHome = () => {
                   </div>
                   <div className="flex mr-6">Profile</div>
                 </div>
-              <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white">
+                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white">
                   <div className="flex">
-                    <img src={require("../../image/logout.png")} className="w-[20px]" alt="logout" />
+                    <img
+                      src={require("../../image/logout.png")}
+                      className="w-[20px]"
+                      alt="logout"
+                    />
                   </div>
                   <div className="flex mr-5">Logout</div>
                 </div>
@@ -153,8 +156,7 @@ const HospitalHome = () => {
                 <div className="flex flex-col justify-start">
                   <span className="text-2xl">Today's Sanctioned</span>
                   <span className="font-bold text-4xl text-left">
-                    ₹
-                    {/* 5000 */}
+                    ₹{/* 5000 */}
                     {dashboardData ? dashboardData.todaysSanctioned : 0}
                   </span>
                 </div>
@@ -174,8 +176,7 @@ const HospitalHome = () => {
                 <div className="flex flex-col justify-start">
                   <span className="text-2xl">Today's Settlements</span>
                   <span className="font-bold text-4xl text-left">
-                    ₹
-                    {/* 5000 */}
+                    ₹{/* 5000 */}
                     {dashboardData ? dashboardData.todaysSettlements : 0}
                   </span>
                 </div>
@@ -189,117 +190,119 @@ const HospitalHome = () => {
                   </div>
                 </div>
               </div>
-              {(dashboardData && dashboardData.totalSanctioned === 0)  ? (
-               <div className="mt-10 w-full flex justify-center items-center relative">
-                <div className="text-center">
-                  <Chart
-                    type="donut"
-                    width={700}
-                    height={580}
-                    series={[100]}
-                    options={{
-                      labels: ["Unsettled Amount", "Settled Amount"],
-                      colors: ["#fff", "#fff"],
-                      dataLabels: {
-                        enabled: false,
-                      },
-                      legend: {
-                        show: true,
-                        position: "bottom",
-                        horizontalAlign: "center",
-                        fontSize: "16px",
-                        fontFamily: "Arial",
-                        markers: {
-                          fillColors: ["#FF7B7B", "#306FC7"],
+              {dashboardData && dashboardData.totalSanctioned === 0 ? (
+                <div className="mt-10 w-full flex justify-center items-center relative">
+                  <div className="text-center">
+                    <Chart
+                      type="donut"
+                      width={700}
+                      height={580}
+                      series={[100]}
+                      options={{
+                        labels: ["Unsettled Amount", "Settled Amount"],
+                        colors: ["#fff", "#fff"],
+                        dataLabels: {
+                          enabled: false,
                         },
-                      },
-                    }}
-                  />
-                  <div className="flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <span className="text-lg font-bold">
-                      Total Settled Amount
-                    </span>
-                    <span className="text-4xl font-semibold">
-                      ₹
-                      <span>
-                        {/* 5000 */}
-                        {dashboardData ? dashboardData.totalSettlements : 0}
-                       </span>
-                    </span>
-                    <span className="text-base">
-                      Unsettled Amount - ₹
-                      <span>
-                         {dashboardData
+                        legend: {
+                          show: true,
+                          position: "bottom",
+                          horizontalAlign: "center",
+                          fontSize: "16px",
+                          fontFamily: "Arial",
+                          markers: {
+                            fillColors: ["#FF7B7B", "#306FC7"],
+                          },
+                        },
+                      }}
+                    />
+                    <div className="flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                      <span className="text-lg font-bold">
+                        Total Settled Amount
+                      </span>
+                      <span className="text-4xl font-semibold">
+                        ₹
+                        <span>
+                          {/* 5000 */}
+                          {dashboardData ? dashboardData.totalSettlements : 0}
+                        </span>
+                      </span>
+                      <span className="text-base">
+                        Unsettled Amount - ₹
+                        <span>
+                          {dashboardData
                             ? dashboardData.totalRevenue -
                               dashboardData.totalSettlements
                             : 0}
-                       </span>
-                    </span>
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-               ) : ( !loading && 
-              <div className="mt-10 w-full flex justify-center items-center relative">
-                <div className="text-center">
-                  <Chart
-                    type="donut"
-                    width={700}
-                    height={580}
-                    series={[
-                      dashboardData
-                        ? dashboardData.totalSanctioned -
-                          dashboardData.totalSettlements
-                        : 50,
-                      dashboardData ? dashboardData.totalSettlements : 50,
-                      // 67, 33,
-                    ]}
-                    options={{
-                      labels: ["Unsettled Amount", "Settled Amount"],
-                      colors: ["#FF7B7B", "#306FC7"],
-                      dataLabels: {
-                        enabled: false,
-                      },
-
-                      legend: {
-                        show: true,
-                        position: "bottom",
-                        horizontalAlign: "center",
-                        fontSize: "16px",
-                        fontFamily: "Arial",
-                        markers: {
-                          fillColors: ["#FF7B7B", "#306FC7"],
-                        },
-                      },
-                      tooltip: {
-                        enabled: false,
-                      },
-                    }}
-                  />
-                  <div className="flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <span className="text-lg font-bold">
-                      Total Settled Amount
-                    </span>
-                    <span className="text-4xl font-semibold">
-                      ₹
-                      <span>
-                        {/* 50000 */}
-                        {dashboardData ? dashboardData.totalSettlements : 0}
-                      </span>
-                    </span>
-                    <span className="text-base">
-                      Unsettled Amount - ₹
-                      <span>
-                        {/* 50000 */}
-                        {dashboardData
+              ) : (
+                !loading && (
+                  <div className="mt-10 w-full flex justify-center items-center relative">
+                    <div className="text-center">
+                      <Chart
+                        type="donut"
+                        width={700}
+                        height={580}
+                        series={[
+                          dashboardData
                             ? dashboardData.totalSanctioned -
                               dashboardData.totalSettlements
-                            : 0}
-                      </span>
-                    </span>
+                            : 50,
+                          dashboardData ? dashboardData.totalSettlements : 50,
+                          // 67, 33,
+                        ]}
+                        options={{
+                          labels: ["Unsettled Amount", "Settled Amount"],
+                          colors: ["#FF7B7B", "#306FC7"],
+                          dataLabels: {
+                            enabled: false,
+                          },
+
+                          legend: {
+                            show: true,
+                            position: "bottom",
+                            horizontalAlign: "center",
+                            fontSize: "16px",
+                            fontFamily: "Arial",
+                            markers: {
+                              fillColors: ["#FF7B7B", "#306FC7"],
+                            },
+                          },
+                          tooltip: {
+                            enabled: false,
+                          },
+                        }}
+                      />
+                      <div className="flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <span className="text-lg font-bold">
+                          Total Settled Amount
+                        </span>
+                        <span className="text-4xl font-semibold">
+                          ₹
+                          <span>
+                            {/* 50000 */}
+                            {dashboardData ? dashboardData.totalSettlements : 0}
+                          </span>
+                        </span>
+                        <span className="text-base">
+                          Unsettled Amount - ₹
+                          <span>
+                            {/* 50000 */}
+                            {dashboardData
+                              ? dashboardData.totalSanctioned -
+                                dashboardData.totalSettlements
+                              : 0}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-               )}
+                )
+              )}
             </div>
             <div className="box bg-lightBlue w-[48.5vw] border-solid border-1 border-aliceblue rounded-2xl relative">
               <div className="flex flex-row ml-10 mt-7 justify-start items-center">
@@ -321,24 +324,24 @@ const HospitalHome = () => {
                         ).toLocaleDateString()}\t\t`}
                     </span>
                     {!datePicker && (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="12"
-                      height="8"
-                      viewBox="0 0 12 8"
-                      fill="none"
-                      className="ml-2"
-                    >
-                      <path
-                        id="Vector"
-                        d="M1 1.5L6 6.5L11 1.5"
-                        stroke="black"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                    )} 
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="12"
+                        height="8"
+                        viewBox="0 0 12 8"
+                        fill="none"
+                        className="ml-2"
+                      >
+                        <path
+                          id="Vector"
+                          d="M1 1.5L6 6.5L11 1.5"
+                          stroke="black"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    )}
                   </div>
                   {datePicker && (
                     <div className="flex flex-row absolute top-0 left-[200px] w-full h-full z-10 ">
@@ -375,7 +378,7 @@ const HospitalHome = () => {
                         />
                       </div>
                     </div>
-                        )}
+                  )}
                 </div>
               </div>
               <div className="grid w-[90%] h-[440px] p-8  grid-cols-2 gap-7">
@@ -387,8 +390,8 @@ const HospitalHome = () => {
                           Total Sanctioned
                         </span>
                         <span className="text-4xl text-left font-semibold mt-7">
-                        {/* ₹50000 */}
-                          ₹{dashboardData ? dashboardData.totalSanctioned : 0}
+                          {/* ₹50000 */}₹
+                          {dashboardData ? dashboardData.totalSanctioned : 0}
                         </span>
                       </div>
                     </div>
@@ -402,8 +405,8 @@ const HospitalHome = () => {
                           Total Settlements
                         </span>
                         <span className="text-4xl text-left font-semibold mt-7">
-                          {/* ₹50000 */}
-                          ₹{dashboardData ? dashboardData.totalSettlements : 0}
+                          {/* ₹50000 */}₹
+                          {dashboardData ? dashboardData.totalSettlements : 0}
                         </span>
                       </div>
                     </div>
@@ -431,8 +434,8 @@ const HospitalHome = () => {
                           Total Repayments
                         </span>
                         <span className="text-4xl text-left font-semibold mt-7">
-                          {/* ₹50000 */}
-                          ₹{dashboardData ? dashboardData.totalUnsettled : 0}
+                          {/* ₹50000 */}₹
+                          {dashboardData ? dashboardData.totalUnsettled : 0}
                         </span>
                       </div>
                     </div>
@@ -455,59 +458,78 @@ const HospitalHome = () => {
               </tr>
             </div>
           ) : (
-          // 
-          <div className="flex w-[80vww] justify-center px-7">
-            <table cellSpacing="0" className="w-full mt-4">
-              <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
-              {/* {allLoans.length > 0 ? (
+            //
+            <div className="flex w-[80vww] justify-center px-7">
+              <table cellSpacing="0" className="w-full mt-4">
+                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+                  {/* {allLoans.length > 0 ? (
                   allLoans.map((transactions) => (
                 <> */}
-                <tr className=" first-row border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
-                <td className="pl-4 w-[30px]">
-                    <img src={require("./status.png")} alt="status" />
-                  </td>
-                  <td className="pl-4 w-[150px]">Loan ID</td>
-                  <td className="w-[200px]">Name</td>
-                  <td className="pl-4 w-[140px]">Phone No</td>
-                  <td className="pl-4 w-[140px]">Tenure</td>
-                  <td className="pl-4 w-[150px]">Amount</td>
-                  <td className="pl-4 w-[150px]">Date</td>
-                  <td className="pr-4 w-[100px]">Status</td>
-                </tr>
-                {loans && (
-                  loans.slice(-2).map((transactions) => (
-                <>
-                <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-5">
-                  <td className="pl-4 w-[30px]">
-                    <img src={require("./processing.png")} alt="processing" />
-                  </td>
-                  <td className="text-aliceblue pl-4 w-[150px]"> {transactions.trnId}</td>
-                  <td className="w-[200px]">{transactions.customerId.name}</td>
-                  <td className="pl-4 w-[140px]">{transactions.customerId.phone}</td>
-                  <td className=" pl-4 w-[140px]">{transactions.tenure}{status === "Success"? " months": " " }</td>
-                  {/* <td className="text-center h-[50px] w-[230px]"> transactions.tenure === " " ? " ": 
+                  <tr className=" first-row border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                    <td className="pl-4 w-[30px]">
+                      <img src={require("./status.png")} alt="status" />
+                    </td>
+                    <td className="pl-4 w-[150px]">Loan ID</td>
+                    <td className="w-[200px]">Name</td>
+                    <td className="pl-4 w-[140px]">Phone No</td>
+                    <td className="pl-4 w-[140px]">Tenure</td>
+                    <td className="pl-4 w-[150px]">Amount</td>
+                    <td className="pl-4 w-[150px]">Date</td>
+                    <td className="pr-4 w-[100px]">Status</td>
+                  </tr>
+                  {loans &&
+                    loans.slice(-2).map((transactions) => (
+                      <>
+                        <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-5">
+                          <td className="pl-4 w-[30px]">
+                            <img
+                              src={require("./processing.png")}
+                              alt="processing"
+                            />
+                          </td>
+                          <td className="text-aliceblue pl-4 w-[150px]">
+                            {" "}
+                            {transactions.trnId}
+                          </td>
+                          <td className="w-[200px]">
+                            {transactions.customerId.name}
+                          </td>
+                          <td className="pl-4 w-[140px]">
+                            {transactions.customerId.phone}
+                          </td>
+                          <td className=" pl-4 w-[140px]">
+                            {transactions.tenure}
+                            {status === "Success" ? " months" : " "}
+                          </td>
+                          {/* <td className="text-center h-[50px] w-[230px]"> transactions.tenure === " " ? " ": 
                     <div className="ml-10 block text-xl text-blue text-center border-solid border-1 border-blue bg-lightBlue rounded-2xl h-[40px]">
                       Kidney Surgery
                     </div>
                   </td> */}
-                  <td className="pl-4 w-[150px]">₹{transactions.treatmentCost}</td>
-                  <td className="pl-4 w-[150px]">{transactions.date}</td>
-                  <td
-                        className={
-                          transactions.lenderStatus === true
-                            ? "text-green pr-4 w-[100px]"
-                            : "text-red pr-4 w-[100px]"
-                        }
-                      >
-                        {transactions.lenderStatus === true ? "Settled" : "Pending"}
-                      </td>             
-                </tr>
-              
-                </> ))
-                  )}
-              </tbody>
-            </table>
-          </div>)}
+                          <td className="pl-4 w-[150px]">
+                            ₹{transactions.treatmentCost}
+                          </td>
+                          <td className="pl-4 w-[150px]">
+                            {transactions.date}
+                          </td>
+                          <td
+                            className={
+                              transactions.lenderStatus === true
+                                ? "text-green pr-4 w-[100px]"
+                                : "text-red pr-4 w-[100px]"
+                            }
+                          >
+                            {transactions.lenderStatus === true
+                              ? "Settled"
+                              : "Pending"}
+                          </td>
+                        </tr>
+                      </>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </>
