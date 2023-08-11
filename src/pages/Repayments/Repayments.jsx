@@ -177,50 +177,9 @@ const Repayment = () => {
                 />
               </div>
             </div>
-            <div className="flex justify-start items-center mr-10 px-5">
-              <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
+            <div className="flex justify-start items-center mr-12">
+              <div className="flex text-lg border-solid border-transparent  w-[250px] h-[37px] ">
                 <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white">
-                  <div className="flex">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      viewBox="0 0 28 28"
-                      fill="none"
-                    >
-                      <g clipPath="url(#clip0_305_158)">
-                        <path
-                          d="M14 24.5C19.799 24.5 24.5 19.799 24.5 14C24.5 8.20101 19.799 3.5 14 3.5C8.20101 3.5 3.5 8.20101 3.5 14C3.5 19.799 8.20101 24.5 14 24.5Z"
-                          stroke="white"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M14 19.8333V19.845"
-                          stroke="white"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M14.0001 15.75C13.9786 15.3713 14.0808 14.9958 14.2912 14.6802C14.5016 14.3645 14.8089 14.1258 15.1667 14C15.6053 13.8323 15.9989 13.5651 16.3166 13.2194C16.6343 12.8738 16.8674 12.4591 16.9976 12.008C17.1278 11.5569 17.1516 11.0818 17.0669 10.62C16.9823 10.1582 16.7916 9.72235 16.5099 9.34676C16.2283 8.97117 15.8632 8.66609 15.4436 8.45554C15.024 8.245 14.5612 8.13474 14.0917 8.13343C13.6222 8.13213 13.1588 8.23983 12.738 8.44804C12.3172 8.65625 11.9505 8.9593 11.6667 9.33332"
-                          stroke="white"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_305_158">
-                          <rect width="28" height="28" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </div>
-                  <div className="flex mr-6">Help</div>
-                </div>
-                <div className="flex w-[50%] justify-evenly rounded-r-lg items-center bg-blue text-white">
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -253,6 +212,16 @@ const Repayment = () => {
                     </svg>
                   </div>
                   <div className="flex mr-6">Profile</div>
+                </div>
+                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white">
+                  <div className="flex">
+                    <img
+                      src={require("../../image/logout.png")}
+                      className="w-[20px]"
+                      alt="logout"
+                    />
+                  </div>
+                  <div className="flex mr-6">Logout</div>
                 </div>
               </div>
             </div>
