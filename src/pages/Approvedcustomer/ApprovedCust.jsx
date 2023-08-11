@@ -3,7 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import { Drawer } from "antd";
 import { Progress } from "antd";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 
@@ -18,7 +18,7 @@ const ApprovedCust = () => {
   const [customers, setCustomers] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const [drawers, setDrawers] = React.useState(false);
-
+  let navigate = useNavigate()
   const { isFormSubmitted } = useContext(FormContext);
   const handleClientDetails = () => {
     setShowClientdDtails(true);
@@ -86,10 +86,12 @@ const ApprovedCust = () => {
   }, [isFormSubmitted]);
 
   return (
-    <div className="flex w-full">
-      <Sidebar />
-      <div className="container mt-[50px]">
-        <div className="flex flex-row justify-around">
+    <div className="flex w-full relative">
+        <div className="fixed top-0 bottom-0 ">
+          <Sidebar />
+        </div>
+      <div className="container mt-[50px] ml-[270px]">
+        <div className="flex flex-row justify-around ml-10">
           <div className="flex text-black">
             {/* <span className="text-3xl font-bold text-left"></span> */}
             {/* <div className="flex mr-6">Help</div> */}
@@ -172,7 +174,11 @@ const ApprovedCust = () => {
           </div>
           <div className="flex justify-start items-center mr-10">
               <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white">
+                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
+                onClick={()=>{
+                  navigate("/settings")
+                  sessionStorage.setItem("selectedSettingTab","profile")
+                }}>
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -206,7 +212,11 @@ const ApprovedCust = () => {
                   </div>
                   <div className="flex mr-6">Profile</div>
                 </div>
-                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white">
+                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
+                onClick={()=>{
+                  navigate("/login")
+                  localStorage.setItem("token","")
+                }}>
                   <div className="flex">
                     <img
                       src={require("../../image/logout.png")}
@@ -221,8 +231,8 @@ const ApprovedCust = () => {
           </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 align-middle py-[60px] px-[68px] gap-5">
-            <div className="flex w-[745px] h-[105px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+          <div className="grid grid-cols-2 align-middle px-10 pt-[60px] gap-5 ml-4">
+            <div className="flex w-[720px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
               <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
               <div className="flex flex-col justify-center items-center p-5">
                 <div className="w-[180px] h-[20px] mb-1 shimmer" />
@@ -232,7 +242,7 @@ const ApprovedCust = () => {
                 <div className="w-[30px] h-[30px] shimmer" />
               </div>
             </div>
-            <div className="flex w-[745px] h-[105px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+            <div className="flex w-[720px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
               <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
               <div className="flex flex-col justify-center items-center p-5">
                 <div className="w-[180px] h-[20px] mb-1 shimmer" />
@@ -244,12 +254,12 @@ const ApprovedCust = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 align-middle p-10 gap-5">
+          <div className="grid grid-cols-2 align-middle px-10 pt-[60px] gap-5 ml-4">
             {customers ? (
               customers.map((cust) => (
-                <div className="flex w-[732px] h-[136px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg -5">
-                  <div className="flex w-[93x] mt-[20px] ml-[20px] flex-row items-start">
-                    <img src={require("./user.png")} alt="user" />
+                <div className="flex w-[720px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+                  <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+                    <img src={require("./user.png")} className=" w-[75px]" alt="user" />
                   </div>
                   <div className="flex flex-col justify-center items-center p-6 ">
                     <span className="text-xl text-left font-semibold mr-auto">

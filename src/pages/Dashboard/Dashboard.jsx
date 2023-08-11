@@ -5,12 +5,14 @@ import "./dashboard.css";
 import axios from "axios";
 import { DatePicker } from "antd";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 const HospitalHome = () => {
   const [loans, setLoans] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [dashboardData, setDashboardData] = React.useState(null);
   const [datePicker, setDatePicker] = React.useState(false);
   const [status, setStats] = React.useState("");
+  let navigate = useNavigate()
   const currentDate = new Date();
   const [startDate, setStartDate] = React.useState(
     new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
@@ -94,7 +96,11 @@ const HospitalHome = () => {
             </div>
             <div className="flex justify-start items-center mr-10">
               <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white">
+                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
+                onClick={()=>{
+                  navigate("/settings")
+                  sessionStorage.setItem("selectedSettingTab","profile")
+                }}>
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +134,11 @@ const HospitalHome = () => {
                   </div>
                   <div className="flex mr-6">Profile</div>
                 </div>
-                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white">
+                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
+                onClick={()=>{
+                  navigate("/login")
+                  localStorage.setItem("token","")
+                }}>
                   <div className="flex">
                     <img
                       src={require("../../image/logout.png")}
@@ -242,11 +252,11 @@ const HospitalHome = () => {
               ) : (
                 !loading && (
                   <div className="mt-10 w-full flex justify-center items-center relative">
-                    <div className="text-center">
+                    <div className="text-center relative mb-[40px]">
                       <Chart
                         type="donut"
                         width={700}
-                        height={580}
+                        height="auto"
                         series={[
                           dashboardData
                             ? dashboardData.totalSanctioned -
@@ -266,10 +276,11 @@ const HospitalHome = () => {
                             show: true,
                             position: "bottom",
                             horizontalAlign: "center",
-                            fontSize: "16px",
+                            fontSize: "25px",
                             fontFamily: "Arial",
                             markers: {
                               fillColors: ["#FF7B7B", "#306FC7"],
+          
                             },
                           },
                           tooltip: {
@@ -414,13 +425,13 @@ const HospitalHome = () => {
                 </div>
                 <div className="text w-[21vw] h-[200px] text-black bg-white border-solid border-1 border-aliceblue rounded-2xl">
                   <div className="flex flex-row w-full h-full">
-                    <div className="flex w-[50%] justify-center items-center">
-                      <div className="flex flex-col justify-start items-stretch ml-3">
-                        <span className=" text-lg font-normal">
+                    <div className="flex w-[50%] justify-center items-center ml-[-20px]">
+                      <div className="flex flex-col justify-start items-stretch">
+                        <span className=" text-lg font-normal text-left">
                           Total Loans
                         </span>
                         <span className="text-4xl text-left font-semibold mt-7">
-                          54
+                          {loans ? loans.length : 0}
                         </span>
                       </div>
                     </div>

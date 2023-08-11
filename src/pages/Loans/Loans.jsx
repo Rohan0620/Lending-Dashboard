@@ -5,6 +5,7 @@ import "./loans.css";
 import { Divider, Drawer } from "antd";
 import axios from "axios";
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -13,6 +14,7 @@ const Loans = () => {
   const [loading, setLoading] = React.useState(true);
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
+  let navigate = useNavigate()
 
   const socketRef = useRef(null);
 
@@ -49,23 +51,20 @@ const Loans = () => {
   //     });
   //   }
   // }, [socketRef]);
-  if(socketRef.current)
- {
-
-  socketRef.current.on("credited", (data) => {
-    console.log("Received data from server:", data);
-    console.log(fundData)
-    const newFundData = Object.assign({}, fundData, {
-              data: {
-                ...fundData.data,
-                amountReceived: data.amount,
-              },
-            });
-            console.log(newFundData);
-            setFund(newFundData);
-  });
-
- }
+  if (socketRef.current) {
+    socketRef.current.on("credited", (data) => {
+      console.log("Received data from server:", data);
+      console.log(fundData);
+      const newFundData = Object.assign({}, fundData, {
+        data: {
+          ...fundData.data,
+          amountReceived: data.amount,
+        },
+      });
+      console.log(newFundData);
+      setFund(newFundData);
+    });
+  }
 
   const getFundDetails = async () => {
     const fundId = paramIds.replace("#", "");
@@ -101,7 +100,7 @@ const Loans = () => {
         token: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    socketRef.current=socket;
+    socketRef.current = socket;
     getFundDetails();
     setSelectClient(false);
     setShowCreditsLimit(true);
@@ -196,19 +195,19 @@ const Loans = () => {
         <div className="fixed top-0 bottom-0 ">
           <Sidebar />
         </div>
-        <div className="w-full mt-[50px] ml-[250px]">
+        <div className="w-full mt-[50px] ml-[270px]">
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row w-[vw] text-black px-5">
               <div className="flex flex-col justify-center items-start px-6">
                 <span className="text-lg font-normal ">Settled Amount</span>
                 <span className="text-3xl font-bold ">
-                  <i className="fa fa-rupee"></i>50000.00
+                  <i className="fa fa-inr"></i>50000.00
                 </span>
               </div>
               <div className="flex flex-col justify-center items-start px-6">
                 <span className="text-lg font-normal ">Unsettled Amount</span>
                 <span className="text-3xl font-bold ">
-                  <i className="fa fa-rupee"></i>50000.00
+                  <i className="fa fa-inr"></i>50000.00
                 </span>
               </div>
             </div>
@@ -258,9 +257,13 @@ const Loans = () => {
                 />
               </div>
             </div>
-            <div className="flex justify-start items-center mr-10">
+            <div className="flex justify-start items-center mr-12">
               <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white">
+                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
+                onClick={()=>{
+                  navigate("/settings")
+                  sessionStorage.setItem("selectedSettingTab","profile")
+                }}>
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -294,7 +297,11 @@ const Loans = () => {
                   </div>
                   <div className="flex mr-6">Profile</div>
                 </div>
-                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white">
+                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer" 
+                onClick={()=>{
+                  navigate("/login")
+                  localStorage.setItem("token","")
+                }}>
                   <div className="flex">
                     <img
                       src={require("../../image/logout.png")}
@@ -308,73 +315,101 @@ const Loans = () => {
             </div>
           </div>
           {loading ? (
-            <div className="mt-[50px]">
-              <tr
-                className={`border-solid w-[79vw] h-[50px] px-7 ml-8 text-xl border-1 border-aliceblue bg-lightBlue rounded-lg mt-4 shimmer`}
+            <div className="flex pl-10 pr-12">
+              <table
+                cellSpacing="0"
+                className="w-full mt-4"
+                style={{ scrollBehavior: "smooth" }}
               >
-                <td colSpan="8"></td>
-              </tr>
-              <tr
-                className={`border-solid w-[79vw] px-7 ml-8 text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
-              >
-                <td colSpan="8"></td>
-              </tr>
-            </div>
-          ) : (
-            <div className="flex w-[80vww] justify-center p-7">
-              <table cellSpacing="0" className="w-full mt-4">
-                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
-                  {/* {allLoans.length > 0 ? (
-                  allLoans.map((transactions) => (
-                <> */}
-                  <tr className=" first-row border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
-                    <td>
+                <thead>
+                  <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                    <td className="pl-4 w-[30px]">
                       <img src={require("./status.png")} alt="status" />
                     </td>
-                    <td>Loan ID</td>
-                    <td>Name</td>
-                    <td>Phone No</td>
-                    <td>Tensure</td>
-                    <td>Amount</td>
-                    <td>Date</td>
-                    <td className="mr-4">Status</td>
+                    <td className="pl-4 w-[150px]">Loan ID</td>
+                    <td className="w-[200px]">Name</td>
+                    <td className="pl-4 w-[140px]">Phone No</td>
+                    <td className="pl-4 w-[140px]">Tenure</td>
+                    <td className="pl-4 w-[150px]">Amount</td>
+                    <td className="pl-4 w-[150px]">Date</td>
+                    <td className="pr-4 w-[100px]">Status</td>
                   </tr>
+                </thead>
+                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+                  <tr
+                    className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
+                  >
+                    <td colSpan="8"></td>
+                  </tr>
+                  <tr
+                    className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
+                  >
+                    <td colSpan="8"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="flex pl-10 pr-12">
+              <table
+                cellSpacing="0"
+                className="w-full mt-4"
+                style={{ scrollBehavior: "smooth" }}
+              >
+                <thead>
+                  <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                    <td className="pl-4 w-[30px]">
+                      <img src={require("./status.png")} alt="status" />
+                    </td>
+                    <td className="pl-4 w-[150px]">Loan ID</td>
+                    <td className="w-[200px]">Name</td>
+                    <td className="pl-4 w-[140px]">Phone No</td>
+                    <td className="pl-4 w-[140px]">Tenure</td>
+                    <td className="pl-4 w-[150px]">Amount</td>
+                    <td className="pl-4 w-[150px]">Date</td>
+                    <td className="pr-4 w-[100px]">Status</td>
+                  </tr>
+                </thead>
+                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
                   {allLoans.length > 0 ? (
                     allLoans.map((transactions) => (
                       <>
-                        <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-5">
-                          <td>
+                        <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
+                          <td className="pl-4 w-[30px]">
                             <img
                               src={require("./processing.png")}
                               alt="processing"
                             />
                           </td>
                           <td
-                            className="text-aliceblue"
+                            className="text-aliceblue pl-4 w-[150px]"
                             onClick={() => handleClick(transactions.trnId)}
                             style={{ cursor: "pointer" }}
                           >
                             {" "}
                             {transactions.trnId}
                           </td>
-                          <td>{transactions.customerId.name}</td>
-                          <td>{transactions.customerId.phone}</td>
-                          <td className="text-center h-[50px] w-[230px]">
+                          <td className="w-[200px]">
+                            {transactions.customerId.name}
+                          </td>
+                          <td className="pl-4 w-[140px]">
+                            {transactions.customerId.phone}
+                          </td>
+                          <td className="pl-4 w-[140px]">
                             {transactions.tenure}
                             {status === "Success" ? " months" : " "}
                           </td>
-                          {/* <td className="text-center h-[50px] w-[230px]"> transactions.tenure === " " ? " ": 
-                    <div className="ml-10 block text-xl text-blue text-center border-solid border-1 border-blue bg-lightBlue rounded-2xl h-[40px]">
-                      Kidney Surgery
-                    </div>
-                  </td> */}
-                          <td>{transactions.treatmentCost}</td>
-                          <td>{transactions.date}</td>
+                          <td className="pl-4 w-[150px]">
+                          ₹{transactions.treatmentCost}
+                          </td>
+                          <td className="pl-4 w-[150px]">
+                            {transactions.date}
+                          </td>
                           <td
                             className={
                               transactions.lenderStatus === true
-                                ? "text-green pr-6 w-[80px]"
-                                : "text-red pr-6 w-[80px]"
+                                ? "text-green pr-4 w-[100px]"
+                                : "text-red pr-4 w-[100px]"
                             }
                           >
                             {transactions.lenderStatus === true

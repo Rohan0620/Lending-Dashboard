@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../../components/Sidebar";
 import { Divider, Drawer } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const PendingCustomer = () => {
@@ -13,7 +13,7 @@ const PendingCustomer = () => {
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [selectedCredit, setSelectedcredit] = React.useState("");
   const [loading, setLoading] = React.useState(true);
-
+  let navigate = useNavigate()
 
   const onClose = () => {
     setSelectClient(false);
@@ -86,12 +86,12 @@ const PendingCustomer = () => {
   }, []);
 
   return (
-    <div className="flex w-full font-Poppins">
-      <div>
-        <Sidebar />
-      </div>
-      <div className="container mt-[60px]">
-        <div className="flex flex-row justify-around">
+    <div className="flex w-full relative">
+        <div className="fixed top-0 bottom-0 ">
+          <Sidebar />
+        </div>
+      <div className="container mt-[50px] ml-[270px]">
+        <div className="flex flex-row justify-around ml-10">
           <div className="flex text-black">
             <div className="flex justify-start items-center">
               <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
@@ -170,8 +170,12 @@ const PendingCustomer = () => {
             </div>
           </div>
           <div className="flex justify-start items-center mr-10">
-              <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white">
+              <div className="flex text-lg border-solid border-transparent  w-[265px] h-[37px]">
+                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
+                onClick={()=>{
+                  navigate("/settings")
+                  sessionStorage.setItem("selectedSettingTab","profile")
+                }}>
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +209,11 @@ const PendingCustomer = () => {
                   </div>
                   <div className="flex mr-6">Profile</div>
                 </div>
-                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white">
+                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
+                onClick={()=>{
+                  navigate("/login")
+                  localStorage.setItem("token","")
+                }}>
                   <div className="flex">
                     <img
                       src={require("../../image/logout.png")}
@@ -219,8 +227,8 @@ const PendingCustomer = () => {
             </div>
           </div>
         {loading ? (
-          <div className="grid grid-cols-2 align-middle p-5 pt-[60px] gap-5">
-            <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+          <div className="grid grid-cols-2 align-middle px-10 pt-[60px] gap-5 ml-4">
+            <div className="flex w-[720px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
               <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
               <div className="flex flex-col justify-center items-center p-5">
                 <div className="w-[180px] h-[20px] mb-1 shimmer" />
@@ -230,7 +238,7 @@ const PendingCustomer = () => {
                 <div className="w-[30px] h-[30px] shimmer" />
               </div>
             </div>
-            <div className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+            <div className="flex w-[720px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
               <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
               <div className="flex flex-col justify-center items-center p-5">
                 <div className="w-[180px] h-[20px] mb-1 shimmer" />
@@ -242,11 +250,11 @@ const PendingCustomer = () => {
             </div>
           </div>
         ) : (
-        <div className="grid grid-cols-2 align-middle p-5 pt-[60px] gap-5 ml-4">
+        <div className="grid grid-cols-2 align-middle px-10 pt-[60px] gap-5 ml-4">
           {pendingCustomers?.length > 0 ? (
             pendingCustomers.map((pendingCustomer) => (
               <div
-                className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300"
+                className="flex w-[720px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300"
                 key={pendingCustomer._id}
                 onClick={() => handleClick(pendingCustomer._id)}
               >

@@ -4,6 +4,7 @@ import "./repay.css";
 import axios from "axios";
 import { Divider, Drawer } from "antd";
 import '../../styles/Shimmering.css'
+import { useNavigate } from "react-router-dom";
 const Repayment = () => {
   const [selectClient, setSelectClient] = React.useState(false);
   const [showClientdDtails, setShowClientdDtails] = React.useState(false);
@@ -12,8 +13,7 @@ const Repayment = () => {
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
   const [loading, setLoading] = React.useState(true);
-
-  
+  let navigate = useNavigate();  
 
   const handleApprove = () => {
     setShowApproved(true);
@@ -179,7 +179,11 @@ const Repayment = () => {
             </div>
             <div className="flex justify-start items-center mr-12">
               <div className="flex text-lg border-solid border-transparent  w-[250px] h-[37px] ">
-                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white">
+                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
+                onClick={()=>{
+                  navigate("/settings")
+                  sessionStorage.setItem("selectedSettingTab","profile")
+                }}>
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -213,7 +217,11 @@ const Repayment = () => {
                   </div>
                   <div className="flex mr-6">Profile</div>
                 </div>
-                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white">
+                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
+                onClick={()=>{
+                  navigate("/login")
+                  localStorage.setItem("token","")
+                }}>
                   <div className="flex">
                     <img
                       src={require("../../image/logout.png")}

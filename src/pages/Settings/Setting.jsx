@@ -1,8 +1,17 @@
 import React from "react";
 import Sidebar from "../../components/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 const Setting = () => {
-  const [showSelected, setShowSelected] = React.useState("profile");
+  const [showSelected, setShowSelected] = React.useState(() => {
+    return sessionStorage.getItem("selectedSettingTab") || "profile";
+  });
+  let navigate = useNavigate();
+
+  const handleTabClick = (tabName) => {
+    setShowSelected(tabName);
+    sessionStorage.setItem("selectedSettingTab", tabName);
+  };
   return (
     <div className="flex w-full font-poppins">
       <div className="fixed top-0 bottom-0">
@@ -18,7 +27,14 @@ const Setting = () => {
             <ul className="font-normal text-[20px] leading-[70px] text-left text-black pl-0 mr-auto ml-2">
               <li
                 className={`flex flex-row w-[220px] cursor-pointer items-center`}
-                onClick={() => setShowSelected("profile")}
+                onClick={() => {
+                  handleTabClick("profile");
+                }}
+                style={
+                  showSelected === "profile"
+                    ? { backgroundColor: "#ffffff", borderRadius: 10 }
+                    : {}
+                }
               >
                 {" "}
                 <div className=" flex mx-2 items-center">
@@ -28,7 +44,14 @@ const Setting = () => {
               </li>
               <li
                 className="flex  justify-start cursor-pointer items-center"
-                onClick={() => setShowSelected("bankaccount")}
+                onClick={() => {
+                  handleTabClick("bankaccount");
+                }}
+                style={
+                  showSelected === "bankaccount"
+                    ? { backgroundColor: "#ffffff", borderRadius: 10 }
+                    : {}
+                }
               >
                 {" "}
                 <div className=" flex items-center mx-2">
@@ -41,7 +64,14 @@ const Setting = () => {
               </li>
               <li
                 className="flex justify-start cursor-pointer items-center"
-                onClick={() => setShowSelected("notifications")}
+                onClick={() => {
+                  handleTabClick("notifications");
+                }}
+                style={
+                  showSelected === "notifications"
+                    ? { backgroundColor: "#ffffff", borderRadius: 10 }
+                    : {}
+                }
               >
                 {" "}
                 <div className="flex items-center mx-2">
@@ -54,7 +84,14 @@ const Setting = () => {
               </li>
               <li
                 className="flex justify-start cursor-pointer items-center"
-                onClick={() => setShowSelected("help")}
+                onClick={() => {
+                  handleTabClick("help");
+                }}
+                style={
+                  showSelected === "help"
+                    ? { backgroundColor: "#ffffff", borderRadius: 10 }
+                    : {}
+                }
               >
                 {" "}
                 <div className="flex items-center mx-2">
@@ -64,8 +101,14 @@ const Setting = () => {
               </li>
             </ul>
           </div>
-          <div className="flex justify-center">
-            <div className="flex w-[150px] h-[37px] bg-black text-xl justify-center items-center text-white border-1 rounded-lg absolute bottom-6">
+          <div className="flex justify-start ml-[10%]">
+            <div
+              className="flex w-[150px] h-[37px] bg-black text-xl justify-center items-center text-white border-1 rounded-lg absolute bottom-6 cursor-pointer"
+              onClick={() => {
+                navigate("/login");
+                localStorage.setItem("token", "");
+              }}
+            >
               <span className="mr-auto ml-2 mt-2">
                 <img src={require("../../image/logout.png")} alt="logout" />
               </span>
@@ -164,20 +207,19 @@ const Setting = () => {
             </div>
             <div className="flex flex-col mt-[12%] ml-[-97%] gap-6">
               <input
-                className="flex w-[740px] h-[500px] relative justify-start items-start border-1 border-none text-xl bg-lightBlue rounded-xl mt-[15px] placeholder-black"
+                className="block w-[740px] h-[500px] relative  border-1 border-none text-xl bg-lightBlue rounded-xl mt-[15px] placeholder-black"
                 type="text"
                 placeholder="Write us here..."
                 style={{
                   paddingLeft: "5px",
                 }}
               />
-
               <div className="flex flex-row">
                 <button className="w-[170px] h-[45px] text-xl rounded-lg bg-blue text-white border-none ml-auto">
                   Submit
                 </button>
               </div>
-            </div>
+            </div> 
           </>
         )}
       </div>
