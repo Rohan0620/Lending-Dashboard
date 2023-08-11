@@ -126,9 +126,18 @@ const Sidebar = () => {
               Clients
             </li>
             <hr className="bg-white" />
-            <li className="flex justify-start cursor-pointer items-center text-white">
+            <li className="flex justify-start cursor-pointer items-center text-white"
+            onClick={() =>{ 
+              handleTabClick("settings") 
+              navigate("/settings")}}
+              style={
+                selectedTab === "settings"
+                  ? { backgroundColor: "rgba(255, 255, 255, 0.2)" ,borderRadius:10}
+                  : {}
+              }>
               {" "}
-              <div className="flex items-center mx-2">
+              <div className="flex items-center mx-2"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
