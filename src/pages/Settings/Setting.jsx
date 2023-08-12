@@ -121,7 +121,7 @@ const Setting = () => {
             <div className=" mt-[5%]">
               <span className="ml-[45%] text-4xl font-bold ">Profile</span>
             </div>
-            <div className="flex flex-col mt-[15%] ml-[-7%] gap-6">
+            <div className="flex flex-col mt-[13%] ml-[-7%] gap-6">
               <div className="flex flex-col w-[600px] h-[110px] justify-center border-1 border-none text-xl bg-lightBlue rounded-xl mt-[15px]">
                 <span className="ml-[8%] mr-auto">Username</span>
                 <span className="ml-[8%] mr-auto font-bold">test</span>
@@ -151,13 +151,13 @@ const Setting = () => {
                   Bank Account
                 </span>
               </div>
-              <div className=" flex flex-row w-full text-lg mt-[2%] ml-[3%] mr-auto text-left">
+              <div className=" flex flex-row w-full text-lg mt-[1px] ml-[3%] mr-auto text-left">
                 You will receive your settlements in the bank account below.
                 Write to care@curecoin.in <br /> or contact your Account Manager
                 to update the bank account.
               </div>
             </div>
-            <div className="flex flex-col mt-[15%] ml-[-97%] gap-6">
+            <div className="flex flex-col mt-[12%] ml-[-97%] gap-6">
               <div className="flex flex-col w-[600px] h-[110px] justify-center border-1 border-none text-xl bg-lightBlue rounded-xl mt-[15px]">
                 <span className="ml-[8%] mr-auto">Account Number</span>
                 <span className="ml-[8%] mr-auto font-bold">
@@ -179,12 +179,12 @@ const Setting = () => {
                   Notifications
                 </span>
               </div>
-              <div className=" flex flex-row w-full text-lg mt-[2%] ml-[3%] mr-auto align-start">
+              <div className=" flex flex-row w-full text-lg mt-[1px] ml-[3%] mr-auto align-start">
                 You will receive the notifications about settlements to below
                 email id.
               </div>
             </div>
-            <div className="flex flex-col mt-[12%] ml-[-97%] gap-6">
+            <div className="flex flex-col mt-[10%] ml-[-97%] gap-6">
               <div className="flex flex-col w-[600px] h-[110px] justify-center border-1 border-none text-xl bg-lightBlue rounded-xl mt-[15px]">
                 <span className="ml-[8%] mr-auto">Email</span>
                 <span className="ml-[8%] mr-auto font-bold">ABC@gmail.com</span>
@@ -200,26 +200,33 @@ const Setting = () => {
                   Help Centre
                 </span>
               </div>
-              <div className=" flex flex-row w-full text-lg mt-[2%] ml-[3%] mr-auto text-left flex-wrap">
+              <div className=" flex flex-row w-full text-lg mt-[1px] ml-[3%] mr-auto text-left flex-wrap">
                 If you are facing any problem or have any query feel free to
                 reach us at help@curecoin.in or write us below.
               </div>
             </div>
-            <div className="flex flex-col mt-[12%] ml-[-97%] gap-6">
+            <div className="flex flex-col mt-[10%] ml-[-97%]  relative">
               <input
-                className="block w-[740px] h-[500px] relative  border-1 border-none text-xl bg-lightBlue rounded-xl mt-[15px] placeholder-black"
+                id="customInput"
+                className="block w-[740px] h-[500px]  border-1 border-none outline-none text-xl bg-lightBlue rounded-xl mt-[] placeholder-black"
                 type="text"
-                placeholder="Write us here..."
+                placeholder=""
                 style={{
                   paddingLeft: "5px",
                 }}
               />
+              <label
+                className="absolute top-10 left-0 text-xl -mt-[10px] ml-[8px] text-black"
+                htmlFor="customInput"
+              >
+                Write us here...
+              </label>
               <div className="flex flex-row">
                 <button className="w-[170px] h-[45px] text-xl rounded-lg bg-blue text-white border-none ml-auto">
                   Submit
                 </button>
               </div>
-            </div> 
+            </div>
           </>
         )}
       </div>

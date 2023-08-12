@@ -14,7 +14,8 @@ const Loans = () => {
   const [loading, setLoading] = React.useState(true);
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
-  let navigate = useNavigate()
+  const [approveStatus, setApproveStatus] = useState("")
+  let navigate = useNavigate();
 
   const socketRef = useRef(null);
 
@@ -63,6 +64,10 @@ const Loans = () => {
       });
       console.log(newFundData);
       setFund(newFundData);
+      if(data.amount >= IdAmt)
+      {
+        socketRef.current.close();
+      }
     });
   }
 
@@ -150,7 +155,7 @@ const Loans = () => {
       console.log("All Emis", data.data.EmiDates);
       setAllEmis(data.data.EmiDates);
       setEmi(data.data);
-      setEmiAmt(data.data.amount);
+      setEmiAmt(data.data.treatmentCost);
     } catch (err) {
       console.error(err);
     }
@@ -187,7 +192,9 @@ const Loans = () => {
   };
   useEffect(() => {
     getDetails();
-  }, []);
+    console.log("Approve j",approveStatus)
+
+  }, [approveStatus]);
 
   return (
     <>
@@ -259,11 +266,7 @@ const Loans = () => {
             </div>
             <div className="flex justify-start items-center mr-12">
               <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
-                onClick={()=>{
-                  navigate("/settings")
-                  sessionStorage.setItem("selectedSettingTab","profile")
-                }}>
+                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer">
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -297,11 +300,13 @@ const Loans = () => {
                   </div>
                   <div className="flex mr-6">Profile</div>
                 </div>
-                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer" 
-                onClick={()=>{
-                  navigate("/login")
-                  localStorage.setItem("token","")
-                }}>
+                <div
+                  className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
+                  onClick={() => {
+                    navigate("/login");
+                    localStorage.setItem("token", "");
+                  }}
+                >
                   <div className="flex">
                     <img
                       src={require("../../image/logout.png")}
@@ -383,7 +388,9 @@ const Loans = () => {
                           </td>
                           <td
                             className="text-aliceblue pl-4 w-[150px]"
-                            onClick={() => handleClick(transactions.trnId)}
+                            onClick={() => {
+                              handleClick(transactions.trnId) 
+                            setApproveStatus(transactions.lenderStatus)}}
                             style={{ cursor: "pointer" }}
                           >
                             {" "}
@@ -400,7 +407,7 @@ const Loans = () => {
                             {status === "Success" ? " months" : " "}
                           </td>
                           <td className="pl-4 w-[150px]">
-                          ₹{transactions.treatmentCost}
+                            ₹{transactions.treatmentCost}
                           </td>
                           <td className="pl-4 w-[150px]">
                             {transactions.date}
@@ -627,6 +634,7 @@ const Loans = () => {
             <div className="flex flex-row ml-5 mt-3">
               <span className="text-4xl font-extrabold mt-4">EMI Dates</span>
             </div>
+            <div className="mb-[100px]">
             {allEmi ? (
               allEmi.map((emi) => (
                 <>
@@ -650,18 +658,20 @@ const Loans = () => {
             ) : (
               <h2>No emis</h2>
             )}
+            </div>
+          
 
-            <div className="w-full bottom-2  right-0 bg-white ">
-              <Divider className="bg-blue mr-auto mt-12 pt- " />
-              <div className="flex justify-end items-center">
+            <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
+              <Divider className="bg-blue mr-auto mt-0" />
+              <div className="flex justify-end">
                 <button
-                  className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-2 "
+                  className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-4"
                   onClick={onClose}
                 >
                   <span className="text-xl font-bold">CANCEL</span>
                 </button>
                 <button
-                  className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-2 "
+                  className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
                   onClick={onFundAccount}
                 >
                   <span className="text-xl font-bold">PROCEED</span>
@@ -761,9 +771,10 @@ const Loans = () => {
                   <span className="text-xl font-bold">CANCEL</span>
                 </button>
                 <button
-                  className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
+                  className={` bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4 ${approveStatus === false ? "opacity-67":""}`}
                   onClick={handleApprove}
-                >
+                  disabled={approveStatus === false}
+               >
                   <span className="text-xl font-bold">Approve</span>
                 </button>
               </div>
