@@ -91,7 +91,7 @@ const ApprovedCust = () => {
           <Sidebar />
         </div>
       <div className="container mt-[50px] ml-[270px]">
-        <div className="flex flex-row justify-around ml-10">
+        <div className="flex flex-row justify-around px-7 ml-6">
           <div className="flex text-black">
             {/* <span className="text-3xl font-bold text-left"></span> */}
             {/* <div className="flex mr-6">Help</div> */}
@@ -172,7 +172,7 @@ const ApprovedCust = () => {
               />
             </div>
           </div>
-          <div className="flex justify-start items-center mr-10">
+          <div className="flex justify-start items-center mr-4">
               <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
                 <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
                 onClick={()=>{
@@ -231,8 +231,8 @@ const ApprovedCust = () => {
           </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 align-middle px-10 pt-[60px] gap-5 ml-4">
-            <div className="flex w-[720px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+          <div className="grid grid-cols-2 align-middle px-[68px] py-[60px] gap-5 ">
+            <div className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
               <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
               <div className="flex flex-col justify-center items-center p-5">
                 <div className="w-[180px] h-[20px] mb-1 shimmer" />
@@ -242,7 +242,7 @@ const ApprovedCust = () => {
                 <div className="w-[30px] h-[30px] shimmer" />
               </div>
             </div>
-            <div className="flex w-[720px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+            <div className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
               <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
               <div className="flex flex-col justify-center items-center p-5">
                 <div className="w-[180px] h-[20px] mb-1 shimmer" />
@@ -254,18 +254,18 @@ const ApprovedCust = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 align-middle px-10 pt-[60px] gap-5 ml-4">
+          <div className="grid grid-cols-2 align-middle px-[68px] py-[60px] gap-5">
             {customers ? (
               customers.map((cust) => (
-                <div className="flex w-[720px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+                <div className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
                   <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
                     <img src={require("./user.png")} className=" w-[75px]" alt="user" />
                   </div>
-                  <div className="flex flex-col justify-center items-center p-6 ">
-                    <span className="text-xl text-left font-semibold mr-auto">
+                  <div className="flex flex-col justify-center items-center p-6 text-left">
+                    <span className="text-xl font-semibold mr-auto">
                       {cust.name}
                     </span>
-                    <span className="text-lg">{cust.phone}</span>
+                    <span className="text-lg mr-auto ">{cust.phone}</span>
                   </div>
                   <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
                     <span
