@@ -15,6 +15,7 @@ const Loans = () => {
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
   const [approveStatus, setApproveStatus] = useState("")
+  const [amounts, setAmounts] = useState({unsettled:"",settled:""})
   let navigate = useNavigate();
 
   const socketRef = useRef(null);
@@ -183,6 +184,7 @@ const Loans = () => {
     setStats(json.status);
     if (json.status === "Success") {
       setLoading(false);
+      setAmounts({unsettled:json.unsettled,settled:json.settled})
       setLoanData(json.data.transactions);
       console.log("hello json", json.data.transactions);
     } else {
@@ -208,13 +210,13 @@ const Loans = () => {
               <div className="flex flex-col justify-center items-start px-6">
                 <span className="text-lg font-normal ">Settled Amount</span>
                 <span className="text-3xl font-bold ">
-                  <i className="fa fa-inr"></i>50000.00
+                ₹{amounts.settled}
                 </span>
               </div>
               <div className="flex flex-col justify-center items-start px-6">
                 <span className="text-lg font-normal ">Unsettled Amount</span>
                 <span className="text-3xl font-bold ">
-                  <i className="fa fa-inr"></i>50000.00
+                ₹{amounts.unsettled}
                 </span>
               </div>
             </div>

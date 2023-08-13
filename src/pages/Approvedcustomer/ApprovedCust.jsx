@@ -18,7 +18,7 @@ const ApprovedCust = () => {
   const [customers, setCustomers] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const [drawers, setDrawers] = React.useState(false);
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   const { isFormSubmitted } = useContext(FormContext);
   const handleClientDetails = () => {
     setShowClientdDtails(true);
@@ -87,9 +87,9 @@ const ApprovedCust = () => {
 
   return (
     <div className="flex w-full relative">
-        <div className="fixed top-0 bottom-0 ">
-          <Sidebar />
-        </div>
+      <div className="fixed top-0 bottom-0 ">
+        <Sidebar />
+      </div>
       <div className="container mt-[50px] ml-[270px]">
         <div className="flex flex-row justify-around px-7 ml-6">
           <div className="flex text-black">
@@ -173,62 +173,66 @@ const ApprovedCust = () => {
             </div>
           </div>
           <div className="flex justify-start items-center mr-4">
-              <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
-                onClick={()=>{
-                  navigate("/settings")
-                  sessionStorage.setItem("selectedSettingTab","profile")
-                }}>
-                  <div className="flex">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      viewBox="0 0 28 28"
-                      fill="none"
-                    >
-                      <g clipPath="url(#clip0_305_165)">
-                        <path
-                          d="M13.9999 12.8333C16.5772 12.8333 18.6666 10.744 18.6666 8.16667C18.6666 5.58934 16.5772 3.5 13.9999 3.5C11.4226 3.5 9.33325 5.58934 9.33325 8.16667C9.33325 10.744 11.4226 12.8333 13.9999 12.8333Z"
-                          stroke="white"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M7 24.5V22.1667C7 20.929 7.49167 19.742 8.36683 18.8668C9.242 17.9917 10.429 17.5 11.6667 17.5H16.3333C17.571 17.5 18.758 17.9917 19.6332 18.8668C20.5083 19.742 21 20.929 21 22.1667V24.5"
-                          stroke="white"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_305_165">
-                          <rect width="28" height="28" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </div>
-                  <div className="flex mr-6">Profile</div>
+            <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
+              <div
+                className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
+                onClick={() => {
+                  navigate("/settings");
+                  sessionStorage.setItem("selectedSettingTab", "profile");
+                }}
+              >
+                <div className="flex">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="28"
+                    height="28"
+                    viewBox="0 0 28 28"
+                    fill="none"
+                  >
+                    <g clipPath="url(#clip0_305_165)">
+                      <path
+                        d="M13.9999 12.8333C16.5772 12.8333 18.6666 10.744 18.6666 8.16667C18.6666 5.58934 16.5772 3.5 13.9999 3.5C11.4226 3.5 9.33325 5.58934 9.33325 8.16667C9.33325 10.744 11.4226 12.8333 13.9999 12.8333Z"
+                        stroke="white"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M7 24.5V22.1667C7 20.929 7.49167 19.742 8.36683 18.8668C9.242 17.9917 10.429 17.5 11.6667 17.5H16.3333C17.571 17.5 18.758 17.9917 19.6332 18.8668C20.5083 19.742 21 20.929 21 22.1667V24.5"
+                        stroke="white"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_305_165">
+                        <rect width="28" height="28" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
                 </div>
-                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
-                onClick={()=>{
-                  navigate("/login")
-                  localStorage.setItem("token","")
-                }}>
-                  <div className="flex">
-                    <img
-                      src={require("../../image/logout.png")}
-                      className="w-[20px]"
-                      alt="logout"
-                    />
-                  </div>
-                  <div className="flex mr-5">Logout</div>
+                <div className="flex mr-6">Profile</div>
+              </div>
+              <div
+                className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
+                onClick={() => {
+                  navigate("/login");
+                  localStorage.setItem("token", "");
+                }}
+              >
+                <div className="flex">
+                  <img
+                    src={require("../../image/logout.png")}
+                    className="w-[20px]"
+                    alt="logout"
+                  />
                 </div>
+                <div className="flex mr-5">Logout</div>
               </div>
             </div>
           </div>
+        </div>
 
         {loading ? (
           <div className="grid grid-cols-2 align-middle px-[68px] py-[60px] gap-5 ">
@@ -258,8 +262,12 @@ const ApprovedCust = () => {
             {customers ? (
               customers.map((cust) => (
                 <div className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
-                  <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
-                    <img src={require("./user.png")} className=" w-[75px]" alt="user" />
+                  <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] flex-row items-start rounded-full overflow-hidden">
+                    <img
+                      src={`http://localhost:8000/${cust.profileImage}`}
+                      className=" w-[75px] h-[75px]"
+                      alt="user"
+                    />
                   </div>
                   <div className="flex flex-col justify-center items-center p-6 text-left">
                     <span className="text-xl font-semibold mr-auto">
@@ -336,10 +344,10 @@ const ApprovedCust = () => {
             <div>
               <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
                 <div className="flex flex-row w-full">
-                  <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
+                  <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] items-start rounded-full overflow-hidden">
                     <img
-                      className="w-[75px] "
-                      src={require("./user.png")}
+                      className="w-[75px] h-[75px] "
+                      src={`http://localhost:8000/${custDetails.profileImage}`}
                       alt="user"
                     />
                   </div>
