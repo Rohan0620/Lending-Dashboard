@@ -3,7 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import "./repay.css";
 import axios from "axios";
 import { Divider, Drawer } from "antd";
-import '../../styles/Shimmering.css'
+import "../../styles/Shimmering.css";
 import { useNavigate } from "react-router-dom";
 const Repayment = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -13,7 +13,8 @@ const Repayment = () => {
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
   const [loading, setLoading] = React.useState(true);
-  let navigate = useNavigate();  
+  const [amounts, setAmounts] = useState({ unsettled: "", settled: "" });
+  let navigate = useNavigate();
 
   const handleApprove = () => {
     setShowApproved(true);
@@ -96,8 +97,9 @@ const Repayment = () => {
 
     const json = await response.json();
     if (json.status === "Success") {
-      setLoading(false)
+      setLoading(false);
       setRepayData(json.message);
+      setAmounts({ unsettled: json.unsettled, settled: json.settled });
       console.log("hello json", json.message);
     } else {
       alert("Data not found");
@@ -120,14 +122,12 @@ const Repayment = () => {
             <div className="flex flex-rowtext-black px-5">
               <div className="flex flex-col justify-center items-start px-6">
                 <span className="text-lg font-normal ">Settled Amount</span>
-                <span className="text-3xl font-bold ">
-                  <i className="fa fa-rupee"></i>50000.00
-                </span>
+                <span className="text-3xl font-bold ">₹{amounts.settled}</span>
               </div>
               <div className="flex flex-col justify-center items-start px-6">
                 <span className="text-lg font-normal ">Unsettled Amount</span>
                 <span className="text-3xl font-bold ">
-                  <i className="fa fa-rupee"></i>50000.00
+                  ₹{amounts.unsettled}
                 </span>
               </div>
             </div>
@@ -179,11 +179,13 @@ const Repayment = () => {
             </div>
             <div className="flex justify-start items-center mr-12">
               <div className="flex text-lg border-solid border-transparent  w-[250px] h-[37px] ">
-                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
-                onClick={()=>{
-                  navigate("/settings")
-                  sessionStorage.setItem("selectedSettingTab","profile")
-                }}>
+                <div
+                  className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
+                  onClick={() => {
+                    navigate("/settings");
+                    sessionStorage.setItem("selectedSettingTab", "profile");
+                  }}
+                >
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -217,11 +219,13 @@ const Repayment = () => {
                   </div>
                   <div className="flex mr-6">Profile</div>
                 </div>
-                <div className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
-                onClick={()=>{
-                  navigate("/login")
-                  localStorage.setItem("token","")
-                }}>
+                <div
+                  className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
+                  onClick={() => {
+                    navigate("/login");
+                    localStorage.setItem("token", "");
+                  }}
+                >
                   <div className="flex">
                     <img
                       src={require("../../image/logout.png")}
@@ -236,99 +240,107 @@ const Repayment = () => {
           </div>
           {loading ? (
             <div className="flex pl-10 pr-12">
-            <table cellSpacing="0" className="w-full mt-4">
-              <thead>
-                <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
-                  <td className="pl-4 w-[30px]">
-                    <img src={require("./status.png")} alt="status" />
-                  </td>
-                  <td className="pl-4 w-[150px]">Loan ID</td>
-                  <td className="w-[200px]">Name</td>
-                  <td className="pl-4 w-[140px]">Phone No</td>
-                  <td className="pl-4 w-[150px]">Amount</td>
-                  <td className="pl-4 w-[150px]">Date</td>
-                  <td className="pl-4 w-[100px]">EMI</td>
-                  <td className="pr-4 w-[100px]">Status</td>
-                </tr>
-              </thead>
-              <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
-              <tr
-                className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
-              >
-                <td colSpan="8"></td>
-              </tr>
-              <tr
-                className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
-              >
-                <td colSpan="8"></td>
-              </tr>
-              </tbody>
+              <table cellSpacing="0" className="w-full mt-4">
+                <thead>
+                  <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                    <td className="pl-4 w-[30px]">
+                      <img src={require("./status.png")} alt="status" />
+                    </td>
+                    <td className="pl-4 w-[150px]">Loan ID</td>
+                    <td className="w-[200px]">Name</td>
+                    <td className="pl-4 w-[140px]">Phone No</td>
+                    <td className="pl-4 w-[150px]">Amount</td>
+                    <td className="pl-4 w-[150px]">Date</td>
+                    <td className="pl-4 w-[100px]">EMI</td>
+                    <td className="pr-4 w-[100px]">Status</td>
+                  </tr>
+                </thead>
+                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+                  <tr
+                    className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
+                  >
+                    <td colSpan="8"></td>
+                  </tr>
+                  <tr
+                    className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
+                  >
+                    <td colSpan="8"></td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           ) : (
-          <div className="flex pl-10 pr-12">
-            <table cellSpacing="0" className="w-full mt-4" style={{scrollBehavior:"smooth"}}>
-              <thead>
-                <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
-                  <td className="pl-4 w-[30px]">
-                    <img src={require("./status.png")} alt="status" />
-                  </td>
-                  <td className="pl-4 w-[150px]">Loan ID</td>
-                  <td className="w-[200px]">Name</td>
-                  <td className="pl-4 w-[140px]">Phone No</td>
-                  <td className="pl-4 w-[150px]">Amount</td>
-                  <td className="pl-4 w-[150px]">Date</td>
-                  <td className="pl-4 w-[100px]">EMI</td>
-                  <td className="pr-4 w-[100px]">Status</td>
-                </tr>
-              </thead>
-              <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
-                {repayData.length > 0 ? (
-                  repayData.map((repayment) => (
-                    <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
-                      <td className="pl-3 w-[30px]">
-                        <img src={require("./completed.png")} alt="completed" />
-                      </td>
-                      <td
-                        className="text-aliceblue pl-4 w-[150px] cursor-pointer"
-                        onClick={() => handleClick(repayment.trnId)}
-                      >
-                        {repayment.trnId}
-                      </td>
-                      <td className="pl-4 w-[200px]">{repayment.name}</td>
-                      <td className="pl-4 w-[140px]">{repayment.phone}</td>
-                      <td className="pl-4 w-[150px]">₹{repayment.amount}</td>
+            <div className="flex pl-10 pr-12">
+              <table
+                cellSpacing="0"
+                className="w-full mt-4"
+                style={{ scrollBehavior: "smooth" }}
+              >
+                <thead>
+                  <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                    <td className="pl-4 w-[30px]">
+                      <img src={require("./status.png")} alt="status" />
+                    </td>
+                    <td className="pl-4 w-[150px]">Loan ID</td>
+                    <td className="w-[200px]">Name</td>
+                    <td className="pl-4 w-[140px]">Phone No</td>
+                    <td className="pl-4 w-[150px]">Amount</td>
+                    <td className="pl-4 w-[150px]">Date</td>
+                    <td className="pl-4 w-[100px]">EMI</td>
+                    <td className="pr-4 w-[100px]">Status</td>
+                  </tr>
+                </thead>
+                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+                  {repayData.length > 0 ? (
+                    repayData.map((repayment) => (
+                      <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
+                        <td className="pl-3 w-[30px]">
+                          <img
+                            src={require("./completed.png")}
+                            alt="completed"
+                          />
+                        </td>
+                        <td
+                          className="text-aliceblue pl-4 w-[150px] cursor-pointer"
+                          onClick={() => handleClick(repayment.trnId)}
+                        >
+                          {repayment.trnId}
+                        </td>
+                        <td className="pl-4 w-[200px]">{repayment.name}</td>
+                        <td className="pl-4 w-[140px]">{repayment.phone}</td>
+                        <td className="pl-4 w-[150px]">₹{repayment.amount}</td>
 
-                      <td className="pl-4 w-[180px]">
-                        <span>
-                          {new Date(repayment.date).toLocaleDateString(
-                            "en-GB",
-                            {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            }
-                          )}
-                        </span>
-                      </td>
-                      <td className="pr-3 w-[100px]">{repayment.emiNo}</td>
-                      <td
-                        className={
-                          repayment.status === true
-                            ? "text-green pr-6 w-[80px]"
-                            : "text-red pr-6 w-[80px]"
-                        }
-                      >
-                        {repayment.status === true ? "Settled" : "Pending"}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <div> No repayments data found</div>
-                )}
-              </tbody>
-            </table>
-          </div>)}
+                        <td className="pl-4 w-[180px]">
+                          <span>
+                            {new Date(repayment.date).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )}
+                          </span>
+                        </td>
+                        <td className="pr-3 w-[100px]">{repayment.emiNo}</td>
+                        <td
+                          className={
+                            repayment.status === true
+                              ? "text-green pr-6 w-[80px]"
+                              : "text-red pr-6 w-[80px]"
+                          }
+                        >
+                          {repayment.status === true ? "Settled" : "Pending"}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <div> No repayments data found</div>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           <Drawer
             placement="right"
@@ -412,7 +424,9 @@ const Repayment = () => {
                       City
                     </span>
                     <span className="text-lg font-normal mr-auto m-1">
-                      {emiData ? emiData.customerId.customerLocation.residenceType : "-"}
+                      {emiData
+                        ? emiData.customerId.customerLocation.residenceType
+                        : "-"}
                     </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
@@ -481,10 +495,10 @@ const Repayment = () => {
               <div className="flex flex-col w-full m-3">
                 <div className="flex flex-row justify-between mb-4">
                   <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-[25px] text-aliceblue text-left    ">
+                    <span className="text-[25px] text-aliceblue text-left ml-3    ">
                       Loan Amount
                     </span>
-                    <span className="text-[25px] text-aliceblue font-normal  ">
+                    <span className="text-[25px] text-aliceblue font-normal mr-3 ">
                       ₹{emiData ? emiData.amount : "-"}
                     </span>
                   </div>
@@ -492,10 +506,10 @@ const Repayment = () => {
 
                 <div className="flex flex-row justify-between mb-4">
                   <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-[25px] text-aliceblue text-left    ">
+                    <span className="text-[25px] text-aliceblue text-left  ml-3  ">
                       Interest rate per month
                     </span>
-                    <span className="text-[25px] text-aliceblue font-normal  ">
+                    <span className="text-[25px] text-aliceblue font-normal mr-3  ">
                       1.5%
                     </span>
                   </div>
@@ -503,21 +517,21 @@ const Repayment = () => {
 
                 <div className="flex flex-row justify-between mb-4">
                   <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-[25px] text-aliceblue text-left    ">
+                    <span className="text-[25px] text-aliceblue text-left  ml-3  ">
                       Tensure(months)
                     </span>
-                    <span className="text-[25px] text-aliceblue font-normal  ">
-                      {emiData ? emiData.tenure : "-"} 
+                    <span className="text-[25px] text-aliceblue font-normal mr-3 ">
+                      {emiData ? emiData.tenure : "-"}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex flex-row justify-between mb-4">
                   <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-[25px] text-black text-left    ">
+                    <span className="text-[25px] text-black text-left ml-3   ">
                       EMI
                     </span>
-                    <span className="text-[25px] text-black font-normal  ">
+                    <span className="text-[25px] text-black font-normal mr-3 ">
                       ₹8333
                     </span>
                   </div>
@@ -528,40 +542,34 @@ const Repayment = () => {
             <div className="flex flex-row ml-5 mt-3">
               <span className="text-4xl font-extrabold mt-4">EMI Dates</span>
             </div>
-            {allEmi ? allEmi.map((emi) => (
-              <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-                <span className="ml-4 text-lg font-semibold">
-                  { new Date(
-                        emi.date
-                      ).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })
+            {allEmi ? (
+              allEmi.map((emi) => (
+                <div className="flex flex-row w-[600px] h-[50px] justify-around items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+                  <div className="ml-4 text-lg font-semibold">
+                    {new Date(emi.date).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </div>
+
+                  <div className="pl-12 text-lg font-semibold">
+                    ₹{emi.amount}
+                  </div>
+                  <div
+                    className={
+                      emi.status === true
+                        ? "text-lg text-yellowgreen ml-auto mr-4"
+                        : "text-lg text-red ml-auto mr-4 "
                     }
-                </span>
-
-                <span className="mr-auto ml-6 text-lg font-semibold">
-                  ₹{emi.amount}
-                </span>
-                <span className={ emi.status === true ? "text-lg text-yellowgreen ml-auto mr-4":"text-lg text-red ml-auto mr-4 "}>
-                {emi.status === true ? "Settled" : "Pending"}
-                </span>
-
-              
-              </div>
-            ))
-          :(
-            <h2>No emis</h2>
-          )
-          }
-
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-              <span className="ml-4 text-lg font-semibold">22 July 2023</span>
-
-              <span className="mr-auto ml-6 text-lg font-semibold">₹8333</span>
-              <span className="text-lg text-red ml-auto mr-4 ">Pending</span>
-            </div>
+                  >
+                    {emi.status === true ? "Settled" : "Pending"}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <h2>No emis</h2>
+            )}
           </Drawer>
 
           {/* 

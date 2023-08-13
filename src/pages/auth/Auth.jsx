@@ -97,7 +97,7 @@ const Auth = () => {
                 type="text"
                 name="username"
                 id="username"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="User Name"
                 value={credentials.username}
                 onChange={handleChange}
@@ -109,7 +109,7 @@ const Auth = () => {
                 type="password"
                 name="password"
                 id="password"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="Password"
                 value={credentials.password}
                 onChange={handleChange}

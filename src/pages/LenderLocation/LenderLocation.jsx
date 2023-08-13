@@ -88,7 +88,7 @@ const LenderLocation = () => {
                 type="text"
                 name="line1"
                 id="line1"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="Address Line 1"
                 onChange={handleChange}
                 value={address.line1}
@@ -100,7 +100,7 @@ const LenderLocation = () => {
                 type="text"
                 name="line2"
                 id="line2"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="Address Line 2"
                 onChange={handleChange}
                 value={address.line2}
@@ -154,7 +154,7 @@ const LenderLocation = () => {
                 type="number"
                 name="pincode"
                 id="pincode"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="Pincode"
                 onChange={handleChange}
                 value={address.pincode}

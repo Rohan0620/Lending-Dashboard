@@ -1,12 +1,31 @@
 import React from "react";
 import Sidebar from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
+import { Divider, Drawer } from "antd";
 
 const Setting = () => {
   const [showSelected, setShowSelected] = React.useState(() => {
     return sessionStorage.getItem("selectedSettingTab") || "profile";
   });
+  const [mailDrawer, setMailDrawer] = React.useState(false);
+  const [otpDrawer, setOtpDrawer]  = React.useState(false);
+  const [nameDrawer, setNameDrawer] = React.useState(false)
   let navigate = useNavigate();
+
+  const onCloseMailDrawer = () => {
+    setMailDrawer(false);
+  };
+  const onCloseNameDrawer = () => {
+    setNameDrawer(false);
+  };
+  const onCloseOtpDrawer = () =>{
+    setMailDrawer(true)
+    setOtpDrawer(false)
+  }
+  const handleOtpDrawer = () =>{
+    setMailDrawer(false)
+    setOtpDrawer(true)
+  }
 
   const handleTabClick = (tabName) => {
     setShowSelected(tabName);
@@ -131,7 +150,16 @@ const Setting = () => {
                 <span className="ml-[8%] mr-auto font-bold">XYZ Hospital</span>
               </div>
               <div className="flex flex-col w-[600px] h-[110px] justify-center border-1 border-none text-xl bg-lightBlue rounded-xl mt-[15px]">
+                <div className="flex">
                 <span className="ml-[8%] mr-auto">Incharge Name</span>
+                <span
+                    className="text-xl text-blue ml-auto mr-4 cursor-pointer"
+                    onClick={() => setNameDrawer(true)}
+                  >
+                    Edit
+                  </span>
+
+                </div>
                 <span className="ml-[8%] mr-auto font-bold">John Doe</span>
               </div>
               <div className="flex flex-col w-[600px] h-[110px] justify-center border-1 border-none text-xl bg-lightBlue rounded-xl mt-[15px]">
@@ -186,7 +214,15 @@ const Setting = () => {
             </div>
             <div className="flex flex-col mt-[10%] ml-[-97%] gap-6">
               <div className="flex flex-col w-[600px] h-[110px] justify-center border-1 border-none text-xl bg-lightBlue rounded-xl mt-[15px]">
-                <span className="ml-[8%] mr-auto">Email</span>
+                <div className="flex ">
+                  <span className="ml-[8%] mr-auto">Email</span>
+                  <span
+                    className="text-xl text-blue ml-auto mr-4 cursor-pointer"
+                    onClick={() => setMailDrawer(true)}
+                  >
+                    Edit
+                  </span>
+                </div>
                 <span className="ml-[8%] mr-auto font-bold">ABC@gmail.com</span>
               </div>
             </div>
@@ -227,6 +263,217 @@ const Setting = () => {
                 </button>
               </div>
             </div>
+          </>
+        )}
+        {mailDrawer && (
+          <>
+            <Drawer
+              placement="right"
+              closable={false}
+              onClose={onCloseMailDrawer}
+              open={mailDrawer}
+              width={700}
+              className="border-solid border-2 border-aliceblue border-t-0 border-b-0 border-r-0 "
+            >
+              {/* {submitting && (
+          <div
+            className="bg-blue h-1 absolute top-0 left-0 right-0"
+            style={{ width: "100%", animation: "loading-bar 2s infinite" }}
+          ></div>
+        )} */}
+              <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
+                <svg
+                  className="h-8 w-8 text-black cursor-pointer"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  onClick={onCloseMailDrawer}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+              </div>
+              <form>
+                <div className="flex flex-col ml-5 mt-8 font-Poppins">
+                  <span className="text-4xl font-bold mt-4">New Email</span>
+                  <span className="text-2xl font-normal mt-4">
+                    We will send verification code to the email you choose.
+                  </span>
+                </div>
+                <div className="block mt-5 ml-7">
+                  <input
+                    type="text"
+                    name="name"
+                    className="w-[575px] h-[50px] font-Poppins text-2xl text-blue border-1 border-solid border-blue placeholder-blue bg-white border-x-0 border-t-0"
+                    placeholder="New Email"
+                    // value={otp}
+                    // onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="w-full block absolute bottom-3 right-0">
+                  <Divider className="bg-blue mr-auto" />
+                  <div className="flex justify-end ">
+                    <button
+                      className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-lightBlue"
+                      onClick={onCloseMailDrawer}
+                    >
+                      <span className="text-xl font-bold">CANCEL</span>
+                    </button>
+                    <button
+                      className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue"
+                      type="submit"
+                      onClick={handleOtpDrawer}
+                    >
+                      <span className="text-xl font-bold">NEXT</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </Drawer>
+          </>
+        )}
+        {nameDrawer && (
+          <>
+            <Drawer
+              placement="right"
+              closable={false}
+              onClose={onCloseNameDrawer}
+              open={nameDrawer}
+              width={700}
+              className="border-solid border-2 border-aliceblue border-t-0 border-b-0 border-r-0 "
+            >
+              {/* {submitting && (
+          <div
+            className="bg-blue h-1 absolute top-0 left-0 right-0"
+            style={{ width: "100%", animation: "loading-bar 2s infinite" }}
+          ></div>
+        )} */}
+              <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
+                <svg
+                  className="h-8 w-8 text-black cursor-pointer"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  onClick={onCloseNameDrawer}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+              </div>
+              <form>
+                <div className="flex flex-col ml-5 mt-8 font-Poppins">
+                  <span className="text-4xl font-bold mt-4">Incharge Name</span>
+                </div>
+                <div className="block mt-5 ml-7">
+                  <input
+                    type="text"
+                    name="name"
+                    className="w-[575px] h-[50px] font-Poppins text-2xl text-blue border-1 border-solid border-blue placeholder-blue bg-white border-x-0 border-t-0"
+                    placeholder="New Name"
+                    // value={otp}
+                    // onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="w-full block absolute bottom-3 right-0">
+                  <Divider className="bg-blue mr-auto" />
+                  <div className="flex justify-end ">
+                    <button
+                      className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-lightBlue"
+                      onClick={onCloseNameDrawer}
+                    >
+                      <span className="text-xl font-bold">CANCEL</span>
+                    </button>
+                    <button
+                      className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue"
+                      type="submit"
+                    >
+                      <span className="text-xl font-bold">DONE</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </Drawer>
+          </>
+        )}
+        {otpDrawer && (
+          <>
+            <Drawer
+              placement="right"
+              closable={false}
+              onClose={onCloseOtpDrawer}
+              open={otpDrawer}
+              width={700}
+              className="border-solid border-2 border-aliceblue border-t-0 border-b-0 border-r-0 "
+            >
+              {/* {submitting && (
+          <div
+            className="bg-blue h-1 absolute top-0 left-0 right-0"
+            style={{ width: "100%", animation: "loading-bar 2s infinite" }}
+          ></div>
+        )} */}
+              <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
+                <svg
+                  className="h-8 w-8 text-black cursor-pointer"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  onClick={onCloseOtpDrawer}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+              </div>
+              <form>
+                <div className="flex flex-col ml-5 mt-8 font-Poppins">
+                  <span className="text-4xl font-bold mt-4">Verification Code</span>
+                  <span className="text-2xl font-normal mt-4">
+                  Enter the 6-digit code that we sent to your phone number to finish your authentication.
+                  </span>
+                </div>
+                <div className="block mt-5 ml-7">
+                  <input
+                    type="text"
+                    name="otp"
+                    className="w-[575px] h-[50px] font-Poppins text-2xl text-blue border-1 border-solid border-blue placeholder-blue bg-white border-x-0 border-t-0"
+                    placeholder="OTP"
+                    // value={otp}
+                    // onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="w-full block absolute bottom-3 right-0">
+                  <Divider className="bg-blue mr-auto" />
+                  <div className="flex justify-end ">
+                    <button
+                      className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-lightBlue"
+                      onClick={onCloseOtpDrawer}
+                    >
+                      <span className="text-xl font-bold">CANCEL</span>
+                    </button>
+                    <button
+                      className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue"
+                      type="submit"
+                    >
+                      <span className="text-xl font-bold">DONE</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </Drawer>
           </>
         )}
       </div>

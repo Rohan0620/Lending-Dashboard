@@ -105,7 +105,7 @@ const AddAccount = () => {
                 type="number"
                 name="accno"
                 id="accno"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="Account Number"
                 value={bankDetails.accno}
                 onChange={handleChange}
@@ -117,7 +117,7 @@ const AddAccount = () => {
                 type="number"
                 name="confirmAccno"
                 id="confirmAccno"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="Confirm Account Number"
                 value={confirmAccno}
                 onChange={(e) => setConfirmAccno(e.target.value)}
@@ -129,7 +129,7 @@ const AddAccount = () => {
                 type="text"
                 name="ifsc"
                 id="ifsc"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="IFSC Code"
                 value={bankDetails.ifsc}
                 onChange={handleChange}
