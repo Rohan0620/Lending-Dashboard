@@ -15,8 +15,8 @@ const LenderLocation = () => {
   const [cities, setCities] = React.useState([]);
 
   let navigate = useNavigate();
-  const showError = () => {
-    toast.error("Please try again later. Server is busy.", {
+  const showError = (err) => {
+    toast.error(err, {
       position: "top-center",
     });
   };
@@ -43,7 +43,7 @@ const LenderLocation = () => {
         navigate("/addaccount");
       }
     } catch (err) {
-      showError();
+      showError(err.response.data.message);
     }
     setSubmitting(false);
   };

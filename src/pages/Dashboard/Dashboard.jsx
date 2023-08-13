@@ -251,19 +251,18 @@ const HospitalHome = () => {
                 </div>
               ) : (
                 !loading && (
-                  <div className="mt-10 w-full flex justify-center items-center relative">
+                  <div className="mt-10 w-full flex flex-col justify-center items-center relative">
                     <div className="text-center relative mb-[40px]">
                       <Chart
                         type="donut"
                         width={700}
-                        height="auto"
+                        height={520}
                         series={[
                           dashboardData
                             ? dashboardData.totalSanctioned -
                               dashboardData.totalSettlements
                             : 50,
                           dashboardData ? dashboardData.totalSettlements : 50,
-                          // 67, 33,
                         ]}
                         options={{
                           labels: ["Unsettled Amount", "Settled Amount"],
@@ -273,15 +272,7 @@ const HospitalHome = () => {
                           },
 
                           legend: {
-                            show: true,
-                            position: "bottom",
-                            horizontalAlign: "center",
-                            fontSize: "25px",
-                            fontFamily: "Arial",
-                            markers: {
-                              fillColors: ["#FF7B7B", "#306FC7"],
-          
-                            },
+                            show: false,
                           },
                           tooltip: {
                             enabled: false,
@@ -311,7 +302,23 @@ const HospitalHome = () => {
                         </span>
                       </div>
                     </div>
+                    <div className="flex justify-center pt-6">
+                        <div className="text-center">
+                          <div className="flex justify-center mt-3 text-2xl">
+                            <span className="mr-3 text-[70px]" style={{ color: "#FF7B7B" }}>
+                              •
+                            </span>
+                            <span className="mr-3 mt-9">Unsettled Amount</span>
+                            <span className="ml-3 text-[70px]" style={{ color: "#306FC7" }}>
+                              •
+                            </span>
+                            <span className="ml-3 mt-9">Settled Amount</span>
+                          </div>
+                          <div className="flex justify-center mt-1"></div>
+                        </div>
+                      </div>
                   </div>
+                  
                 )
               )}
             </div>
