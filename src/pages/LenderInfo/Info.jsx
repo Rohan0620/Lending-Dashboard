@@ -122,7 +122,7 @@ const HospitalInfo = () => {
                 type="text"
                 name="lenderName"
                 id="lenderName"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="Lender Name"
                 value={data.lenderName}
                 onChange={handleChange}
@@ -134,7 +134,7 @@ const HospitalInfo = () => {
                 type="text"
                 name="inChargeName"
                 id="inChargeName"
-                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none placeholder-white border-none"
+                className="block w-full my-auto ml-4 font-normal text-3xl text-left bg-transparent outline-none text-white placeholder-white border-none"
                 placeholder="In Charge Name"
                 value={data.inChargeName}
                 onChange={handleChange}

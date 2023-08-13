@@ -521,7 +521,14 @@ const HospitalHome = () => {
                             ₹{transactions.treatmentCost}
                           </td>
                           <td className="pl-4 w-[150px]">
-                            {transactions.date}
+                          {new Date(transactions.date).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
                           </td>
                           <td
                             className={
