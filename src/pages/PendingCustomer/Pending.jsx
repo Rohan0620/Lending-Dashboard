@@ -263,11 +263,11 @@ const PendingCustomer = () => {
                   key={pendingCustomer._id}
                   onClick={() => handleClick(pendingCustomer._id)}
                 >
-                  <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
+                  <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start h-[75px] rounded-full overflow-hidden">
                     <img
-                      src={require("./user.png")}
+                      src={`http://localhost:8000/${pendingCustomer.profileImage}`}
                       alt="user"
-                      className="w-[75px]"
+                      className="w-[75px] h-[75px]"
                     />
                   </div>
                   <div className="flex flex-col justify-center items-center p-6">
@@ -323,10 +323,10 @@ const PendingCustomer = () => {
           </div>
           <div className="flex w-[600px] h-[540px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-6">
             <div className="flex flex-row w-full">
-              <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
+              <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] items-start rounded-full overflow-hidden">
                 <img
-                  className="w-[75px] "
-                  src={require("./user.png")}
+                  className="w-[75px] h-[75px]"
+                  src={`http://localhost:8000/${selectedCustomer.profileImage}`}
                   alt="user"
                 />
               </div>
@@ -600,7 +600,12 @@ const PendingCustomer = () => {
             //     alt="Selected Document"
             //   />
             // </div>
-            <DisplayImage imageUrl={`http://localhost:8000/${selectedImage.replace(/\\/g, '/')}`}/>
+            <DisplayImage
+              imageUrl={`http://localhost:8000/${selectedImage.replace(
+                /\\/g,
+                "/"
+              )}`}
+            />
           )}
           <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
             <Divider className="bg-blue mr-auto mt-0" />
