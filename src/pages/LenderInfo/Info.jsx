@@ -18,31 +18,10 @@ const HospitalInfo = () => {
     });
   };
 
-
-  // const response = await fetch("http://localhost:8000/addhospinfo",{
-  //   method:"PATCH",
-  //   headers:{
-  //     "Content-Type":"application/json",
-  //     "Authorization":`Bearer ${localStorage.getItem('token')}`
-  //   },
-  //   body: JSON.stringify({
-  //     hospitalName: data.hospitalName,
-  //     inChargeName: data.inChargeName,
-  //     category:data.category
-  //   }),
-  // })
-
-
-
-
-
-
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setSubmitting(true);
-    // try {
+    setSubmitting(true);
+    try {
       const response = await fetch("http://localhost:8000/Lenders/addlenderinfo",{
           method: "PATCH",
           headers:{
@@ -66,16 +45,11 @@ const HospitalInfo = () => {
         console.log("Success");
         navigate("/addlenderloc");
       }
-      else
-      {
-        toast.error("Lender already registered!",{
-          position:"top-right"
-        })
       }
-    // } catch (json) {
-    //   showError(json.message);
-    // }
-    // setSubmitting(false);
+    catch (err) {
+      showError(err.response.data.message);
+    }
+    setSubmitting(false);
   };
 
   const handleChange = (e) => {

@@ -263,7 +263,7 @@ const PendingCustomer = () => {
                   key={pendingCustomer._id}
                   onClick={() => handleClick(pendingCustomer._id)}
                 >
-                  <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start h-[75px] rounded-full overflow-hidden">
+                  <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] flex-row items-start rounded-full overflow-hidden">
                     <img
                       src={`http://localhost:8000/${pendingCustomer.profileImage}`}
                       alt="user"

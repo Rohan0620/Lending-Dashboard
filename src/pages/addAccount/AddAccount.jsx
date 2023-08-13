@@ -7,8 +7,8 @@ const AddAccount = () => {
   const [confirmAccno, setConfirmAccno] = React.useState("");
 
   let navigate = useNavigate();
-  const showError = () => {
-    toast.error("Please try again later. Server is busy.", {
+  const showError = (err) => {
+    toast.error(err, {
       position: "top-right",
     });
   };
@@ -43,15 +43,8 @@ const AddAccount = () => {
       if (json.status === "Success") {
         navigate("/dashboard");
       }
-      else
-      {
-        console.log("Error")
-        toast.error(json.message,{
-          position:"top-right"
-        })
-      }
     } catch (err) {
-      showError();
+      showError(err.response.data.message);
     }
     setSubmitting(false);
   };

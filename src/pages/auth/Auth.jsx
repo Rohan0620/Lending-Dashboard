@@ -11,11 +11,7 @@ const Auth = () => {
   const [submitting, setSubmitting] = React.useState(false);
 
   let navigate = useNavigate();
-  const showError = () => {
-    toast.error("Please try again later. Server is busy.", {
-      position: "top-right",
-    });
-  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +41,6 @@ const Auth = () => {
       toast.error(json.reply, {
         position: "top-right",
       });
-      showError();
     }
     setSubmitting(false);
   };
