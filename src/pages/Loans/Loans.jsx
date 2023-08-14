@@ -67,6 +67,7 @@ const Loans = () => {
       setFund(newFundData);
       if(data.amount >= IdAmt)
       {
+        setApproveStatus(true)
         socketRef.current.close();
       }
     });
