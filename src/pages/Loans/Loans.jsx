@@ -6,6 +6,7 @@ import { Divider, Drawer } from "antd";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import { FormContext } from "../../Contexts/FormContext";
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -16,6 +17,7 @@ const Loans = () => {
   const [showApproved, setShowApproved] = useState(false);
   const [approveStatus, setApproveStatus] = useState("")
   const [amounts, setAmounts] = useState({unsettled:"",settled:""})
+  const { baseUrl }= React.useContext(FormContext)
   let navigate = useNavigate();
 
   const socketRef = useRef(null);
@@ -78,7 +80,7 @@ const Loans = () => {
     console.log("Fund ID===>", fundId);
     try {
       const response = await axios.get(
-        `http://localhost:8000/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${IdAmt}`,
+        `${baseUrl}/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${IdAmt}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -94,7 +96,7 @@ const Loans = () => {
 
   const onFundAccount = () => {
     console.log("socket api is going call");
-    const socket = io("http://localhost:8000/", {
+    const socket = io(`${baseUrl}/`, {
       withCredentials: true,
       query: {
         // Add your parameters here as key-value pairs
@@ -142,10 +144,9 @@ const Loans = () => {
     setSelectClient(!selectClient);
     setParams(id);
     var paramId = id.replace("#", "");
-
     try {
       const response = await axios.get(
-        `http://localhost:8000/Lenders/selectAproovals?trnId=%23${paramId}`,
+        `${baseUrl}/Lenders/selectAproovals?trnId=%23${paramId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -171,7 +172,7 @@ const Loans = () => {
   const [allLoans, setLoanData] = useState("");
   const [status, setStats] = useState("");
   const getDetails = async () => {
-    const response = await fetch("http://localhost:8000/Lenders/aproovals", {
+    const response = await fetch(`${baseUrl}/Lenders/aproovals`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -380,8 +381,8 @@ const Loans = () => {
                 </thead>
                 <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
                   {allLoans.length > 0 ? (
-                    allLoans.map((transactions) => (
-                      <>
+                    allLoans.slice().reverse().map((transactions) => (
+                      <div key={transactions.trnId}>
                         <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
                           <td className="pl-4 w-[30px]">
                             <img
@@ -434,7 +435,7 @@ const Loans = () => {
                               : "Pending"}
                           </td>
                         </tr>
-                      </>
+                      </div>
                     ))
                   ) : (
                     <div> No Loans data found</div>

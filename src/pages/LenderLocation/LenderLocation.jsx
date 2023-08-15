@@ -3,6 +3,7 @@ import State from "../../data/States";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import { FormContext } from "../../Contexts/FormContext";
 const LenderLocation = () => {
   const [address, setAddress] = React.useState({
     line1: "",
@@ -13,6 +14,7 @@ const LenderLocation = () => {
   });
   const [submitting, setSubmitting] = React.useState(false);
   const [cities, setCities] = React.useState([]);
+  const { baseUrl }= React.useContext(FormContext)
 
   let navigate = useNavigate();
   const showError = (err) => {
@@ -24,7 +26,7 @@ const LenderLocation = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const response = await axios.patch("http://localhost:8000/Lenders/addlenderloc", {
+      const response = await axios.patch(`${baseUrl}/Lenders/addlenderloc`, {
         line1: address.line1,
         line2: address.line2,
         state: address.state,

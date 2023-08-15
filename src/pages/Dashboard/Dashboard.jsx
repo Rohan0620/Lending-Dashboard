@@ -6,6 +6,7 @@ import axios from "axios";
 import { DatePicker } from "antd";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { FormContext } from "../../Contexts/FormContext";
 const HospitalHome = () => {
   const [loans, setLoans] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -20,6 +21,7 @@ const HospitalHome = () => {
   const [endDate, setEndDate] = React.useState(
     new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
   );
+  const { baseUrl }= React.useContext(FormContext)
   const backendFormatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
     dateObj.setUTCHours(dateObj.getUTCHours() + 5);
@@ -31,7 +33,7 @@ const HospitalHome = () => {
     return `${year}-${month}-${day}`;
   };
   const fetchLoans = async () => {
-    const response = await fetch("http://localhost:8000/Lenders/aproovals", {
+    const response = await fetch(`${baseUrl}/Lenders/aproovals`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +61,7 @@ const HospitalHome = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/Lenders/dashboard?startDate=${backendFormatDate(
+          `${baseUrl}/Lenders/dashboard?startDate=${backendFormatDate(
             startDate
           )}&endDate=${backendFormatDate(endDate)}`,
           {
