@@ -266,7 +266,7 @@ const ApprovedCust = () => {
                 <div className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
                   <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] flex-row items-start rounded-full overflow-hidden">
                     <img
-                      src={`http://localhost:8000/${cust.profileImage}`}
+                      src={`${baseUrl}/${cust.profileImage}`}
                       className=" w-[75px] h-[75px]"
                       alt="user"
                     />
@@ -349,7 +349,7 @@ const ApprovedCust = () => {
                   <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] items-start rounded-full overflow-hidden">
                     <img
                       className="w-[75px] h-[75px] "
-                      src={`http://localhost:8000/${custDetails.data.profileImage}`}
+                      src={`${baseUrl}/${custDetails.data.profileImage}`}
                       alt="user"
                     />
                   </div>
