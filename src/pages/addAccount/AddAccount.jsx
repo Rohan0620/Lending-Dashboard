@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { FormContext } from "../../Contexts/FormContext";
 const AddAccount = () => {
   const [bankDetails, setBankDetails] = React.useState({ accno: "", ifsc: "" });
   const [submitting, setSubmitting] = React.useState(false);
   const [confirmAccno, setConfirmAccno] = React.useState("");
+  const { baseUrl }= React.useContext(FormContext)
 
   let navigate = useNavigate();
   const showError = (err) => {
@@ -25,7 +27,7 @@ const AddAccount = () => {
       return;
     }
     try {
-    const response = await fetch("http://localhost:8000/Lenders/addBankAcc", {
+    const response = await fetch(`${baseUrl}/Lenders/addBankAcc`, {
       method:"PATCH",
       headers:{
         "Content-Type":"application/json",

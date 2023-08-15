@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { FormContext } from "../../Contexts/FormContext";
 
 const HospitalInfo = () => {
   const [data, setData] = React.useState({
@@ -10,6 +11,7 @@ const HospitalInfo = () => {
     category: "",
   });
   const [submitting, setSubmitting] = React.useState(false);
+  const { baseUrl }= React.useContext(FormContext)
 
   let navigate = useNavigate();
   const showError = (msg) => {
@@ -22,7 +24,7 @@ const HospitalInfo = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const response = await fetch("http://localhost:8000/Lenders/addlenderinfo",{
+      const response = await fetch(`${baseUrl}/Lenders/addlenderinfo`,{
           method: "PATCH",
           headers:{
                 "Content-Type":"application/json",

@@ -20,6 +20,7 @@ const ApprovedCust = () => {
   const [drawers, setDrawers] = React.useState(false);
   let navigate = useNavigate();
   const { isFormSubmitted } = useContext(FormContext);
+  const { baseUrl }= useContext(FormContext)
   const handleClientDetails = () => {
     setShowClientdDtails(true);
     setSelectClient(false);
@@ -41,7 +42,7 @@ const ApprovedCust = () => {
     // console.log(custDetails);
     try {
       const response = await axios.get(
-        `http://localhost:8000/Lenders/aproovedCustomers/${id}`,
+        `${baseUrl}/Lenders/aproovedCustomers/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -58,9 +59,10 @@ const ApprovedCust = () => {
   };
 
   const fetchCustomers = async () => {
+    console.log("env var",process.env.REACT_APP_API_URL_PROD)
     try {
       const response = await axios.get(
-        "http://localhost:8000/Lenders/aproovedCustomers",
+        `${baseUrl}/Lenders/aproovedCustomers`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -260,7 +262,7 @@ const ApprovedCust = () => {
         ) : (
           <div className="grid grid-cols-2 align-middle px-[68px] py-[60px] gap-5">
             {customers ? (
-              customers.map((cust) => (
+              customers.slice().reverse().map((cust) => (
                 <div className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
                   <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] flex-row items-start rounded-full overflow-hidden">
                     <img
@@ -347,7 +349,7 @@ const ApprovedCust = () => {
                   <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] items-start rounded-full overflow-hidden">
                     <img
                       className="w-[75px] h-[75px] "
-                      src={`http://localhost:8000/${custDetails.profileImage}`}
+                      src={`http://localhost:8000/${custDetails.data.profileImage}`}
                       alt="user"
                     />
                   </div>
@@ -486,7 +488,7 @@ const ApprovedCust = () => {
                     </div>
                     <div className="block ml-auto p-5 mr-3 text-left">
                       <span className="text-base font-normal">
-                        Total Limit-<i className="fa fa-inr custom"></i>
+                        Total Limit-₹
                         {custDetails.data.creditLimit}
                       </span>
                     </div>
@@ -520,19 +522,17 @@ const ApprovedCust = () => {
                             marginTop: "30px",
                           }}
                         >
-                          <i className="fa fa-inr custom"></i>
-                          {custDetails.data.creditUsed}
+                          ₹{custDetails.data.creditUsed}
                         </span>
                       ) : null}
                     </div>
                   </div>
                   <div className="flex flex-row w-full">
-                    <div className="block text-base ml-8">
-                      <i className="fa fa-inr custom"></i>
-                      00
+                    <div className="block text-base ml-4">
+                    ₹00
                     </div>
-                    <div className="block ml-auto text-base mr-8">
-                      <i className="fa fa-inr custom"></i>
+                    <div className="block ml-auto text-base mr-4">
+                    ₹
                       {custDetails.data.creditLimit}
                     </div>
                   </div>
