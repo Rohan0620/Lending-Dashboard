@@ -603,7 +603,7 @@ const PendingCustomer = () => {
             //   />
             // </div>
             <DisplayImage
-              imageUrl={`http://localhost:8000/${selectedImage.replace(
+              imageUrl={`${baseUrl}/${selectedImage.replace(
                 /\\/g,
                 "/"
               )}`}
