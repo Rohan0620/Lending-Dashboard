@@ -1,8 +1,9 @@
 import React from "react";
 import Sidebar from "../../components/Sidebar";
 import { Divider, Drawer } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import DisplayImage from "../../components/DisplayImage";
 
 const PendingCustomer = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -12,6 +13,8 @@ const PendingCustomer = () => {
   const [selectedCustomer, setSelectedCustomer] = React.useState("");
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [selectedCredit, setSelectedcredit] = React.useState("");
+  const [loading, setLoading] = React.useState(true);
+  let navigate = useNavigate();
 
   const onClose = () => {
     setSelectClient(false);
@@ -73,6 +76,7 @@ const PendingCustomer = () => {
         },
       });
       const data = response.data;
+      setLoading(false);
       setPendingCustomers(data.data);
     } catch (err) {
       console.error(err);
@@ -83,12 +87,12 @@ const PendingCustomer = () => {
   }, []);
 
   return (
-    <div className="flex w-full font-Poppins">
-      <div>
+    <div className="flex w-full relative">
+      <div className="fixed top-0 bottom-0 ">
         <Sidebar />
       </div>
-      <div className="container mt-[60px]">
-        <div className="flex flex-row justify-around">
+      <div className="container mt-[50px] ml-[270px]">
+        <div className="flex flex-row justify-around px-7 ml-6">
           <div className="flex text-black">
             <div className="flex justify-start items-center">
               <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
@@ -166,50 +170,15 @@ const PendingCustomer = () => {
               />
             </div>
           </div>
-          <div className="flex justify-start items-center">
-            <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-              <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white">
-                <div className="flex">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                  >
-                    <g clipPath="url(#clip0_305_158)">
-                      <path
-                        d="M14 24.5C19.799 24.5 24.5 19.799 24.5 14C24.5 8.20101 19.799 3.5 14 3.5C8.20101 3.5 3.5 8.20101 3.5 14C3.5 19.799 8.20101 24.5 14 24.5Z"
-                        stroke="white"
-                        strokeWidth="1.75"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M14 19.8333V19.845"
-                        stroke="white"
-                        strokeWidth="1.75"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M14.0001 15.75C13.9786 15.3713 14.0808 14.9958 14.2912 14.6802C14.5016 14.3645 14.8089 14.1258 15.1667 14C15.6053 13.8323 15.9989 13.5651 16.3166 13.2194C16.6343 12.8738 16.8674 12.4591 16.9976 12.008C17.1278 11.5569 17.1516 11.0818 17.0669 10.62C16.9823 10.1582 16.7916 9.72235 16.5099 9.34676C16.2283 8.97117 15.8632 8.66609 15.4436 8.45554C15.024 8.245 14.5612 8.13474 14.0917 8.13343C13.6222 8.13213 13.1588 8.23983 12.738 8.44804C12.3172 8.65625 11.9505 8.9593 11.6667 9.33332"
-                        stroke="white"
-                        strokeWidth="1.75"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_305_158">
-                        <rect width="28" height="28" fill="white" />
-                      </clipPath>
-                    </defs>
-                  </svg>
-                </div>
-                <div className="flex mr-6">Help</div>
-              </div>
-              <div className="flex w-[50%] justify-evenly rounded-r-lg items-center bg-blue text-white">
+          <div className="flex justify-start items-center mr-4">
+            <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px]">
+              <div
+                className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
+                onClick={() => {
+                  navigate("/settings");
+                  sessionStorage.setItem("selectedSettingTab", "profile");
+                }}
+              >
                 <div className="flex">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -243,44 +212,85 @@ const PendingCustomer = () => {
                 </div>
                 <div className="flex mr-6">Profile</div>
               </div>
+              <div
+                className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
+                onClick={() => {
+                  navigate("/login");
+                  localStorage.setItem("token", "");
+                }}
+              >
+                <div className="flex">
+                  <img
+                    src={require("../../image/logout.png")}
+                    className="w-[20px]"
+                    alt="logout"
+                  />
+                </div>
+                <div className="flex mr-5">Logout</div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 align-middle p-5 pt-[60px] gap-5 ml-4">
-          {pendingCustomers?.length > 0 ? (
-            pendingCustomers.map((pendingCustomer) => (
-              <div
-                className="flex w-[765px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg px-2 cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300"
-                key={pendingCustomer._id}
-                onClick={() => handleClick(pendingCustomer._id)}
-              >
-                <div className="flex w-[75px] mt-[20px] ml-[20px] flex-row items-start">
-                  <img
-                    src={require("./user.png")}
-                    alt="user"
-                    className="w-[75px]"
-                  />
-                </div>
-                <div className="flex flex-col justify-center items-center p-6">
-                  <span className="text-xl font-semibold mr-auto">
-                    {pendingCustomer.name}
-                  </span>
-                  <span className="text-lg mr-auto">
-                    {pendingCustomer.phone}
-                  </span>
-                </div>
-                <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
-                  <span className="ml-auto">
-                    <img src={require("./right.png")} alt="user" />
-                  </span>
-                  <span className="text-lg text-red">Pending</span>
-                </div>
+        {loading ? (
+          <div className="grid grid-cols-2 align-middle px-[68px] py-[60px] gap-5">
+            <div className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+              <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
+              <div className="flex flex-col justify-center items-center p-5">
+                <div className="w-[180px] h-[20px] mb-1 shimmer" />
+                <div className="w-[150px] h-[18px] shimmer" />
               </div>
-            ))
-          ) : (
-            <div>No pending customers</div>
-          )}
-        </div>
+              <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+                <div className="w-[30px] h-[30px] shimmer" />
+              </div>
+            </div>
+            <div className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-white rounded-lg items-center cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300">
+              <div className="w-[70px] h-[70px] ml-[20px] rounded-full shimmer" />
+              <div className="flex flex-col justify-center items-center p-5">
+                <div className="w-[180px] h-[20px] mb-1 shimmer" />
+                <div className="w-[150px] h-[18px] shimmer" />
+              </div>
+              <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+                <div className="w-[30px] h-[30px] shimmer" />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 align-middle px-[68px] py-[60px] gap-5 ">
+            {pendingCustomers?.length > 0 ? (
+              pendingCustomers.map((pendingCustomer) => (
+                <div
+                  className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300"
+                  key={pendingCustomer._id}
+                  onClick={() => handleClick(pendingCustomer._id)}
+                >
+                  <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] flex-row items-start rounded-full overflow-hidden">
+                    <img
+                      src={`http://localhost:8000/${pendingCustomer.profileImage}`}
+                      alt="user"
+                      className="w-[75px] h-[75px]"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center items-center p-6">
+                    <span className="text-xl font-semibold mr-auto">
+                      {pendingCustomer.name}
+                    </span>
+                    <span className="text-lg mr-auto">
+                      {pendingCustomer.phone}
+                    </span>
+                  </div>
+                  <div className="flex flex-col content-end justify-center items-center ml-auto mr-11">
+                    <span className="ml-auto">
+                      <img src={require("./right.png")} alt="user" />
+                    </span>
+                    <span className="text-lg text-red">Pending</span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div>No pending customers</div>
+            )}
+          </div>
+        )}
         <Drawer
           placement="right"
           closable={false}
@@ -313,10 +323,10 @@ const PendingCustomer = () => {
           </div>
           <div className="flex w-[600px] h-[540px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-6">
             <div className="flex flex-row w-full">
-              <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
+              <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] items-start rounded-full overflow-hidden">
                 <img
-                  className="w-[75px] "
-                  src={require("./user.png")}
+                  className="w-[75px] h-[75px]"
+                  src={`http://localhost:8000/${selectedCustomer.profileImage}`}
                   alt="user"
                 />
               </div>
@@ -421,50 +431,53 @@ const PendingCustomer = () => {
               </div>
             </div>
           </div>
-
-          <div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-              Employment Details
-            </span>
-          </div>
-          <div className="flex w-[600px] h-[220px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-            <div className="flex flex-col w-full mt-8">
-              <div className="flex flex-row justify-around">
-                <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1 ">
-                    Industry Type
-                  </span>
-                  <span className="text-lg font-normal mr-auto m-1">
-                    {selectedCustomer.employmentDetails
-                      ? selectedCustomer.employmentDetails.industryType
-                      : ""}
-                  </span>
-                </div>
-                <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                    Employer Name
-                  </span>
-                  <span className="text-lg font-normal mr-auto m-1">
-                    {selectedCustomer.employmentDetails
-                      ? selectedCustomer.employmentDetails.employerName
-                      : ""}
-                  </span>
+          {selectedCustomer.employmentType === "Salaried" && (
+            <>
+              <div className="flex flex-row ml-5 mt-3">
+                <span className="text-4xl font-extrabold mt-4">
+                  Employment Details
+                </span>
+              </div>
+              <div className="flex w-[600px] h-[220px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+                <div className="flex flex-col w-full mt-8">
+                  <div className="flex flex-row justify-around">
+                    <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                      <span className="text-[18px] text-left font-semibold mr-auto m-1 ">
+                        Industry Type
+                      </span>
+                      <span className="text-lg font-normal mr-auto m-1">
+                        {selectedCustomer.employmentDetails
+                          ? selectedCustomer.employmentDetails.industryType
+                          : ""}
+                      </span>
+                    </div>
+                    <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                      <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                        Employer Name
+                      </span>
+                      <span className="text-lg font-normal mr-auto m-1">
+                        {selectedCustomer.employmentDetails
+                          ? selectedCustomer.employmentDetails.employerName
+                          : ""}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-row w-full justify-around mt-7">
+                    <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                      <span className="text-[18px] text-left font-semibold mr-auto m-1">
+                        Work Email
+                      </span>
+                      <span className="text-lg font-normal mr-auto m-1">
+                        {selectedCustomer.employmentDetails
+                          ? selectedCustomer.employmentDetails.workEmail
+                          : ""}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="flex flex-row w-full justify-around mt-7">
-                <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                    Work Email
-                  </span>
-                  <span className="text-lg font-normal mr-auto m-1">
-                    {selectedCustomer.employmentDetails
-                      ? selectedCustomer.employmentDetails.workEmail
-                      : ""}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+            </>
+          )}
 
           <div className="flex flex-row ml-5 mt-3">
             <span className="text-4xl font-extrabold mt-3">Income Details</span>
@@ -503,7 +516,10 @@ const PendingCustomer = () => {
             </div>
             <div
               className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
-              onClick={() => setSelectedImage(selectedCustomer.pan)}
+              onClick={() => {
+                console.log("clicked");
+                setSelectedImage(selectedCustomer.pan);
+              }}
             >
               <span className="mr-auto ml-4 text-lg font-semibold">
                 PAN Card
@@ -512,15 +528,31 @@ const PendingCustomer = () => {
                 <img src={require("./arrow.png")} alt="arrow" />
               </span>
             </div>
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer">
-              <span className="mr-auto ml-4 text-lg font-semibold">
-                Salary Slip
-              </span>
-              <span className="ml-auto mr-4">
-                <img src={require("./arrow.png")} alt="arrow" />
-              </span>
-            </div>
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer">
+            {selectedCustomer.employmentType === "Salaried" && (
+              <>
+                <div
+                  className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
+                  onClick={() => {
+                    console.log("clicked");
+                    setSelectedImage(selectedCustomer.salarySlip);
+                  }}
+                >
+                  <span className="mr-auto ml-4 text-lg font-semibold">
+                    Salary Slip
+                  </span>
+                  <span className="ml-auto mr-4">
+                    <img src={require("./arrow.png")} alt="arrow" />
+                  </span>
+                </div>
+              </>
+            )}
+            <div
+              className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
+              onClick={() => {
+                console.log("clicked");
+                setSelectedImage(selectedCustomer.bankStatements);
+              }}
+            >
               <span className="mr-auto ml-4 text-lg font-semibold">
                 Bank Statement
               </span>
@@ -528,15 +560,31 @@ const PendingCustomer = () => {
                 <img src={require("./arrow.png")} alt="arrow" />
               </span>
             </div>
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer">
-              <span className="mr-auto ml-4 text-lg font-semibold">
-                Income Tax Return
-              </span>
-              <span className="ml-auto mr-4">
-                <img src={require("./arrow.png")} alt="arrow" />
-              </span>
-            </div>
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer">
+            {selectedCustomer.employmentType === "Self-employed" && (
+              <>
+                <div
+                  className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
+                  onClick={() => {
+                    console.log("clicked");
+                    setSelectedImage(selectedCustomer.incomeTax);
+                  }}
+                >
+                  <span className="mr-auto ml-4 text-lg font-semibold">
+                    Income Tax Return
+                  </span>
+                  <span className="ml-auto mr-4">
+                    <img src={require("./arrow.png")} alt="arrow" />
+                  </span>
+                </div>
+              </>
+            )}
+            <div
+              className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
+              onClick={() => {
+                console.log(selectedCustomer.addressProof);
+                setSelectedImage(selectedCustomer.addressProof);
+              }}
+            >
               <span className="mr-auto ml-4 text-lg font-semibold">
                 Address Proof
               </span>
@@ -546,12 +594,18 @@ const PendingCustomer = () => {
             </div>
           </div>
           {selectedImage && (
-            <div className="flex justify-center items-center z-10 mb-[100px]">
-              <img
-                src={`http://localhost:8000/${selectedImage}`}
-                alt="Selected Document"
-              />
-            </div>
+            // <div className="flex justify-center items-center z-10 mb-[100px]">
+            //   <img
+            //     src={`http://localhost:8000/${selectedImage}`}
+            //     alt="Selected Document"
+            //   />
+            // </div>
+            <DisplayImage
+              imageUrl={`http://localhost:8000/${selectedImage.replace(
+                /\\/g,
+                "/"
+              )}`}
+            />
           )}
           <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
             <Divider className="bg-blue mr-auto mt-0" />

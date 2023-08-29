@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import "./repay.css";
+import axios from "axios";
 import { Divider, Drawer } from "antd";
-
+import "../../styles/Shimmering.css";
+import { useNavigate } from "react-router-dom";
 const Repayment = () => {
   const [selectClient, setSelectClient] = React.useState(false);
   const [showClientdDtails, setShowClientdDtails] = React.useState(false);
@@ -10,6 +12,9 @@ const Repayment = () => {
 
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [amounts, setAmounts] = useState({ unsettled: "", settled: "" });
+  let navigate = useNavigate();
 
   const handleApprove = () => {
     setShowApproved(true);
@@ -43,8 +48,33 @@ const Repayment = () => {
 
     setShowClientdDtails(false);
   };
-  const handleClick = () => {
+
+  const [emiData, setEmi] = useState("");
+  const [allEmi, setAllEmis] = useState(null);
+  // console.log("Length of all EMI",Object.values(allEmi).length);
+  // console.log("EMI DATA===>",emiData.customerId.name)
+
+  const handleClick = async (id) => {
+    console.log("Params id", id);
     setSelectClient(!selectClient);
+    var paramId = id.replace("#", "");
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/Lenders/selectrepayments?trnId=%23${paramId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      // console.log("R===>",response)
+      const data = response.data;
+      console.log("All Emis", data.data.EmiDates);
+      setAllEmis(data.data.EmiDates);
+      setEmi(data.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const onCloseCredits = () => {
@@ -52,52 +82,52 @@ const Repayment = () => {
     setSelectClient(true);
   };
 
+  console.log("Length", emiData.length);
 
   const [repayData, setRepayData] = useState("");
-  console.log("Repayment Data", repayData)
-  const getRepay= async ()=>{ 
-    const response = await fetch("http://localhost:8000/Lenders/repayments",{
-      method:"GET",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":`Bearer ${localStorage.getItem('token')}`
-      },withCredentials: true,
-  
+  const getRepay = async () => {
+    const response = await fetch("http://localhost:8000/Lenders/repayments", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
     });
-   
+
     const json = await response.json();
-    // console.log("MEssage ",json.message)
-    if(json.status === "Success")
-    {
+    if (json.status === "Success") {
+      setLoading(false);
       setRepayData(json.message);
-    }else{
-      alert("Data not found")
+      setAmounts({ unsettled: json.unsettled, settled: json.settled });
+      console.log("hello json", json.message);
+    } else {
+      alert("Data not found");
     }
-    
-  }
-useEffect(()=>{
-  getRepay();
-},[]);
+  };
+  useEffect(() => {
+    getRepay();
+  }, []);
+
+  // console.log(  "repay===>>>??",repayData.length)
 
   return (
     <>
-      <div className="flex w-full">
-        <div>
+      <div className="flex w-full relative">
+        <div className="fixed top-0 bottom-0 ">
           <Sidebar />
         </div>
-        <div className="w-full mt-[50px] relative">
+        <div className="w-full mt-[50px] ml-[270px] ">
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-rowtext-black px-5">
               <div className="flex flex-col justify-center items-start px-6">
                 <span className="text-lg font-normal ">Settled Amount</span>
-                <span className="text-3xl font-bold ">
-                  <i className="fa fa-rupee"></i>50000.00
-                </span>
+                <span className="text-3xl font-bold ">₹{amounts.settled}</span>
               </div>
               <div className="flex flex-col justify-center items-start px-6">
                 <span className="text-lg font-normal ">Unsettled Amount</span>
                 <span className="text-3xl font-bold ">
-                  <i className="fa fa-rupee"></i>50000.00
+                  ₹{amounts.unsettled}
                 </span>
               </div>
             </div>
@@ -147,50 +177,15 @@ useEffect(()=>{
                 />
               </div>
             </div>
-            <div className="flex justify-start items-center mr-10 px-5">
-              <div className="flex text-lg border-solid border-transparent  w-[258px] h-[37px] ">
-                <div className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white">
-                  <div className="flex">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      viewBox="0 0 28 28"
-                      fill="none"
-                    >
-                      <g clipPath="url(#clip0_305_158)">
-                        <path
-                          d="M14 24.5C19.799 24.5 24.5 19.799 24.5 14C24.5 8.20101 19.799 3.5 14 3.5C8.20101 3.5 3.5 8.20101 3.5 14C3.5 19.799 8.20101 24.5 14 24.5Z"
-                          stroke="white"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M14 19.8333V19.845"
-                          stroke="white"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M14.0001 15.75C13.9786 15.3713 14.0808 14.9958 14.2912 14.6802C14.5016 14.3645 14.8089 14.1258 15.1667 14C15.6053 13.8323 15.9989 13.5651 16.3166 13.2194C16.6343 12.8738 16.8674 12.4591 16.9976 12.008C17.1278 11.5569 17.1516 11.0818 17.0669 10.62C16.9823 10.1582 16.7916 9.72235 16.5099 9.34676C16.2283 8.97117 15.8632 8.66609 15.4436 8.45554C15.024 8.245 14.5612 8.13474 14.0917 8.13343C13.6222 8.13213 13.1588 8.23983 12.738 8.44804C12.3172 8.65625 11.9505 8.9593 11.6667 9.33332"
-                          stroke="white"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_305_158">
-                          <rect width="28" height="28" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </div>
-                  <div className="flex mr-6">Help</div>
-                </div>
-                <div className="flex w-[50%] justify-evenly rounded-r-lg items-center bg-blue text-white">
+            <div className="flex justify-start items-center mr-12">
+              <div className="flex text-lg border-solid border-transparent  w-[250px] h-[37px] ">
+                <div
+                  className="flex w-[50%] h-[37px] text-lg justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
+                  onClick={() => {
+                    navigate("/settings");
+                    sessionStorage.setItem("selectedSettingTab", "profile");
+                  }}
+                >
                   <div className="flex">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -224,71 +219,128 @@ useEffect(()=>{
                   </div>
                   <div className="flex mr-6">Profile</div>
                 </div>
+                <div
+                  className="flex w-[50%] h-[37px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
+                  onClick={() => {
+                    navigate("/login");
+                    localStorage.setItem("token", "");
+                  }}
+                >
+                  <div className="flex">
+                    <img
+                      src={require("../../image/logout.png")}
+                      className="w-[20px]"
+                      alt="logout"
+                    />
+                  </div>
+                  <div className="flex mr-6">Logout</div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="flex pl-10 pr-12">
-            <table cellSpacing="0" className="w-full mt-4">
-              <thead>
-                <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
-                  <td className="pl-4 w-[30px]">
-                    <img src={require("./status.png")} alt="status" />
-                  </td>
-                  <td className="pl-4 w-[150px]">Loan ID</td>
-                  <td className="w-[200px]">Name</td>
-                  <td className="pl-4 w-[140px]">Phone No</td>
-                  <td className="pl-4 w-[150px]">Amount</td>
-                  <td className="pl-4 w-[150px]">Tenure</td>
-                  <td className="pl-4 w-[140px]">Date</td>
-                  <td className="pr-4 w-[100px]">Status</td>
-                </tr>
-              </thead>
-              <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
-                <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
-                  <td className="pl-3 w-[30px]">
-                    <img src={require("./completed.png")} alt="completed" />
-                  </td>
-                  <td className="text-aliceblue pl-4 w-[150px]">#1256784542</td>
-                  <td className="pl-4 w-[200px]">John Doe</td>
-                  <td className="pl-4 w-[140px]">9874563210</td>
-                  <td className="pl-4 w-[150px]">₹50000</td>
-                  <td className="pl-4 w-[150px]">3 months</td>
-                  <td className="pl-4 w-[150px]">
-                    <span>Jul 26 2023</span>
-                  </td>
-                  <td className="text-red pr-6 w-[80px]">Pending</td>
-                </tr>
-                <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
-                  <td className="pl-3 w-[30px]">
-                    <img src={require("./completed.png")} alt="completed" />
-                  </td>
-                  <td className="text-aliceblue pl-4 w-[150px]">#1256784542</td>
-                  <td className="pl-4 w-[200px]">John Doe</td>
-                  <td className="pl-4 w-[140px]">9874563210</td>
-                  <td className="pl-4 w-[150px]">₹50000</td>
-                  <td className="pl-4 w-[150px]">3 months</td>
-                  <td className="pl-4 w-[150px]">
-                    <span>Jul 26 2023</span>
-                  </td>
-                  <td className="text-yellowgreen pr-6 w-[80px]">Settled</td>
-                </tr>
-                <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
-                  <td className="pl-3 w-[30px]">
-                    <img src={require("./completed.png")} alt="completed" />
-                  </td>
-                  <td className="text-aliceblue pl-4 w-[150px]">#1256784542</td>
-                  <td className="pl-4 w-[200px]">John Doe</td>
-                  <td className="pl-4 w-[140px]">9874563210</td>
-                  <td className="pl-4 w-[150px]">₹50000</td>
-                  <td className="pl-4 w-[150px]">3 months</td>
-                  <td className="pl-4 w-[150px]">
-                    <span>Jul 26 2023</span>
-                  </td>
-                  <td className="text-yellowgreen pr-6 w-[80px]">Settled</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {loading ? (
+            <div className="flex pl-10 pr-12">
+              <table cellSpacing="0" className="w-full mt-4">
+                <thead>
+                  <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                    <td className="pl-4 w-[30px]">
+                      <img src={require("./status.png")} alt="status" />
+                    </td>
+                    <td className="pl-4 w-[150px]">Loan ID</td>
+                    <td className="w-[200px]">Name</td>
+                    <td className="pl-4 w-[140px]">Phone No</td>
+                    <td className="pl-4 w-[150px]">Amount</td>
+                    <td className="pl-4 w-[150px]">Date</td>
+                    <td className="pl-4 w-[100px]">EMI</td>
+                    <td className="pr-4 w-[100px]">Status</td>
+                  </tr>
+                </thead>
+                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+                  <tr
+                    className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
+                  >
+                    <td colSpan="8"></td>
+                  </tr>
+                  <tr
+                    className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4 shimmer`}
+                  >
+                    <td colSpan="8"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="flex pl-10 pr-12">
+              <table
+                cellSpacing="0"
+                className="w-full mt-4"
+                style={{ scrollBehavior: "smooth" }}
+              >
+                <thead>
+                  <tr className="border-solid text-xl border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                    <td className="pl-4 w-[30px]">
+                      <img src={require("./status.png")} alt="status" />
+                    </td>
+                    <td className="pl-4 w-[150px]">Loan ID</td>
+                    <td className="w-[200px]">Name</td>
+                    <td className="pl-4 w-[140px]">Phone No</td>
+                    <td className="pl-4 w-[150px]">Amount</td>
+                    <td className="pl-4 w-[150px]">Date</td>
+                    <td className="pl-4 w-[100px]">EMI</td>
+                    <td className="pr-4 w-[100px]">Status</td>
+                  </tr>
+                </thead>
+                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
+                  {repayData.length > 0 ? (
+                    repayData.map((repayment) => (
+                      <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
+                        <td className="pl-3 w-[30px]">
+                          <img
+                            src={require("./completed.png")}
+                            alt="completed"
+                          />
+                        </td>
+                        <td
+                          className="text-aliceblue pl-4 w-[150px] cursor-pointer"
+                          onClick={() => handleClick(repayment.trnId)}
+                        >
+                          {repayment.trnId}
+                        </td>
+                        <td className="pl-4 w-[200px]">{repayment.name}</td>
+                        <td className="pl-4 w-[140px]">{repayment.phone}</td>
+                        <td className="pl-4 w-[150px]">₹{repayment.amount}</td>
+
+                        <td className="pl-4 w-[180px]">
+                          <span>
+                            {new Date(repayment.date).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )}
+                          </span>
+                        </td>
+                        <td className="pr-3 w-[100px]">{repayment.emiNo}</td>
+                        <td
+                          className={
+                            repayment.status === true
+                              ? "text-green pr-6 w-[80px]"
+                              : "text-red pr-6 w-[80px]"
+                          }
+                        >
+                          {repayment.status === true ? "Settled" : "Pending"}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <div> No repayments data found</div>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           <Drawer
             placement="right"
@@ -317,6 +369,7 @@ useEffect(()=>{
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </div>
+
             <div className="flex flex-row ml-5 mt-3">
               <span className="text-4xl font-extrabold mt-4">
                 Client Details
@@ -334,9 +387,9 @@ useEffect(()=>{
                 </div>
                 <div className="flex flex-col m-4 mt-9">
                   <span className="text-[22px] text-left font-semibold mr-auto">
-                    John Doe
+                    {emiData ? emiData.customerId.name : "-"}
                   </span>
-                  <span className="text-lg font-normal">+91 6376078722</span>
+                  {emiData ? emiData.customerId.phone : "-"}
                 </div>
 
                 <div></div>
@@ -346,18 +399,22 @@ useEffect(()=>{
                 <div className="flex flex-row justify-around">
                   <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1 ">
-                      Addressline 1
+                      Address Line1
                     </span>
                     <span className="text-lg font-normal mr-auto m-1">
-                      ABC Ground Hello World
+                      {emiData
+                        ? emiData.customerId.customerLocation.line1
+                        : "-"}
                     </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
                     <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                      Addressline 2
+                      Address Line2
                     </span>
                     <span className="text-lg font-normal mr-auto m-1">
-                      ABC Ground
+                      {emiData
+                        ? emiData.customerId.customerLocation.line2
+                        : "-"}
                     </span>
                   </div>
                 </div>
@@ -367,7 +424,9 @@ useEffect(()=>{
                       City
                     </span>
                     <span className="text-lg font-normal mr-auto m-1">
-                      Gadag
+                      {emiData
+                        ? emiData.customerId.customerLocation.residenceType
+                        : "-"}
                     </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
@@ -375,7 +434,9 @@ useEffect(()=>{
                       State
                     </span>
                     <span className="text-lg text-left font-normal mr-auto m-1">
-                      Karnataka
+                      {emiData
+                        ? emiData.customerId.customerLocation.state
+                        : "-"}
                     </span>
                   </div>
                 </div>
@@ -385,7 +446,7 @@ useEffect(()=>{
                       Pan Card No
                     </span>
                     <span className="text-lg font-normal mr-auto m-1">
-                      A54123
+                      {emiData ? emiData.customerId.panNumber : "-"}
                     </span>
                   </div>
                   <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
@@ -393,7 +454,7 @@ useEffect(()=>{
                       Aadhar No
                     </span>
                     <span className="text-lg text-left font-normal mr-auto m-1">
-                      9876543210
+                      {emiData ? emiData.customerId.aadhaar : "-"}
                     </span>
                   </div>
                 </div>
@@ -404,7 +465,15 @@ useEffect(()=>{
                       Approved on
                     </span>
                     <span className="text-lg font-normal mr-auto m-1">
-                      22 July 2023
+                      {emiData
+                        ? new Date(
+                            emiData.customerId.aproovedDate
+                          ).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : ""}
                     </span>
                   </div>
                   <div className="flex flex-col w-[40%] items-center justify-start ml-auto mr-[90px]">
@@ -412,7 +481,7 @@ useEffect(()=>{
                       Approved Limit
                     </span>
                     <span className="text-lg text-left font-normal mr-auto m-1">
-                      ₹50000
+                      ₹{emiData ? emiData.customerId.creditLimit : "-"}
                     </span>
                   </div>
                 </div>
@@ -426,21 +495,21 @@ useEffect(()=>{
               <div className="flex flex-col w-full m-3">
                 <div className="flex flex-row justify-between mb-4">
                   <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-[25px] text-aliceblue text-left    ">
+                    <span className="text-[25px] text-aliceblue text-left ml-3    ">
                       Loan Amount
                     </span>
-                    <span className="text-[25px] text-aliceblue font-normal  ">
-                      ₹50000
+                    <span className="text-[25px] text-aliceblue font-normal mr-3 ">
+                      ₹{emiData ? emiData.amount : "-"}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex flex-row justify-between mb-4">
                   <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-[25px] text-aliceblue text-left    ">
+                    <span className="text-[25px] text-aliceblue text-left  ml-3  ">
                       Interest rate per month
                     </span>
-                    <span className="text-[25px] text-aliceblue font-normal  ">
+                    <span className="text-[25px] text-aliceblue font-normal mr-3  ">
                       1.5%
                     </span>
                   </div>
@@ -448,21 +517,21 @@ useEffect(()=>{
 
                 <div className="flex flex-row justify-between mb-4">
                   <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-[25px] text-aliceblue text-left    ">
-                      Tensure
+                    <span className="text-[25px] text-aliceblue text-left  ml-3  ">
+                      Tensure(months)
                     </span>
-                    <span className="text-[25px] text-aliceblue font-normal  ">
-                      6 mos
+                    <span className="text-[25px] text-aliceblue font-normal mr-3 ">
+                      {emiData ? emiData.tenure : "-"}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex flex-row justify-between mb-4">
                   <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-[25px] text-black text-left    ">
+                    <span className="text-[25px] text-black text-left ml-3   ">
                       EMI
                     </span>
-                    <span className="text-[25px] text-black font-normal  ">
+                    <span className="text-[25px] text-black font-normal mr-3 ">
                       ₹8333
                     </span>
                   </div>
@@ -473,23 +542,37 @@ useEffect(()=>{
             <div className="flex flex-row ml-5 mt-3">
               <span className="text-4xl font-extrabold mt-4">EMI Dates</span>
             </div>
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-              <span className="ml-4 text-lg font-semibold">22 July 2023</span>
+            {allEmi ? (
+              allEmi.map((emi) => (
+                <div className="flex flex-row w-[600px] h-[50px] justify-around items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+                  <div className="ml-4 text-lg font-semibold">
+                    {new Date(emi.date).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </div>
 
-              <span className="mr-auto ml-6 text-lg font-semibold">₹8333</span>
-              <span className="text-lg text-yellowgreen ml-auto mr-4 ">
-                Settled
-              </span>
-            </div>
+                  <div className="pl-12 text-lg font-semibold">
+                    ₹{emi.amount}
+                  </div>
+                  <div
+                    className={
+                      emi.status === true
+                        ? "text-lg text-yellowgreen ml-auto mr-4"
+                        : "text-lg text-red ml-auto mr-4 "
+                    }
+                  >
+                    {emi.status === true ? "Settled" : "Pending"}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <h2>No emis</h2>
+            )}
+          </Drawer>
 
-            <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-              <span className="ml-4 text-lg font-semibold">22 July 2023</span>
-
-              <span className="mr-auto ml-6 text-lg font-semibold">₹8333</span>
-              <span className="text-lg text-red ml-auto mr-4 ">Pending</span>
-            </div>
-
-            {/* 
+          {/* 
           <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
                 <Divider className="bg-blue mr-auto pt-0 " />
                 <div className="flex justify-end">
@@ -507,7 +590,6 @@ useEffect(()=>{
                   </button>
                 </div>
               </div> */}
-          </Drawer>
 
           {/* <Drawer
           placement="right"

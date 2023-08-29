@@ -14,6 +14,7 @@ import Loans from '../pages/Loans/Loans'
 
 import PendingCustomer from '../pages/PendingCustomer/Pending'
 import Repayment from '../pages/Repayments/Repayments'
+import Setting from '../pages/Settings/Setting'
 const Router = () => {
   return (
     <div>
@@ -31,6 +32,7 @@ const Router = () => {
             <Route exact path='/pendingcustomer' element={<PendingCustomer/>}/>
             <Route exact path='/repay' element={<Repayment/>}/>
             <Route exact path='/dashboard' element={<Dashboard/>}/>
+            <Route exact path = '/settings' element={<Setting/>}/>
         </Routes>
         </BrowserRouter>
     </div>
