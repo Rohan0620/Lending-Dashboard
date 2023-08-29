@@ -11,7 +11,9 @@ const Auth = () => {
     password: "",
   });
   const [submitting, setSubmitting] = React.useState(false);
+
   const { baseUrl } = React.useContext(FormContext)
+
 
   let navigate = useNavigate();
   const showError = (err) => {

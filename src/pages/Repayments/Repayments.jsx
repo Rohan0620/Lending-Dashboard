@@ -5,6 +5,7 @@ import axios from "axios";
 import { Divider, Drawer } from "antd";
 import "../../styles/Shimmering.css";
 import { useNavigate } from "react-router-dom";
+import { FormContext } from "../../Contexts/FormContext";
 const Repayment = () => {
   const [selectClient, setSelectClient] = React.useState(false);
   const [showClientdDtails, setShowClientdDtails] = React.useState(false);
@@ -15,6 +16,7 @@ const Repayment = () => {
   const [loading, setLoading] = React.useState(true);
   const [amounts, setAmounts] = useState({ unsettled: "", settled: "" });
   let navigate = useNavigate();
+  const { baseUrl }= React.useContext(FormContext)
 
   const handleApprove = () => {
     setShowApproved(true);
@@ -60,7 +62,7 @@ const Repayment = () => {
     var paramId = id.replace("#", "");
     try {
       const response = await axios.get(
-        `http://localhost:8000/Lenders/selectrepayments?trnId=%23${paramId}`,
+        `${baseUrl}/Lenders/selectrepayments?trnId=%23${paramId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -86,7 +88,7 @@ const Repayment = () => {
 
   const [repayData, setRepayData] = useState("");
   const getRepay = async () => {
-    const response = await fetch("http://localhost:8000/Lenders/repayments", {
+    const response = await fetch(`${baseUrl}/Lenders/repayments`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -292,7 +294,7 @@ const Repayment = () => {
                 </thead>
                 <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
                   {repayData.length > 0 ? (
-                    repayData.map((repayment) => (
+                    repayData.slice().reverse().map((repayment) => (
                       <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
                         <td className="pl-3 w-[30px]">
                           <img
@@ -499,7 +501,7 @@ const Repayment = () => {
                       Loan Amount
                     </span>
                     <span className="text-[25px] text-aliceblue font-normal mr-3 ">
-                      ₹{emiData ? emiData.amount : "-"}
+                      ₹{emiData ? emiData.treatmentCost : "-"}
                     </span>
                   </div>
                 </div>
@@ -532,7 +534,7 @@ const Repayment = () => {
                       EMI
                     </span>
                     <span className="text-[25px] text-black font-normal mr-3 ">
-                      ₹8333
+                      ₹{emiData ? emiData.amount : "-"}
                     </span>
                   </div>
                 </div>
