@@ -17,9 +17,9 @@ const Sidebar = () => {
   let navigate = useNavigate();
   return (
     <>
-      <div className="w-[250px] bg-blue p-2 h-screen  pt-8 duration-300 font-Poppins">
+      <div className="w-[250px] bg-blue p-2 h-screen  pt-6 duration-300 font-Poppins">
         <img
-          className="w-[210px] h-[26px] mt-8 mb-[40px]"
+          className="w-[210px] h-[26px] mt-6 mb-[40px]"
           src={Logo}
           alt="logo"
         />
