@@ -16,6 +16,7 @@ const LenderLocation = () => {
   const [cities, setCities] = React.useState([]);
   const { baseUrl } = React.useContext(FormContext);
 
+
   let navigate = useNavigate();
   const showError = (err) => {
     toast.error(err, {

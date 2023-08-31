@@ -11,7 +11,9 @@ const HospitalInfo = () => {
     category: "",
   });
   const [submitting, setSubmitting] = React.useState(false);
+
   const { baseUrl } = React.useContext(FormContext);
+
 
   let navigate = useNavigate();
   const showError = (msg) => {
@@ -26,22 +28,24 @@ const HospitalInfo = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const response = await axios.patch(
-        `${baseUrl}/Lenders/addlenderinfo`,
-        {
-          hospitalName: data.lenderName,
-          inChargeName: data.inChargeName,
-          category: data.category,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          withCredentials: true,
-        }
-      );
-      const json = await response.data;
+      const response = await fetch(`${baseUrl}/Lenders/addlenderinfo`,{
+          method: "PATCH",
+          headers:{
+                "Content-Type":"application/json",
+                "Authorization":`Bearer ${localStorage.getItem('token')}`
+              },
+              withCredentials: true,
+
+              body: JSON.stringify({
+                lenderName: data.lenderName,
+                inChargeName: data.inChargeName,
+                category: data.category,
+                  }),
+        });
+
+      console.log("Respone", response);
+      const json = await response.json();
+      console.log("Json",json);
       if (json.status === "Success") {
         navigate("/addhosploc");
       } else {

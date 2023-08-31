@@ -4,6 +4,7 @@ import { Divider, Drawer } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import DisplayImage from "../../components/DisplayImage";
+import { FormContext } from "../../Contexts/FormContext";
 
 const PendingCustomer = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -14,6 +15,7 @@ const PendingCustomer = () => {
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [selectedCredit, setSelectedcredit] = React.useState("");
   const [loading, setLoading] = React.useState(true);
+  const { baseUrl }= React.useContext(FormContext)
   let navigate = useNavigate();
 
   const onClose = () => {
@@ -24,7 +26,7 @@ const PendingCustomer = () => {
   const handleClick = async (id) => {
     setSelectClient(!selectClient);
     try {
-      const response = await axios.get(`http://localhost:8000/pending/${id}`, {
+      const response = await axios.get(`${baseUrl}/pending/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -47,7 +49,7 @@ const PendingCustomer = () => {
   const handleSubmit = async (id) => {
     try {
       const response = await axios.patch(
-        `http://localhost:8000/Lenders/aproove/${id}`,
+        `${baseUrl}/Lenders/aproove/${id}`,
         {
           creditLimit: selectedCredit,
         },
@@ -70,7 +72,7 @@ const PendingCustomer = () => {
 
   const fetchPendingCustomers = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/pending", {
+      const response = await axios.get(`${baseUrl}/pending`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -257,7 +259,7 @@ const PendingCustomer = () => {
         ) : (
           <div className="grid grid-cols-2 align-middle px-[68px] py-[60px] gap-5 ">
             {pendingCustomers?.length > 0 ? (
-              pendingCustomers.map((pendingCustomer) => (
+              pendingCustomers.slice().reverse().map((pendingCustomer) => (
                 <div
                   className="flex w-[745px] h-[106px] border-1 border-solid border-aliceblue bg-lightBlue rounded-lg cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-98 duration-300"
                   key={pendingCustomer._id}
@@ -265,7 +267,7 @@ const PendingCustomer = () => {
                 >
                   <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] flex-row items-start rounded-full overflow-hidden">
                     <img
-                      src={`http://localhost:8000/${pendingCustomer.profileImage}`}
+                      src={`${baseUrl}/${pendingCustomer.profileImage}`}
                       alt="user"
                       className="w-[75px] h-[75px]"
                     />
@@ -326,7 +328,7 @@ const PendingCustomer = () => {
               <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] items-start rounded-full overflow-hidden">
                 <img
                   className="w-[75px] h-[75px]"
-                  src={`http://localhost:8000/${selectedCustomer.profileImage}`}
+                  src={`${baseUrl}/${selectedCustomer.profileImage}`}
                   alt="user"
                 />
               </div>
@@ -601,7 +603,7 @@ const PendingCustomer = () => {
             //   />
             // </div>
             <DisplayImage
-              imageUrl={`http://localhost:8000/${selectedImage.replace(
+              imageUrl={`${baseUrl}/${selectedImage.replace(
                 /\\/g,
                 "/"
               )}`}

@@ -579,14 +579,13 @@ const HospitalHome = () => {
   const [datePicker, setDatePicker] = React.useState(false);
   const parentRef = React.useRef(null);
   const currentDate = new Date();
+  const {baseUrl} = React.useContext(FormContext)
   const [startDate, setStartDate] = React.useState(
     new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
   );
   const [endDate, setEndDate] = React.useState(
     new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
   );
-  let navigate = useNavigate();
-  const { baseUrl } = React.useContext(FormContext);
   const backendFormatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
     dateObj.setUTCHours(dateObj.getUTCHours() + 5);
@@ -597,19 +596,22 @@ const HospitalHome = () => {
 
     return `${year}-${month}-${day}`;
   };
-  const fetchTransactions = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/Lenders/aproovals`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        withCredentials: "include",
-      });
+  const fetchLoans = async () => {
+    try{
+    const response = await fetch("http://localhost:8000/Lenders/aproovals", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    })
 
       const data = response.data;
       setTransactions(data.transactions);
-      setLoading(false);
-    } catch (err) {
+      setLoading(false)
+  }
+    catch(err) {
       console.error(err);
     }
   };
@@ -631,7 +633,7 @@ const HospitalHome = () => {
       setDatePicker(false);
     }
     setLoading(true);
-    fetchTransactions();
+    fetchLoans();
     const fetchData = async () => {
       try {
         const response = await axios.get(
