@@ -119,17 +119,7 @@ module.exports = {
       '6': '6px',
       '8': '8px',
     },
-    screens: {
-      lg: {
-        max: "1440px",
-      },
-      md: {
-        max: "768px",
-      },
-      sm: {
-        max: "428px",
-      },
-    },
+    
     lineHeight: {
       'extra-loose': '2.5',
       '12': '3rem',

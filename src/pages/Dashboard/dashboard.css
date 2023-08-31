@@ -1,7 +1,6 @@
 .grid-box{
-    width:82vw;
-    height:800px;
-    padding:38px 38px 10px;
+    max-width:85vw;
+    padding:35px 20px 15px 38px;
     display: grid;
     grid-template-columns: repeat(3,1fr);
     grid-template-rows: repeat(4,1fr);
