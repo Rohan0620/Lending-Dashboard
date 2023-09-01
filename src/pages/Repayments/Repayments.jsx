@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import "./repay.css";
 import axios from "axios";
-import { Divider, Drawer } from "antd";
+import { Divider, Drawer, Spin } from "antd";
 import "../../styles/Shimmering.css";
 import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
@@ -17,7 +17,7 @@ const Repayment = () => {
   const [loading, setLoading] = React.useState(true);
   const [amounts, setAmounts] = useState({ unsettled: "", settled: "" });
   let navigate = useNavigate();
-  const { baseUrl } = React.useContext(FormContext)
+  const { baseUrl } = React.useContext(FormContext);
 
   const handleApprove = () => {
     setShowApproved(true);
@@ -42,6 +42,8 @@ const Repayment = () => {
     setSelectClient(false);
   };
   const onClose = () => {
+    setEmi(false);
+    setAllEmis(null)
     setSelectClient(false);
     setShowApproved(false);
     setShowCreditsLimit(false);
@@ -456,57 +458,57 @@ const Repayment = () => {
           </div>
           {loading ? (
             <div className="flex px-[40px] 2xl:px-[60px]">
-            <table cellSpacing="0" className="w-full mt-4">
-              <thead>
-                <tr className="border-solid 2xl:text-lg text-base border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
-                  <td className="flex items-center w-full pl-[10px] max-w-[20px] 2xl:w-[30px]">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="icon icon-tabler icon-tabler-circle-dashed"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="#306FC7"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      className="text-blue"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
-                      <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
-                      <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
-                      <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
-                      <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
-                      <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
-                      <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
-                      <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
-                    </svg>
-                  </td>
-                  <td className="max-w-[150px] w-full">Loan ID</td>
-                  <td className="pr-4 2xl:max-w-[260px] max-w-[200px] w-full relative flex items-center">
-                    <span className=" justify-start absolute pl-[80px] align-middle">
-                      Name
-                    </span>
-                  </td>
-                  <td className="max-w-[120px] w-full relative flex items-center">
-                    <span className="justify-start w-full absolute left-[rem] pl-2 2xl:pl-8 align-middle">
-                      Phone No
-                    </span>
-                  </td>
-                  <td className="max-w-[200px]  w-full justify-end relative flex items-center">
-                    <span className="w-full absolute  2xl:-right-8 left-0  pl-2 2xl:pl-6">
-                      Amount
-                    </span>
-                  </td>
-                  <td className="pr-10 max-w-[150px] w-full">Date</td>
-                  <td className="pr-4 max-w-[80px]  w-full">EMI</td>
-                  <td className="pr-6 max-w-[80px] xl:max-w-[100px] w-full">
-                    <span className="mr-auto">Status</span>
-                  </td>
-                </tr>
-              </thead>
+              <table cellSpacing="0" className="w-full mt-4">
+                <thead>
+                  <tr className="border-solid 2xl:text-lg text-base border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
+                    <td className="flex items-center w-full pl-[10px] max-w-[20px] 2xl:w-[30px]">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-circle-dashed"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        fill="#306FC7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="text-blue"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M8.56 3.69a9 9 0 0 0 -2.92 1.95" />
+                        <path d="M3.69 8.56a9 9 0 0 0 -.69 3.44" />
+                        <path d="M3.69 15.44a9 9 0 0 0 1.95 2.92" />
+                        <path d="M8.56 20.31a9 9 0 0 0 3.44 .69" />
+                        <path d="M15.44 20.31a9 9 0 0 0 2.92 -1.95" />
+                        <path d="M20.31 15.44a9 9 0 0 0 .69 -3.44" />
+                        <path d="M20.31 8.56a9 9 0 0 0 -1.95 -2.92" />
+                        <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
+                      </svg>
+                    </td>
+                    <td className="max-w-[150px] w-full">Loan ID</td>
+                    <td className="pr-4 2xl:max-w-[260px] max-w-[200px] w-full relative flex items-center">
+                      <span className=" justify-start absolute pl-[80px] align-middle">
+                        Name
+                      </span>
+                    </td>
+                    <td className="max-w-[120px] w-full relative flex items-center">
+                      <span className="justify-start w-full absolute left-[rem] pl-2 2xl:pl-8 align-middle">
+                        Phone No
+                      </span>
+                    </td>
+                    <td className="max-w-[200px]  w-full justify-end relative flex items-center">
+                      <span className="w-full absolute  2xl:-right-8 left-0  pl-2 2xl:pl-6">
+                        Amount
+                      </span>
+                    </td>
+                    <td className="pr-10 max-w-[150px] w-full">Date</td>
+                    <td className="pr-4 max-w-[80px]  w-full">EMI</td>
+                    <td className="pr-6 max-w-[80px] xl:max-w-[100px] w-full">
+                      <span className="mr-auto">Status</span>
+                    </td>
+                  </tr>
+                </thead>
                 <tbody className="border-solid text-xl border-2 border-aliceblue bg-white rounded-lg">
                   <tr
                     className={`text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] -mt-1 shimmer`}
@@ -689,200 +691,214 @@ const Repayment = () => {
                 Client Details
               </span>
             </div>
-
-            <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-              <div className="flex flex-row w-full">
-                <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
-                  <img
-                    className="w-[75px] "
-                    src={require("./user.png")}
-                    alt="user"
-                  />
+            {emiData && allEmi === null ? (
+              <>
+                <div className="fixed inset-0 bg-gray-500 opacity-100 z-50"></div>
+                <div className=" flex justify-center items-center w-full h-full transition ease-in delay-300 ">
+                  <Spin size="large" />
                 </div>
-                <div className="flex flex-col m-4 mt-9">
-                  <span className="2xl:text-xl text-lg text-left font-semibold mr-auto">
-                    {emiData ? emiData.customerId.name : "-"}
-                  </span>
-                  {emiData ? emiData.customerId.phone : "-"}
-                </div>
-
-                <div></div>
-              </div>
-
-              <div className="flex flex-col w-full mt-8">
-                <div className="flex flex-row justify-around">
-                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                    <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1 ">
-                      Address Line1
-                    </span>
-                    <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
-                      {emiData
-                        ? emiData.customerId.customerLocation.line1
-                        : "-"}
-                    </span>
-                  </div>
-                  <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
-                    <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
-                      Address Line2
-                    </span>
-                    <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
-                      {emiData
-                        ? emiData.customerId.customerLocation.line2
-                        : "-"}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-row w-full justify-around mt-10">
-                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                    <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
-                      City
-                    </span>
-                    <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
-                      {emiData
-                        ? emiData.customerId.customerLocation.city
-                        : "-"}
-                    </span>
-                  </div>
-                  <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
-                    <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
-                      State
-                    </span>
-                    <span className="text-base 2xl:text-lg text-left font-normal mr-auto m-1">
-                      {emiData
-                        ? emiData.customerId.customerLocation.state
-                        : "-"}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-row w-full justify-around mt-10">
-                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                    <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
-                      Pan Card No
-                    </span>
-                    <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
-                      {emiData ? emiData.customerId.panNumber : "-"}
-                    </span>
-                  </div>
-                  <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
-                    <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
-                      Aadhar No
-                    </span>
-                    <span className="text-base 2xl:text-lg text-left font-normal mr-auto m-1">
-                      {emiData ? emiData.customerId.aadhaar : "-"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-row w-full justify-around mt-10">
-                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                    <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
-                      Approved on
-                    </span>
-                    <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
-                      {emiData
-                        ? new Date(
-                            emiData.customerId.aproovedDate
-                          ).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })
-                        : ""}
-                    </span>
-                  </div>
-                  <div className="flex flex-col w-[40%] items-center justify-start ml-auto mr-[90px]">
-                    <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
-                      Approved Limit
-                    </span>
-                    <span className="text-base 2xl:text-lg text-left font-normal mr-auto m-1">
-                      ₹{emiData ? emiData.customerId.creditLimit : "-"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-row ml-5 mt-3">
-              <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">Loan Details</span>
-            </div>
-            <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-              <div className="flex flex-col w-full m-3">
-                <div className="flex flex-row justify-between mb-4">
-                  <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-base 2xl:text-lg text-aliceblue text-left ml-3    ">
-                      Loan Amount
-                    </span>
-                    <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3 ">
-                      ₹{emiData ? emiData.treatmentCost : "-"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-row justify-between mb-4">
-                  <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-base 2xl:text-lg text-aliceblue text-left  ml-3  ">
-                      Interest rate per month
-                    </span>
-                    <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3  ">
-                      {emiData ? emiData.interestRate : "-"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-row justify-between mb-4">
-                  <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-base 2xl:text-lg text-aliceblue text-left  ml-3  ">
-                      Tensure(months)
-                    </span>
-                    <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3 ">
-                      {emiData ? emiData.tenure : "-"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-row justify-between mb-4">
-                  <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-base 2xl:text-lg text-black text-left ml-3   ">
-                      EMI
-                    </span>
-                    <span className="text-base 2xl:text-lg text-black font-normal mr-3 ">
-                      ₹{emiData ? emiData.amount : "-"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-row ml-5 mt-3">
-              <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">EMI Dates</span>
-            </div>
-            {allEmi ? (
-              allEmi.map((emi) => (
-                <div className="flex flex-row w-[600px] h-[50px] justify-around items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-                  <div className="ml-4 max-w-[20%] w-full text-base 2xl:text-lg font-semibold">
-                    {new Date(emi.date).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </div>
-
-                  <div className="pl-12 text-base 2xl:text-lg font-semibold">
-                    ₹{emi.amount}
-                  </div>
-                  <div
-                    className={
-                      emi.status === true
-                        ? "text-lg text-yellowgreen ml-auto mr-4"
-                        : "text-lg text-red ml-auto mr-4 "
-                    }
-                  >
-                    {emi.status === true ? "Settled" : "Pending"}
-                  </div>
-                </div>
-              ))
+              </>
             ) : (
-              <h2>No emis</h2>
+              <>
+                <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+                  <div className="flex flex-row w-full">
+                    <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
+                      <img
+                        className="w-[75px] "
+                        src={require("./user.png")}
+                        alt="user"
+                      />
+                    </div>
+                    <div className="flex flex-col m-4 mt-9">
+                      <span className="2xl:text-xl text-lg text-left font-semibold mr-auto">
+                        {emiData ? emiData.customerId.name : "-"}
+                      </span>
+                      {emiData ? emiData.customerId.phone : "-"}
+                    </div>
+
+                    <div></div>
+                  </div>
+
+                  <div className="flex flex-col w-full mt-8">
+                    <div className="flex flex-row justify-around">
+                      <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                        <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1 ">
+                          Address Line1
+                        </span>
+                        <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
+                          {emiData
+                            ? emiData.customerId.customerLocation.line1
+                            : "-"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                        <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
+                          Address Line2
+                        </span>
+                        <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
+                          {emiData
+                            ? emiData.customerId.customerLocation.line2
+                            : "-"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-row w-full justify-around mt-10">
+                      <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                        <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
+                          City
+                        </span>
+                        <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
+                          {emiData
+                            ? emiData.customerId.customerLocation.city
+                            : "-"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                        <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
+                          State
+                        </span>
+                        <span className="text-base 2xl:text-lg text-left font-normal mr-auto m-1">
+                          {emiData
+                            ? emiData.customerId.customerLocation.state
+                            : "-"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-row w-full justify-around mt-10">
+                      <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                        <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
+                          Pan Card No
+                        </span>
+                        <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
+                          {emiData ? emiData.customerId.panNumber : "-"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                        <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
+                          Aadhar No
+                        </span>
+                        <span className="text-base 2xl:text-lg text-left font-normal mr-auto m-1">
+                          {emiData ? emiData.customerId.aadhaar : "-"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row w-full justify-around mt-10">
+                      <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                        <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
+                          Approved on
+                        </span>
+                        <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
+                          {emiData
+                            ? new Date(
+                                emiData.customerId.aproovedDate
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              })
+                            : ""}
+                        </span>
+                      </div>
+                      <div className="flex flex-col w-[40%] items-center justify-start ml-auto mr-[90px]">
+                        <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
+                          Approved Limit
+                        </span>
+                        <span className="text-base 2xl:text-lg text-left font-normal mr-auto m-1">
+                          ₹{emiData ? emiData.customerId.creditLimit : "-"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-row ml-5 mt-3">
+                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                    Loan Details
+                  </span>
+                </div>
+                <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+                  <div className="flex flex-col w-full m-3">
+                    <div className="flex flex-row justify-between mb-4">
+                      <div className="flex flex-row  w-[100%] justify-between  ">
+                        <span className="text-base 2xl:text-lg text-aliceblue text-left ml-3    ">
+                          Loan Amount
+                        </span>
+                        <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3 ">
+                          ₹{emiData ? emiData.treatmentCost : "-"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row justify-between mb-4">
+                      <div className="flex flex-row  w-[100%] justify-between  ">
+                        <span className="text-base 2xl:text-lg text-aliceblue text-left  ml-3  ">
+                          Interest rate per month
+                        </span>
+                        <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3  ">
+                          {emiData ? emiData.interestRate : "-"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row justify-between mb-4">
+                      <div className="flex flex-row  w-[100%] justify-between  ">
+                        <span className="text-base 2xl:text-lg text-aliceblue text-left  ml-3  ">
+                          Tensure(months)
+                        </span>
+                        <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3 ">
+                          {emiData ? emiData.tenure : "-"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row justify-between mb-4">
+                      <div className="flex flex-row  w-[100%] justify-between  ">
+                        <span className="text-base 2xl:text-lg text-black text-left ml-3   ">
+                          EMI
+                        </span>
+                        <span className="text-base 2xl:text-lg text-black font-normal mr-3 ">
+                          ₹{emiData ? emiData.amount : "-"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-row ml-5 mt-3">
+                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                    EMI Dates
+                  </span>
+                </div>
+                {allEmi ? (
+                  allEmi.map((emi) => (
+                    <div className="flex flex-row w-[600px] h-[50px] justify-around items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+                      <div className="ml-4 max-w-[20%] w-full text-base 2xl:text-lg font-semibold">
+                        {new Date(emi.date).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </div>
+
+                      <div className="pl-12 text-base 2xl:text-lg font-semibold">
+                        ₹{emi.amount}
+                      </div>
+                      <div
+                        className={
+                          emi.status === true
+                            ? "text-lg text-yellowgreen ml-auto mr-4"
+                            : "text-lg text-red ml-auto mr-4 "
+                        }
+                      >
+                        {emi.status === true ? "Settled" : "Pending"}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <h2>No emis</h2>
+                )}
+              </>
             )}
           </Drawer>
         </div>
@@ -890,4 +906,4 @@ const Repayment = () => {
     </>
   );
 };
- export default Repayment
+export default Repayment;
