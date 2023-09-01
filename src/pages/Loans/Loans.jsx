@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState, useRef } from "react";
 import Sidebar from "../../components/Sidebar";
 import "./loans.css";
-import { Divider, Drawer } from "antd";
+import { Divider, Drawer, Spin } from "antd";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
@@ -16,9 +16,9 @@ const Loans = () => {
   const [loading, setLoading] = React.useState(true);
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
-  const [approveStatus, setApproveStatus] = useState("")
-  const [amounts, setAmounts] = useState({unsettled:"",settled:""})
-  const {baseUrl} = React.useContext(FormContext)
+  const [approveStatus, setApproveStatus] = useState("");
+  const [amounts, setAmounts] = useState({ unsettled: "", settled: "" });
+  const { baseUrl } = React.useContext(FormContext);
   let navigate = useNavigate();
 
   const socketRef = useRef(null);
@@ -68,8 +68,7 @@ const Loans = () => {
       });
       console.log(newFundData);
       setFund(newFundData);
-      if(data.amount >= IdAmt)
-      {
+      if (data.amount >= IdAmt) {
         socketRef.current.close();
       }
     });
@@ -123,6 +122,7 @@ const Loans = () => {
     setSelectClient(false);
     setShowApproved(false);
     setShowCreditsLimit(false);
+    setEmi(null)
   };
   const onCloseClientDetails = () => {
     setSelectClient(true);
@@ -187,7 +187,7 @@ const Loans = () => {
     setStats(json.status);
     if (json.status === "Success") {
       setLoading(false);
-      setAmounts({unsettled:json.unsettled,settled:json.settled})
+      setAmounts({ unsettled: json.unsettled, settled: json.settled });
       setLoanData(json.data.transactions);
       console.log("hello json", json.data.transactions);
     } else {
@@ -197,13 +197,12 @@ const Loans = () => {
   };
   useEffect(() => {
     getDetails();
-    console.log("Approve j",approveStatus)
-
+    console.log("Approve j", approveStatus);
   }, [approveStatus]);
 
   return (
     <>
-    <div className="flex w-full relative font-poppins">
+      <div className="flex w-full relative font-poppins">
         <div className="fixed top-0 bottom-0">
           <Sidebar />
         </div>
@@ -345,18 +344,22 @@ const Loans = () => {
                     </td>
                     <td className="max-w-[150px] w-full">Loan ID</td>
                     <td className="pr-4 2xl:max-w-[160px] max-w-[200px] w-full relative flex items-center">
-                      <span className=" justify-start absolute left-12 2xl:left-7 align-middle">
+                      <span className=" justify-start absolute left-12 2xl:left-12 align-middle">
                         Name
                       </span>
                     </td>
                     <td className="max-w-[100px] w-full relative flex items-center">
-                      <span className="justify-start w-full absolute left-[-10px] 2xl:left-0 align-middle">
+                      <span className="justify-start w-full absolute left-[-3rem] 2xl:left-2 align-middle">
                         Phone No
                       </span>
                     </td>
-                    <td className="pl-2 max-w-[200px]  w-full">Tenure</td>
+                    <td className="pr-6 max-w-[80px] pl-8 w-full relative flex items-center">
+                      <span className=" justify-start absolute left-1 2xl:left-12 align-middle">
+                        Tenure
+                      </span>
+                    </td>
                     <td className="max-w-[100px]  w-full relative flex items-center">
-                      <span className="justify-start w-full absolute 2xl:left-2 left-0">
+                      <span className="justify-start w-full absolute 2xl:left-2 -left-2">
                         Amount
                       </span>
                     </td>
@@ -422,7 +425,7 @@ const Loans = () => {
                       </span>
                     </td>
                     <td className="pr-6 max-w-[80px] pl-8 w-full relative flex items-center">
-                    <span className=" justify-start absolute left-1 2xl:left-12 align-middle">
+                      <span className=" justify-start absolute left-1 2xl:left-12 align-middle">
                         Tenure
                       </span>
                     </td>
@@ -477,7 +480,7 @@ const Loans = () => {
                           <td
                             className="pr-2 max-w-[100px] w-full cursor-pointer"
                             style={{ color: "#416EC1" }}
-                            onClick={()=>handleClick(transaction.trnId)}
+                            onClick={() => handleClick(transaction.trnId)}
                           >
                             {transaction.trnId || ""}
                           </td>
@@ -494,8 +497,7 @@ const Loans = () => {
                               : ""}
                           </td>
                           <td className="max-w-[120px] 2xl:max-w-[100px] w-full pr-5">
-                            
-                          {transaction.tenure}
+                            {transaction.tenure}
                             {status === "Success" ? " months" : " "}
                           </td>
                           <td className="max-w-[100px] w-full">
@@ -560,217 +562,232 @@ const Loans = () => {
                 Client Details
               </span>
             </div>
-
-            <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-              <div className="flex flex-row w-full">
-                <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
-                  <img
-                    className="w-[75px] "
-                    src={require("./user.png")}
-                    alt="user"
-                  />
+            {emiData === null ? (
+              <>
+                <div className="fixed inset-0 bg-gray-500 opacity-100 z-50"></div>
+                <div className=" flex justify-center items-center w-full h-full transition ease-in delay-300 ">
+                  <Spin size="large" />
                 </div>
-                <div className="flex flex-col m-4 mt-9">
-                  <span className="text-lg 2xl:text-[22px] text-left font-semibold mr-auto">
-                    {emiData ? emiData.customerId.name : "-"}
-                  </span>
-                  {emiData ? emiData.customerId.phone : "-"}
-                </div>
-
-                <div></div>
-              </div>
-
-              <div className="flex flex-col w-full mt-8">
-                <div className="flex flex-row justify-around">
-                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                    <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1 ">
-                      Address Line1
-                    </span>
-                    <span className="text-base 2xl:text-[18px] font-normal mr-auto m-1">
-                      {emiData
-                        ? emiData.customerId.customerLocation.line1
-                        : "-"}
-                    </span>
-                  </div>
-                  <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
-                    <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
-                      Address Line2
-                    </span>
-                    <span className="text-base 2xl:text-[18px] font-normal mr-auto m-1">
-                      {emiData
-                        ? emiData.customerId.customerLocation.line2
-                        : "-"}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-row w-full justify-around mt-10">
-                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                    <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
-                      City
-                    </span>
-                    <span className="text-base 2xl:text-[18px] font-normal mr-auto m-1">
-                      {emiData
-                        ? emiData.customerId.customerLocation.residenceType
-                        : "-"}
-                    </span>
-                  </div>
-                  <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
-                    <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
-                      State
-                    </span>
-                    <span className="text-base 2xl:text-[18px] text-left font-normal mr-auto m-1">
-                      {emiData
-                        ? emiData.customerId.customerLocation.state
-                        : "-"}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-row w-full justify-around mt-10">
-                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                    <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
-                      Pan Card No
-                    </span>
-                    <span className="text-lg font-normal mr-auto m-1">
-                      {emiData ? emiData.customerId.panNumber : "-"}
-                    </span>
-                  </div>
-                  <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
-                    <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
-                      Aadhar No
-                    </span>
-                    <span className="text-base 2xl:text-[18px] text-left font-normal mr-auto m-1">
-                      {emiData ? emiData.customerId.aadhaar : "-"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-row w-full justify-around mt-10">
-                  <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                    <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
-                      Approved on
-                    </span>
-                    <span className="text-base 2xl:text-[18px] font-normal mr-auto m-1">
-                      {emiData
-                        ? new Date(
-                            emiData.customerId.aproovedDate
-                          ).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })
-                        : ""}
-                    </span>
-                  </div>
-                  <div className="flex flex-col w-[40%] items-center justify-start ml-auto mr-[90px]">
-                    <span className="text-sm 2xl:text-base text-left font-semibold mr-auto m-1">
-                      Approved Limit
-                    </span>
-                    <span className="text-lg text-left font-normal mr-auto m-1">
-                      ₹{emiData ? emiData.customerId.creditLimit : "-"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-row ml-5 mt-3">
-              <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">Loan Details</span>
-            </div>
-            <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-              <div className="flex flex-col w-full m-3">
-                <div className="flex flex-row justify-between mb-4">
-                  <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-base 2xl:text-xl text-aliceblue text-left    ">
-                      Loan Amount
-                    </span>
-                    <span className="text-base 2xl:text-xl text-aliceblue font-normal  ">
-                      ₹{emiData ? emiData.amount : "-"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-row justify-between mb-4">
-                  <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-base 2xl:text-xl text-aliceblue text-left    ">
-                      Interest rate per month
-                    </span>
-                    <span className="text-base 2xl:text-xl text-aliceblue font-normal  ">
-                      1.5%
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-row justify-between mb-4">
-                  <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-base 2xl:text-xl text-aliceblue text-left    ">
-                      Tensure(months)
-                    </span>
-                    <span className="text-base 2xl:text-xl text-aliceblue font-normal  ">
-                      {emiData ? emiData.tenure : "-"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-row justify-between mb-4">
-                  <div className="flex flex-row  w-[100%] justify-between  ">
-                    <span className="text-base 2xl:text-xl text-black text-left    ">
-                      EMI
-                    </span>
-                    <span className="text-base 2xl:text-xl text-black font-normal  ">
-                      ₹8333
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-row ml-5 mt-3">
-              <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">EMI Dates</span>
-            </div>
-            <div className="mb-[100px]">
-            {allEmi ? (
-              allEmi.map((emi) => (
-                <>
-                  <div className="w-[600px] ">
-                    <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
-                      <span className="ml-4 text-sm 2xl:text-base font-semibold">
-                        {new Date(emi.date).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
+              </>
+            ) : (
+              <>
+                <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+                  <div className="flex flex-row w-full">
+                    <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
+                      <img
+                        className="w-[75px] "
+                        src={require("./user.png")}
+                        alt="user"
+                      />
+                    </div>
+                    <div className="flex flex-col m-4 mt-9">
+                      <span className="text-lg 2xl:text-[22px] text-left font-semibold mr-auto">
+                        {emiData ? emiData.customerId.name : ""}
                       </span>
-
-                      <span className="ml-auto mr-4 text-sm 2xl:text-base font-semibold">
-                        ₹{emi.amount}
-                      </span>
+                      {emiData ? emiData.customerId.phone : ""}
                     </div>
                   </div>
-                </>
-              ))
-            ) : (
-              <h2>No emis</h2>
-            )}
-            </div>
-          
 
-            <div className="w-full bottom-0 right-0 absolute z-1 bg-white ">
-              <Divider className="bg-blue mr-auto mt-0" />
-              <div className="flex justify-end">
-                <button
-                  className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-5 mb-3 bottom-3 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue "
-                  onClick={onClose}
-                >
-                  <span className="text-base 2xl:text-lg font-bold">CANCEL</span>
-                </button>
-                <button
-                  className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-3 bottom-3 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue "
-                  onClick={onFundAccount}
-                >
-                  <span className="text-base 2xl:text-lg font-bold">PROCEED</span>
-                </button>
-              </div>
-            </div>
+                  <div className="flex flex-col w-full mt-8">
+                    <div className="flex flex-row justify-around">
+                      <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                        <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1 ">
+                          Address Line1
+                        </span>
+                        <span className="text-base 2xl:text-[18px] font-normal mr-auto m-1">
+                          {emiData
+                            ? emiData.customerId.customerLocation.line1
+                            : ""}
+                        </span>
+                      </div>
+                      <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                        <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
+                          Address Line2
+                        </span>
+                        <span className="text-base 2xl:text-[18px] font-normal mr-auto m-1">
+                          {emiData
+                            ? emiData.customerId.customerLocation.line2
+                            : ""}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-row w-full justify-around mt-10">
+                      <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                        <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
+                          City
+                        </span>
+                        <span className="text-base 2xl:text-[18px] font-normal mr-auto m-1">
+                          {emiData
+                            ? emiData.customerId.customerLocation.city
+                            : ""}
+                        </span>
+                      </div>
+                      <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                        <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
+                          State
+                        </span>
+                        <span className="text-base 2xl:text-[18px] text-left font-normal mr-auto m-1">
+                          {emiData
+                            ? emiData.customerId.customerLocation.state
+                            : ""}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-row w-full justify-around mt-10">
+                      <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                        <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
+                          Pan Card No
+                        </span>
+                        <span className="text-lg font-normal mr-auto m-1">
+                          {emiData ? emiData.customerId.panNumber : ""}
+                        </span>
+                      </div>
+                      <div className="flex flex-col w-[30%] items-center justify-start ml-auto mr-[130px]">
+                        <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
+                          Aadhar No
+                        </span>
+                        <span className="text-base 2xl:text-[18px] text-left font-normal mr-auto m-1">
+                          {emiData ? emiData.customerId.aadhaar : ""}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row w-full justify-around mt-10">
+                      <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
+                        <span className="text-base 2xl:text-[18px] text-left font-semibold mr-auto m-1">
+                          Approved on
+                        </span>
+                        <span className="text-base 2xl:text-[18px] font-normal mr-auto m-1">
+                          {emiData
+                            ? new Date(
+                                emiData.customerId.aproovedDate
+                              ).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              })
+                            : ""}
+                        </span>
+                      </div>
+                      <div className="flex flex-col w-[40%] items-center justify-start ml-auto mr-[90px]">
+                        <span className="text-sm 2xl:text-base text-left font-semibold mr-auto m-1">
+                          Approved Limit
+                        </span>
+                        <span className="text-lg text-left font-normal mr-auto m-1">
+                          ₹{emiData ? emiData.customerId.creditLimit : ""}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-row ml-5 mt-3">
+                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                    Loan Details
+                  </span>
+                </div>
+                <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+                  <div className="flex flex-col w-full m-3">
+                    <div className="flex flex-row justify-between mb-4">
+                      <div className="flex flex-row  w-[100%] justify-between  ">
+                        <span className="text-base 2xl:text-xl text-aliceblue text-left    ">
+                          Loan Amount
+                        </span>
+                        <span className="text-base 2xl:text-xl text-aliceblue font-normal  ">
+                          ₹{emiData ? emiData.treatmentCost : ""}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row justify-between mb-4">
+                      <div className="flex flex-row  w-[100%] justify-between  ">
+                        <span className="text-base 2xl:text-xl text-aliceblue text-left    ">
+                          Interest rate per month
+                        </span>
+                        <span className="text-base 2xl:text-xl text-aliceblue font-normal  ">
+                          {emiData ? emiData.interestRate : ""}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row justify-between mb-4">
+                      <div className="flex flex-row  w-[100%] justify-between  ">
+                        <span className="text-base 2xl:text-xl text-aliceblue text-left    ">
+                          Tenure(months)
+                        </span>
+                        <span className="text-base 2xl:text-xl text-aliceblue font-normal  ">
+                          {emiData ? emiData.tenure : ""}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-row justify-between mb-4">
+                      <div className="flex flex-row  w-[100%] justify-between  ">
+                        <span className="text-base 2xl:text-xl text-black text-left    ">
+                          EMI
+                        </span>
+                        <span className="text-base 2xl:text-xl text-black font-normal  ">
+                          ₹{emiData ? emiData.amount : ""}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-row ml-5 mt-3">
+                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                    EMI Dates
+                  </span>
+                </div>
+                <div className="mb-[100px]">
+                  {allEmi ? (
+                    allEmi.map((emi) => (
+                      <>
+                        <div className="w-[600px] ">
+                          <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+                            <span className="ml-4 text-sm 2xl:text-base font-semibold">
+                              {new Date(emi.date).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              })}
+                            </span>
+
+                            <span className="ml-auto mr-4 text-sm 2xl:text-base font-semibold">
+                              ₹{emi.amount}
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    ))
+                  ) : (
+                    <h2>No emis</h2>
+                  )}
+                </div>
+
+                <div className="w-full bottom-0 right-0 absolute z-1 bg-white ">
+                  <Divider className="bg-blue mr-auto mt-0" />
+                  <div className="flex justify-end">
+                    <button
+                      className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-5 mb-3 bottom-3 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue "
+                      onClick={onClose}
+                    >
+                      <span className="text-base 2xl:text-lg font-bold">
+                        CANCEL
+                      </span>
+                    </button>
+                    <button
+                      className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-3 bottom-3 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue "
+                      onClick={onFundAccount}
+                    >
+                      <span className="text-base 2xl:text-lg font-bold">
+                        PROCEED
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </Drawer>
 
           <Drawer
@@ -802,7 +819,9 @@ const Loans = () => {
           </div> */}
 
             <div className="flex flex-row ml-5 mt-3">
-              <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">Fund Account</span>
+              <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                Fund Account
+              </span>
             </div>
 
             <div className="flex w-[600px] h-[220px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
@@ -861,14 +880,20 @@ const Loans = () => {
                   className="  bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-3 bottom-3 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue"
                   onClick={onCloseCredits}
                 >
-                  <span className="text-base 2xl:text-lg font-bold">CANCEL</span>
+                  <span className="text-base 2xl:text-lg font-bold">
+                    CANCEL
+                  </span>
                 </button>
                 <button
-                  className={`  bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mr-5 ml-2 mb-3 bottom-3 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue ${approveStatus === false ? "opacity-67":""}`}
+                  className={`  bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mr-5 ml-2 mb-3 bottom-3 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue ${
+                    approveStatus === false ? "opacity-67" : ""
+                  }`}
                   onClick={handleApprove}
                   disabled={approveStatus === false}
-               >
-                  <span className="text-base 2xl:text-lg font-bold">APPROVE</span>
+                >
+                  <span className="text-base 2xl:text-lg font-bold">
+                    APPROVE
+                  </span>
                 </button>
               </div>
             </div>
