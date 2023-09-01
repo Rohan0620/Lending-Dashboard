@@ -256,14 +256,14 @@
 import React from "react";
 import Logo from "../image/Home.png";
 import { useNavigate } from "react-router-dom";
-import { BsPerson, BsQuestionCircle} from "react-icons/bs"
+import { BsPerson, BsQuestionCircle } from "react-icons/bs";
 const Sidebar = () => {
   const [selectedTab, setSelectedTab] = React.useState(() => {
     return sessionStorage.getItem("selectedTab") || "dashboard";
   });
   const handleTabClick = (tabName) => {
-        setSelectedTab(tabName);
-        sessionStorage.setItem("selectedTab", selectedTab);
+    setSelectedTab(tabName);
+    sessionStorage.setItem("selectedTab", tabName);
     selectedTab === "help"
       ? sessionStorage.setItem("selectedSettingTab", "help")
       : sessionStorage.setItem("selectedSettingTab", "profile");
@@ -273,20 +273,13 @@ const Sidebar = () => {
     ) {
       sessionStorage.setItem("selectedTab", "settings");
     }
-      };
+  };
 
-  // React.useEffect(() => {
-  //   sessionStorage.setItem("selectedTab", selectedTab);
-  //   selectedTab === "help"
-  //     ? sessionStorage.setItem("selectedSettingTab", "help")
-  //     : sessionStorage.setItem("selectedSettingTab", "profile");
-  //   if (
-  //     sessionStorage.getItem("selectedSettingTab") !== "help" &&
-  //     sessionStorage.getItem("selectedTab") === "help"
-  //   ) {
-  //     sessionStorage.setItem("selectedTab", "settings");
-  //   }
-  // }, [selectedTab]);
+  React.useEffect(() => {
+    setSelectedTab(() => {
+      return sessionStorage.getItem("selectedTab");
+    });
+  }, []);
 
   let navigate = useNavigate();
   return (
@@ -305,7 +298,7 @@ const Sidebar = () => {
               className={`flex flex-row 2xl:w-[190px] xl:w-[175px] cursor-pointer items-center text-white`}
               onClick={() => {
                 // setSelectedTab("dashboard");
-                handleTabClick("dashboard")
+                handleTabClick("dashboard");
                 navigate("/dashboard");
               }}
               style={
@@ -362,7 +355,7 @@ const Sidebar = () => {
               className="flex  justify-start cursor-pointer items-center text-white"
               onClick={() => {
                 // setSelectedTab("approvals");
-                handleTabClick("approvals")
+                handleTabClick("approvals");
                 navigate("/all_loans");
               }}
               style={
@@ -376,7 +369,7 @@ const Sidebar = () => {
             >
               {" "}
               <div className=" flex items-center mx-2">
-              <img src={require("./approvals.png")} alt="approvals" />
+                <img src={require("./approvals.png")} alt="approvals" />
               </div>
               Approvals
             </li>
@@ -384,7 +377,7 @@ const Sidebar = () => {
               className="flex justify-start cursor-pointer items-center text-white"
               onClick={() => {
                 // setSelectedTab("repayments");
-                handleTabClick("repayments")
+                handleTabClick("repayments");
                 navigate("/repay");
               }}
               style={
@@ -398,7 +391,7 @@ const Sidebar = () => {
             >
               {" "}
               <div className="flex items-center mx-2">
-              <img src={require("./repayment.png")} alt="repayments" />
+                <img src={require("./repayment.png")} alt="repayments" />
               </div>
               Repayments
             </li>
@@ -406,8 +399,8 @@ const Sidebar = () => {
               className="flex justify-start cursor-pointer items-center text-white"
               onClick={() => {
                 // setSelectedTab("customers");
-                handleTabClick("customers")
-                navigate("/customers");
+                handleTabClick("customers");
+                navigate("/approvedcustomer");
               }}
               style={
                 selectedTab === "customers"
@@ -420,7 +413,7 @@ const Sidebar = () => {
             >
               {" "}
               <div className="flex items-center mx-2">
-                <BsPerson size={24 } className="w-full"/>
+                <BsPerson size={24} className="w-full" />
               </div>
               Clients
             </li>
@@ -429,7 +422,7 @@ const Sidebar = () => {
               className="flex justify-start cursor-pointer items-center text-white"
               onClick={() => {
                 // setSelectedTab("settings");
-                handleTabClick("settings")
+                handleTabClick("settings");
                 navigate("/settings");
               }}
               style={
@@ -481,7 +474,7 @@ const Sidebar = () => {
               className="flex 2xl:w-[190px] xl:w-[175px] cursor-pointer items-center text-white bottom-3 absolute"
               onClick={() => {
                 // setSelectedTab("help");
-                handleTabClick("help")
+                handleTabClick("help");
                 navigate("/settings");
               }}
               style={
@@ -494,8 +487,8 @@ const Sidebar = () => {
               }
             >
               <div className="flex items-center mx-2">
-              <BsQuestionCircle size={24}/>
-               </div>
+                <BsQuestionCircle size={24} />
+              </div>
               Help Centre
             </li>
           </ul>

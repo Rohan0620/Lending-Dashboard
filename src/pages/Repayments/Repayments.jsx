@@ -6,7 +6,6 @@ import { Divider, Drawer } from "antd";
 import "../../styles/Shimmering.css";
 import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
-import FormContext from "rc-field-form/es/FormContext";
 const Repayment = () => {
   const [selectClient, setSelectClient] = React.useState(false);
   const [showClientdDtails, setShowClientdDtails] = React.useState(false);
@@ -17,7 +16,6 @@ const Repayment = () => {
   const [loading, setLoading] = React.useState(true);
   const [amounts, setAmounts] = useState({ unsettled: "", settled: "" });
   let navigate = useNavigate();
-  const { baseUrl }= React.useContext(FormContext)
 
   const handleApprove = () => {
     setShowApproved(true);
@@ -63,7 +61,7 @@ const Repayment = () => {
     var paramId = id.replace("#", "");
     try {
       const response = await axios.get(
-        `${baseUrl}/Lenders/selectrepayments?trnId=%23${paramId}`,
+        `http://localhost:8000/Lenders/selectrepayments?trnId=%23${paramId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -89,7 +87,7 @@ const Repayment = () => {
 
   const [repayData, setRepayData] = useState("");
   const getRepay = async () => {
-    const response = await fetch(`${baseUrl}/Lenders/repayments`, {
+    const response = await fetch("http://localhost:8000/Lenders/repayments", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -295,7 +293,7 @@ const Repayment = () => {
                 </thead>
                 <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
                   {repayData.length > 0 ? (
-                    repayData.slice().reverse().map((repayment) => (
+                    repayData.map((repayment) => (
                       <tr className="text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
                         <td className="pl-3 w-[30px]">
                           <img
@@ -812,8 +810,8 @@ const Repayment = () => {
                     <span className="text-base 2xl:text-lg text-aliceblue text-left ml-3    ">
                       Loan Amount
                     </span>
-                    <span className="text-[25px] text-aliceblue font-normal mr-3 ">
-                      ₹{emiData ? emiData.amount : "-"}
+                    <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3 ">
+                      ₹{emiData ? emiData.treatmentCost : "-"}
                     </span>
                   </div>
                 </div>
@@ -845,8 +843,8 @@ const Repayment = () => {
                     <span className="text-base 2xl:text-lg text-black text-left ml-3   ">
                       EMI
                     </span>
-                    <span className="text-[25px] text-black font-normal mr-3 ">
-                      ₹8333
+                    <span className="text-base 2xl:text-lg text-black font-normal mr-3 ">
+                      ₹{emiData ? emiData.amount : "-"}
                     </span>
                   </div>
                 </div>
@@ -885,176 +883,9 @@ const Repayment = () => {
               <h2>No emis</h2>
             )}
           </Drawer>
-
-          {/* 
-          <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
-                <Divider className="bg-blue mr-auto pt-0 " />
-                <div className="flex justify-end">
-                  <button
-                    className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-4"
-                    onClick={onClose}
-                  >
-                    <span className="text-xl font-bold">CANCEL</span>
-                  </button>
-                  <button
-                    className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
-                    onClick={onFundAccount}
-                  >
-                    <span className="text-xl font-bold">PROCEED</span>
-                  </button>
-                </div>
-              </div> */}
-
-          {/* <Drawer
-          placement="right"
-          closable={false}
-          onClose={onCloseCredits}
-          open={showCreditsLimit}
-          key="right"
-          width={700}
-        >
-          <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
-            <svg
-              className="h-8 w-8 text-black cursor-pointer"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              onClick={onCloseCredits}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
-          </div> */}
-
-          {/* <div className="block px-5 pt-10">
-            <span className="text-4xl font-bold">Set Credit Limit</span>
-          </div> */}
-
-          {/* 
-<div className="flex flex-row ml-5 mt-3">
-            <span className="text-4xl font-extrabold mt-4">
-            Fund Account
-            </span>
-          </div>
-          <div className="flex w-[600px] h-[220px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-            <div className="flex flex-col w-full mt-8">
-              <div className="flex flex-row justify-around">
-                <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1 ">
-                  Account No
-                  </span>
-                  <span className="text-lg font-normal mr-auto m-1">
-                  1234556777788
-                  </span>
-                </div>
-                <div className="flex flex-col w-[35%] items-center justify-start ml-auto mr-[130px]">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                    IFSC Code
-                  </span>
-                  <span className="text-lg font-normal mr-auto m-1">
-                  SBI0009373
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-row w-full justify-around mt-7">
-                <div className="flex flex-col w-[70%] justify-start items-center mr-auto ml-5">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                  UPI id
-                  </span>
-                  <span className="text-lg font-normal mr-auto m-1">upi@okaxis</span>
-                </div>
-
-                <div className="flex flex-col w-[35%] items-center justify-start ml-auto mr-[130px]">
-                  <span className="text-[18px] text-left font-semibold mr-auto m-1">
-                  Amount Received
-                  </span>
-                  <span className="text-lg font-normal mr-auto m-1">
-                  ₹28000
-                  </span>
-                </div>
-              </div>
-
-              
-            </div>
-          </div> */}
-
-          {/* <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-gold bg-lightBlue rounded-lg ml-6 mt-40">
-            <span className="mr-auto ml-4 text-lg font-semibold text-gold">
-            Amount to be received is ₹50000
-            </span>
-            
-          </div> */}
-
-          {/* <div className="w-full bottom-3 right-0 absolute z-1 bg-white ">
-            <Divider className="bg-blue mr-auto pt-0 " />
-            <div className="flex justify-end">
-              <button
-                className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 mb-4"
-                onClick={onCloseCredits}
-              >
-                <span className="text-xl font-bold">CANCEL</span>
-              </button>
-              <button
-                className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 mb-4"
-                onClick={handleApprove}
-              >
-                <span className="text-xl font-bold">Approve</span>
-              </button>
-            </div>
-          </div>
-        </Drawer> */}
-
-          {/*         
-        <Drawer
-          placement="right"
-          closable={false}
-          onClose={onClose}
-          open={showApproved}
-          key="right"
-          width={700}
-        >
-          <div className="w-full h-screen relative">
-            <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
-              <svg
-                className="h-8 w-8 text-black cursor-pointer"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                onClick={onClose}
-              >
-                {" "}
-                <path stroke="none" d="M0 0h24v24H0z" />{" "}
-                <line x1="18" y1="6" x2="6" y2="18" />{" "}
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </div>
-            <div className="flex w-full h-screen justify-center top-[50%] font-Poppins">
-              <div className="flex flex-col flex-wrap justify-center items-center">
-                <div className="">
-                  <img src={require("./approved.png")} alt="congrats" />
-                </div>
-                <span className=" w-[500px] break-words text-3xl  font-bold text-center">
-                  Approved Successfully
-                </span>
-              </div>
-            </div>
-          </div>
-        </Drawer>
-          
-       */}
         </div>
       </div>
     </>
   );
 };
-
-export default Repayment;
+ export default Repayment
