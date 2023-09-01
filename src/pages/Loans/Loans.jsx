@@ -7,7 +7,6 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
-import FormContext from "rc-field-form/es/FormContext";
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -18,7 +17,6 @@ const Loans = () => {
   const [showApproved, setShowApproved] = useState(false);
   const [approveStatus, setApproveStatus] = useState("")
   const [amounts, setAmounts] = useState({unsettled:"",settled:""})
-  const { baseUrl }= React.useContext(FormContext)
   let navigate = useNavigate();
 
   const socketRef = useRef(null);
@@ -70,7 +68,6 @@ const Loans = () => {
       setFund(newFundData);
       if(data.amount >= IdAmt)
       {
-        setApproveStatus(true)
         socketRef.current.close();
       }
     });
@@ -81,7 +78,7 @@ const Loans = () => {
     console.log("Fund ID===>", fundId);
     try {
       const response = await axios.get(
-        `${baseUrl}/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${IdAmt}`,
+        `http://localhost:8000/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${IdAmt}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -97,7 +94,7 @@ const Loans = () => {
 
   const onFundAccount = () => {
     console.log("socket api is going call");
-    const socket = io(`${baseUrl}/`, {
+    const socket = io("http://localhost:8000/", {
       withCredentials: true,
       query: {
         // Add your parameters here as key-value pairs
@@ -145,9 +142,10 @@ const Loans = () => {
     setSelectClient(!selectClient);
     setParams(id);
     var paramId = id.replace("#", "");
+
     try {
       const response = await axios.get(
-        `${baseUrl}/Lenders/selectAproovals?trnId=%23${paramId}`,
+        `http://localhost:8000/Lenders/selectAproovals?trnId=%23${paramId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -173,7 +171,7 @@ const Loans = () => {
   const [allLoans, setLoanData] = useState("");
   const [status, setStats] = useState("");
   const getDetails = async () => {
-    const response = await fetch(`${baseUrl}/Lenders/aproovals`, {
+    const response = await fetch("http://localhost:8000/Lenders/aproovals", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -354,7 +352,7 @@ const Loans = () => {
                         Phone No
                       </span>
                     </td>
-                    <td className="pl-2 max-w-[200px]  w-full">Tensure</td>
+                    <td className="pl-2 max-w-[200px]  w-full">Tenure</td>
                     <td className="max-w-[100px]  w-full relative flex items-center">
                       <span className="justify-start w-full absolute 2xl:left-2 left-0">
                         Amount
@@ -410,7 +408,7 @@ const Loans = () => {
                         <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
                       </svg>
                     </td>
-                    <td className="max-w-[150px] w-full">Transaction ID</td>
+                    <td className="max-w-[150px] w-full">Loan ID</td>
                     <td className="pr-4 2xl:max-w-[160px] max-w-[200px] w-full relative flex items-center">
                       <span className=" justify-start absolute left-12 2xl:left-12 align-middle">
                         Name
@@ -437,17 +435,43 @@ const Loans = () => {
                     </td>
                   </tr>
                 </thead>
-                <tbody className="border-solid text-xl border-1 border-aliceblue bg-white rounded-lg">
-                  {allLoans.length > 0 ? (
-                    allLoans.map((transaction) => (
-                      <>
-                        <tr className=" text-xl border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] mt-4">
-                          <td className="pl-4 w-[30px]">
-                            <img
-                              src={require("./processing.png")}
-                              alt="processing"
-                            />
-                          </td>
+                <tbody className="border-solid 2xl:text-lg text-base border-1 border-aliceblue bg-white rounded-lg">
+                  {allLoans &&
+                    allLoans
+                      .slice()
+                      .reverse()
+                      .map((transaction, index) => (
+                        <tr
+                          className={` border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] ${
+                            index === 0 ? "-mt-1" : "mt-4"
+                          }`}
+                          key={transaction.trnId}
+                        >
+                          {transaction.lenderStatus ? (
+                            <td className="pl-3 flex items-center pr-2 w-full max-w-[20px]">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512"
+                              >
+                                <path
+                                  fill="#306FC7"
+                                  d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"
+                                />
+                              </svg>
+                            </td>
+                          ) : (
+                            <td className="pl-3 pr-2 flex items-center w-full max-w-[20px]">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512"
+                              >
+                                <path
+                                  fill="#306FC7"
+                                  d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
+                                />
+                              </svg>
+                            </td>
+                          )}
                           <td
                             className="pr-2 max-w-[100px] w-full cursor-pointer"
                             style={{ color: "#416EC1" }}
@@ -485,23 +509,17 @@ const Loans = () => {
                               }
                             )}
                           </td>
-                          <td
-                            className={
-                              transaction.lenderStatus === true
-                                ? "text-green pr-4 w-[100px]"
-                                : "text-red pr-4 w-[100px]"
-                            }
-                          >
-                            {transaction.lenderStatus === true
-                              ? "Settled"
-                              : "Pending"}
-                          </td>
+                          {transaction.lenderStatus ? (
+                            <td className="text-yellowgreen max-w-[120px] text-left  w-full">
+                              <span className="ml-6">Settled</span>
+                            </td>
+                          ) : (
+                            <td className="text-red pr-5 max-w-[100px] w-full">
+                              Pending
+                            </td>
+                          )}
                         </tr>
-                      </>
-                    ))
-                  ) : (
-                    <div> No Loans data found</div>
-                  )}
+                      ))}
                 </tbody>
               </table>
             </div>
