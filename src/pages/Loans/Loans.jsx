@@ -7,6 +7,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
+import { FormContext } from "../../Contexts/FormContext";
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -17,6 +18,7 @@ const Loans = () => {
   const [showApproved, setShowApproved] = useState(false);
   const [approveStatus, setApproveStatus] = useState("")
   const [amounts, setAmounts] = useState({unsettled:"",settled:""})
+  const {baseUrl} = React.useContext(FormContext)
   let navigate = useNavigate();
 
   const socketRef = useRef(null);
@@ -78,7 +80,7 @@ const Loans = () => {
     console.log("Fund ID===>", fundId);
     try {
       const response = await axios.get(
-        `http://localhost:8000/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${IdAmt}`,
+        `${baseUrl}/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${IdAmt}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -145,7 +147,7 @@ const Loans = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8000/Lenders/selectAproovals?trnId=%23${paramId}`,
+        `${baseUrl}/Lenders/selectAproovals?trnId=%23${paramId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -171,7 +173,7 @@ const Loans = () => {
   const [allLoans, setLoanData] = useState("");
   const [status, setStats] = useState("");
   const getDetails = async () => {
-    const response = await fetch("http://localhost:8000/Lenders/aproovals", {
+    const response = await fetch(`${baseUrl}/Lenders/aproovals`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
