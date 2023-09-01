@@ -3,17 +3,11 @@ import Lightbox from "react-18-image-lightbox";
 import "react-18-image-lightbox/style.css";
 
 
-const DisplayImage = ({ imageUrl }) => {
-  const [lightboxOpen, setLightboxOpen] = useState(false);
+const DisplayImage = ({ imageUrl , open }) => {
+  const [lightboxOpen, setLightboxOpen] = useState(imageUrl ? true : false);
   console.log(imageUrl)
   return (
     <div>
-      <img
-        src={imageUrl}
-        alt="DisplayedImage"
-        style={{ cursor: "pointer" }}
-        onClick={() => setLightboxOpen(true)}
-      />
       {lightboxOpen && (
         <Lightbox
           mainSrc={imageUrl}

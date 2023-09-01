@@ -341,7 +341,7 @@ const Loans = () => {
                         <path d="M15.44 3.69a9 9 0 0 0 -3.44 -.69" />
                       </svg>
                     </td>
-                    <td className="max-w-[150px] w-full">Transaction ID</td>
+                    <td className="max-w-[150px] w-full">Loan ID</td>
                     <td className="pr-4 2xl:max-w-[160px] max-w-[200px] w-full relative flex items-center">
                       <span className=" justify-start absolute left-12 2xl:left-7 align-middle">
                         Name
