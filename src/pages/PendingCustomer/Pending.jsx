@@ -3,19 +3,26 @@ import Sidebar from "../../components/Sidebar";
 import { Divider, Drawer, Spin } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BiDownload } from "react-icons/bi";
 import DisplayImage from "../../components/DisplayImage";
 import { FormContext } from "../../Contexts/FormContext";
 import { BsSearch } from "react-icons/bs";
+import Lightbox from "yet-another-react-lightbox";
+// import "react-18-image-lightbox/style.css";
+import "yet-another-react-lightbox/styles.css";
+import Download from "yet-another-react-lightbox/plugins/download";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
 const PendingCustomer = () => {
   const [selectClient, setSelectClient] = React.useState(false);
   const [showCreditsLimit, setShowCreditsLimit] = React.useState(false);
   const [showApproved, setShowApproved] = React.useState(false);
   const [pendingCustomers, setPendingCustomers] = React.useState([]);
-  const [selectedCustomer, setSelectedCustomer] = React.useState("");
+  const [selectedCustomer, setSelectedCustomer] = React.useState(null);
   const [selectedImage, setSelectedImage] = React.useState(null);
   const [selectedCredit, setSelectedcredit] = React.useState("");
   const [loading, setLoading] = React.useState(true);
+  const [openLightbox, setOpenLightbox] = React.useState(false);
   const { baseUrl } = React.useContext(FormContext);
   let navigate = useNavigate();
 
@@ -48,6 +55,16 @@ const PendingCustomer = () => {
     setSelectClient(true);
   };
 
+  const closeLightbox = () => {
+    setOpenLightbox(false);
+    setSelectedImage(null);
+  };
+
+  const handleImage = (img) => {
+    setSelectedImage(`${baseUrl}/${img}`);
+    setOpenLightbox(true);
+  };
+
   const handleSubmit = async (id) => {
     try {
       const response = await axios.patch(
@@ -71,6 +88,7 @@ const PendingCustomer = () => {
       console.error(err);
     }
   };
+  const zoomRef = React.useRef(null);
 
   const fetchPendingCustomers = async () => {
     try {
@@ -87,6 +105,7 @@ const PendingCustomer = () => {
     }
   };
   React.useEffect(() => {
+    console.log(openLightbox);
     fetchPendingCustomers();
   }, []);
 
@@ -289,40 +308,39 @@ const PendingCustomer = () => {
           width={700}
           className=""
         >
-            
-              <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
-                <svg
-                  className="h-8 w-8 text-black cursor-pointer"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  onClick={onClose}
-                >
-                  {" "}
-                  <path stroke="none" d="M0 0h24v24H0z" />{" "}
-                  <line x1="18" y1="6" x2="6" y2="18" />{" "}
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
+          <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
+            <svg
+              className="h-8 w-8 text-black cursor-pointer"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              onClick={onClose}
+            >
+              {" "}
+              <path stroke="none" d="M0 0h24v24H0z" />{" "}
+              <line x1="18" y1="6" x2="6" y2="18" />{" "}
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </div>
+          <div className="flex flex-row ml-5 mt-3">
+            <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+              Client Details
+            </span>
+          </div>
+          {selectedCustomer === null ? (
+            <>
+              <div className="fixed inset-0 bg-gray-500 opacity-100 z-50"></div>
+              <div className=" flex justify-center items-center w-full h-full transition ease-in delay-300 ">
+                <Spin size="large" />
               </div>
-              <div className="flex flex-row ml-5 mt-3">
-                <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
-                  Client Details
-                </span>
-              </div>
-                  {selectedCustomer === null ? (
-                    <>
-                      <div className="fixed inset-0 bg-gray-500 opacity-100 z-50"></div>
-                      <div className=" flex justify-center items-center w-full h-full transition ease-in delay-300 ">
-                        <Spin size="large" />
-                      </div>
-                    </>
-                  ) : (
-                    <>
+            </>
+          ) : (
+            <>
               <div className="flex w-[600px] h-[540px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-6 py-5 ">
                 <div className="flex flex-row w-full">
                   <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] items-start rounded-full overflow-hidden">
@@ -523,7 +541,7 @@ const PendingCustomer = () => {
                 <div
                   className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
                   onClick={() => {
-                    setSelectedImage(selectedCustomer.pan);
+                    handleImage(selectedCustomer.pan);
                   }}
                 >
                   <span className="mr-auto ml-4 text-base 2xl:text-lg font-semibold">
@@ -538,7 +556,7 @@ const PendingCustomer = () => {
                     <div
                       className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
                       onClick={() => {
-                        setSelectedImage(selectedCustomer.salarySlip);
+                        handleImage(selectedCustomer.salarySlip);
                       }}
                     >
                       <span className="mr-auto ml-4 text-base 2xl:text-lg font-semibold">
@@ -553,7 +571,7 @@ const PendingCustomer = () => {
                 <div
                   className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
                   onClick={() => {
-                    setSelectedImage(selectedCustomer.bankStatements);
+                    handleImage(selectedCustomer.bankStatements);
                   }}
                 >
                   <span className="mr-auto ml-4 text-base 2xl:text-lg font-semibold">
@@ -568,7 +586,7 @@ const PendingCustomer = () => {
                     <div
                       className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
                       onClick={() => {
-                        setSelectedImage(selectedCustomer.incomeTax);
+                        handleImage(selectedCustomer.incomeTax);
                       }}
                     >
                       <span className="mr-auto ml-4 text-base 2xl:text-lg font-semibold">
@@ -583,13 +601,7 @@ const PendingCustomer = () => {
                 <div
                   className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4 cursor-pointer"
                   onClick={() => {
-                    setSelectedImage(selectedCustomer.addressProof);
-                    <DisplayImage
-                      imageUrl={`${baseUrl}/${selectedCustomer.addressProof.replace(
-                        /\\/g,
-                        "/"
-                      )}`}
-                    />;
+                    handleImage(selectedCustomer.addressProof);
                   }}
                 >
                   <span className="mr-auto ml-4 text-base 2xl:text-lg font-semibold">
@@ -600,23 +612,62 @@ const PendingCustomer = () => {
                   </span>
                 </div>
               </div>
+              {openLightbox && (
+                <div className="">
+                  <Lightbox
+                    open={openLightbox}
+                    slides={[{ src: selectedImage }]}
+                    close={() => setOpenLightbox(false)}
+                    plugins={[Download , Zoom]}
+                    animation={{ zoom: 500 }}
+                    // zoom={{
+                    //   maxZoomPixelRatio:1,
+                    //   zoomInMultiplier:2,
+                    //   doubleTapDelay:300,
+                    //   doubleClickDelay:300,
+                    //   doubleClickMaxStops:2,
+                    //   keyboardMoveDistance:50,
+                    //   wheelZoomDistanceFactor:100,
+                    //   pinchZoomDistanceFactor:100,
+                    //   scrollToZoom:false,
+                      
+                    // }}
+                    carousel={{
+                      finite:true,
+                      preload:2,
+                      imageFit : "contain",
+                      padding: "16px",
+                      spacing: "16px",
+                    }}
+                    render={{
+                      buttonPrev:()=>null,
+                      buttonNext:()=>null,
+                      buttonZoom:()=>true,
+                    }}
+                  />
+                </div>
+              )}
               <div className="w-full block bg-white  absolute bottom-0 right-0 overflow-hidden">
-            <Divider className="bg-blue mr-auto mt-0" />
-            <div className="flex justify-end pb-2">
-              <button
-                className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-1 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-lightBlue"
-                onClick={onClose}
-              >
-                <span className="2xl:text-lg text-base font-bold">CANCEL</span>
-              </button>
-              <button
-                className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mr-5 ml-2 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue"
-                onClick={handleCredits}
-              >
-                <span className="2xl:text-lg text-base font-bold">NEXT</span>
-              </button>
-            </div>
-          </div>
+                <Divider className="bg-blue mr-auto mt-0" />
+                <div className="flex justify-end pb-2">
+                  <button
+                    className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-1 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-lightBlue"
+                    onClick={onClose}
+                  >
+                    <span className="2xl:text-lg text-base font-bold">
+                      CANCEL
+                    </span>
+                  </button>
+                  <button
+                    className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mr-5 ml-2 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue"
+                    onClick={handleCredits}
+                  >
+                    <span className="2xl:text-lg text-base font-bold">
+                      NEXT
+                    </span>
+                  </button>
+                </div>
+              </div>
             </>
           )}
         </Drawer>
@@ -646,7 +697,9 @@ const PendingCustomer = () => {
             </svg>
           </div>
           <div className="block px-5 pt-10">
-            <span className="text-2xl 2xl:text-3xl font-bold">Set Credit Limit</span>
+            <span className="text-2xl 2xl:text-3xl font-bold">
+              Set Credit Limit
+            </span>
           </div>
           <div className="container relative pb-[120px]">
             <div className="w-full ml-5 mt-6">
@@ -659,7 +712,9 @@ const PendingCustomer = () => {
                   }`}
                   onClick={() => setSelectedcredit("50000")}
                 >
-                  <span className="text-xl 2xl:text-2xl text-blue">&#8377;50,000</span>
+                  <span className="text-xl 2xl:text-2xl text-blue">
+                    &#8377;50,000
+                  </span>
                 </div>
                 <div
                   className={`flex justify-center items-center h-[180px] w-[250px] ml-[-15px] bg-lightBlue rounded-lg cursor-pointer ${
@@ -669,7 +724,9 @@ const PendingCustomer = () => {
                   }`}
                   onClick={() => setSelectedcredit("100000")}
                 >
-                  <span className="text-xl 2xl:text-2xl text-blue">&#8377;100,000</span>
+                  <span className="text-xl 2xl:text-2xl text-blue">
+                    &#8377;100,000
+                  </span>
                 </div>
                 <div
                   className={`flex justify-center items-center h-[180px] w-[250px] bg-lightBlue rounded-lg cursor-pointer ${
@@ -679,7 +736,9 @@ const PendingCustomer = () => {
                   }`}
                   onClick={() => setSelectedcredit("500000")}
                 >
-                  <span className="text-xl 2xl:text-2xl text-blue">&#8377;500,000</span>
+                  <span className="text-xl 2xl:text-2xl text-blue">
+                    &#8377;500,000
+                  </span>
                 </div>
                 <div
                   className={`flex justify-center items-center h-[180px] w-[250px] ml-[-15px] bg-lightBlue rounded-lg cursor-pointer ${
@@ -689,7 +748,9 @@ const PendingCustomer = () => {
                   }`}
                   onClick={() => setSelectedcredit("1000000")}
                 >
-                  <span className="text-xl 2xl:text-2xl text-blue">&#8377;1,000,000</span>
+                  <span className="text-xl 2xl:text-2xl text-blue">
+                    &#8377;1,000,000
+                  </span>
                 </div>
               </div>
               <div className="flex flex-row mt-12 ml-[-20px] justify-center relative text-xl font-bold">

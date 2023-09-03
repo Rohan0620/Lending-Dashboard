@@ -2,6 +2,8 @@ import React from "react";
 import Sidebar from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import { Divider, Drawer } from "antd";
+import axios from "axios";
+import { FormContext } from "../../Contexts/FormContext";
 
 const Setting = () => {
   const [showSelected, setShowSelected] = React.useState(() => {
@@ -10,6 +12,8 @@ const Setting = () => {
   const [mailDrawer, setMailDrawer] = React.useState(false);
   const [otpDrawer, setOtpDrawer] = React.useState(false);
   const [nameDrawer, setNameDrawer] = React.useState(false);
+  const [settingData, setSettingData] = React.useState(null)
+  const {baseUrl} = React.useContext(FormContext)
   let navigate = useNavigate();
 
   const onCloseMailDrawer = () => {
@@ -30,6 +34,26 @@ const Setting = () => {
     setNameDrawer(true);
   };
 
+  const getData = async () =>{
+    try{
+      const response = await axios.get(`${baseUrl}/Hospitals/settings`,
+      {
+        headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        },
+        withCredentials:'include'
+      },
+      )
+      const  data = response.data;
+      setSettingData(data)
+      console.log(settingData)
+    }
+    catch(err)
+    {
+      console.log(err)
+    }
+  }
+
   const handleTabClick = (tabName) => {
     setShowSelected(tabName);
     sessionStorage.setItem("selectedSettingTab", tabName);
@@ -39,6 +63,7 @@ const Setting = () => {
       sessionStorage.setItem("selectedTab", "settings");
     }  };
   React.useEffect(()=>{
+    getData()
     setShowSelected(sessionStorage.getItem("selectedSettingTab") || "profile")
   },[showSelected])
   return (
