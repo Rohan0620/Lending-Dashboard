@@ -72,6 +72,7 @@ const AddAccount = () => {
           ></div>
         )}
         <div className="w-[70vw] h-full top-0 bottom-0 left-0 fixed">
+        <div className="bg-blue opacity-40 inset-0 fixed"></div>
           <img
             src={require("../../image/bg_login.png")}
             alt="bgimage"
@@ -83,7 +84,7 @@ const AddAccount = () => {
             <img
               src={require("../../image/Home.png")}
               alt="curecoin"
-              className="w-full max-w-[300px]"
+              className="w-full max-w-[250px]"
             />
           </div>
           <div className="flex flex-col justify-center items-center mt-6">

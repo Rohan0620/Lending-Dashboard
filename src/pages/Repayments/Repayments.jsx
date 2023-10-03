@@ -7,6 +7,12 @@ import "../../styles/Shimmering.css";
 import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { FormContext } from "../../Contexts/FormContext";
+import Lightbox from "yet-another-react-lightbox";
+// import "react-18-image-lightbox/style.css";
+import "yet-another-react-lightbox/styles.css";
+import Download from "yet-another-react-lightbox/plugins/download";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Footer from "../../components/Footer";
 const Repayment = () => {
   const [selectClient, setSelectClient] = React.useState(false);
   const [showClientdDtails, setShowClientdDtails] = React.useState(false);
@@ -18,7 +24,7 @@ const Repayment = () => {
   const [amounts, setAmounts] = useState({ unsettled: "", settled: "" });
   let navigate = useNavigate();
   const { baseUrl } = React.useContext(FormContext);
-
+  const [openLightbox, setOpenLightbox] = React.useState(false);
   const handleApprove = () => {
     setShowApproved(true);
     setShowCreditsLimit(false);
@@ -53,6 +59,7 @@ const Repayment = () => {
 
     setShowClientdDtails(false);
   };
+  const [invoice, setInvoice] = useState(null)
 
   const [emiData, setEmi] = useState("");
   const [allEmi, setAllEmis] = useState(null);
@@ -81,6 +88,10 @@ const Repayment = () => {
       console.error(err);
     }
   };
+  const handleInvoice = (img) =>{
+    const _invoice = img.replace("public","https://cashwave.nyc3.digitaloceanspaces.com")
+    setInvoice(_invoice)
+  }
 
   const onCloseCredits = () => {
     setShowCreditsLimit(false);
@@ -441,7 +452,7 @@ const Repayment = () => {
                   className="flex w-[50%] h-[32px] 2xl:text-sm text-sm justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
                   onClick={() => {
                     navigate("/login");
-                    localStorage.setItem("token", "");
+                    localStorage.removeItem("token");
                   }}
                 >
                   <div className="flex ml-2 mr-1">
@@ -459,7 +470,7 @@ const Repayment = () => {
           {loading ? (
             <div className="flex px-[40px] 2xl:px-[60px]">
               <table cellSpacing="0" className="w-full mt-4">
-                <thead>
+              <thead>
                   <tr className="border-solid 2xl:text-lg text-base border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
                     <td className="flex items-center w-full pl-[10px] max-w-[20px] 2xl:w-[30px]">
                       <svg
@@ -488,22 +499,24 @@ const Repayment = () => {
                     </td>
                     <td className="max-w-[150px] w-full">Loan ID</td>
                     <td className="pr-4 2xl:max-w-[260px] max-w-[200px] w-full relative flex items-center">
-                      <span className=" justify-start absolute pl-[80px] align-middle">
+                      <span className=" justify-start absolute pl-[80px] 2xl:left-5 align-middle">
                         Name
                       </span>
                     </td>
                     <td className="max-w-[120px] w-full relative flex items-center">
-                      <span className="justify-start w-full absolute left-[rem] pl-2 2xl:pl-8 align-middle">
+                      <span className="justify-start w-full absolute 2xl:left-[-1.8rem] pl-2 2xl:pl-8 align-middle">
                         Phone No
                       </span>
                     </td>
-                    <td className="max-w-[200px]  w-full justify-end relative flex items-center">
-                      <span className="w-full absolute  2xl:-right-8 left-0  pl-2 2xl:pl-6">
+                    <td className="max-w-[150px]  w-full justify-end relative flex items-center">
+                      <span className="w-full absolute  2xl:-right-4 2xl:left-0 left-5  pl-2 2xl:pl-6">
                         Amount
                       </span>
                     </td>
-                    <td className="pr-10 max-w-[150px] w-full">Date</td>
-                    <td className="pr-4 max-w-[80px]  w-full">EMI</td>
+                    <td className="pl-2 max-w-[200px] w-full">
+                      Repayment Date
+                    </td>
+                    {/* <td className="pr-4 max-w-[80px]  w-full">EMI</td> */}
                     <td className="pr-6 max-w-[80px] xl:max-w-[100px] w-full">
                       <span className="mr-auto">Status</span>
                     </td>
@@ -526,7 +539,7 @@ const Repayment = () => {
           ) : (
             <div className="flex px-[40px] 2xl:px-[60px]">
               <table cellSpacing="0" className="w-full mt-4">
-                <thead>
+              <thead>
                   <tr className="border-solid 2xl:text-lg text-base border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
                     <td className="flex items-center w-full pl-[10px] max-w-[20px] 2xl:w-[30px]">
                       <svg
@@ -555,29 +568,31 @@ const Repayment = () => {
                     </td>
                     <td className="max-w-[150px] w-full">Loan ID</td>
                     <td className="pr-4 2xl:max-w-[260px] max-w-[200px] w-full relative flex items-center">
-                      <span className=" justify-start absolute pl-[80px] align-middle">
+                      <span className=" justify-start absolute pl-[80px] 2xl:left-5 align-middle">
                         Name
                       </span>
                     </td>
                     <td className="max-w-[120px] w-full relative flex items-center">
-                      <span className="justify-start w-full absolute left-[rem] pl-2 2xl:pl-8 align-middle">
+                      <span className="justify-start w-full absolute 2xl:left-[-1.8rem] pl-2 2xl:pl-8 align-middle">
                         Phone No
                       </span>
                     </td>
-                    <td className="max-w-[200px]  w-full justify-end relative flex items-center">
-                      <span className="w-full absolute  2xl:-right-8 left-0  pl-2 2xl:pl-6">
+                    <td className="max-w-[150px]  w-full justify-end relative flex items-center">
+                      <span className="w-full absolute  2xl:-right-4 2xl:left-0 left-5  pl-2 2xl:pl-6">
                         Amount
                       </span>
                     </td>
-                    <td className="pr-10 max-w-[150px] w-full">Date</td>
-                    <td className="pr-4 max-w-[80px]  w-full">EMI</td>
+                    <td className="pl-2 max-w-[200px] w-full">
+                      Repayment Date
+                    </td>
+                    {/* <td className="pr-4 max-w-[80px]  w-full">EMI</td> */}
                     <td className="pr-6 max-w-[80px] xl:max-w-[100px] w-full">
                       <span className="mr-auto">Status</span>
                     </td>
                   </tr>
                 </thead>
                 <tbody className="border-solid 2xl:text-lg text-base border-1 border-aliceblue bg-white rounded-lg">
-                  {repayData &&
+                  {repayData.length>0 ?
                     repayData
                       .slice()
                       .reverse()
@@ -639,9 +654,6 @@ const Repayment = () => {
                               }
                             )}
                           </td>
-                          <td className="max-w-[80px] w-full">
-                            {transaction.emiNo}
-                          </td>
                           {transaction.status ? (
                             <td className="text-yellowgreen max-w-[120px]  w-full text-center">
                               <span className="pr-6">Settled</span>
@@ -652,7 +664,11 @@ const Repayment = () => {
                             </td>
                           )}
                         </tr>
-                      ))}
+                      )) :(
+                        <div className="flex w-full justify-center items-end pt-[200px] text-lg 2xl:text-xl">
+                      Nothing to display.
+                    </div>
+                      )}
                 </tbody>
               </table>
             </div>
@@ -817,14 +833,19 @@ const Repayment = () => {
                     Loan Details
                   </span>
                 </div>
-                <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-                  <div className="flex flex-col w-full m-3">
+                <div className="flex flex-row ml-5 mt-3">
+                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                    Loan Details
+                  </span>
+                </div>
+                <div className="flex w-[600px] py-6 text-lg 2xl:text-xl flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-4">
+                  <div className="flex flex-col w-full mx-6">
                     <div className="flex flex-row justify-between mb-4">
                       <div className="flex flex-row  w-[100%] justify-between  ">
-                        <span className="text-base 2xl:text-lg text-aliceblue text-left ml-3    ">
+                        <span className="text-aliceblue text-left ml-3    ">
                           Loan Amount
                         </span>
-                        <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3 ">
+                        <span className="text-aliceblue font-normal mr-3 ">
                           ₹{emiData ? emiData.treatmentCost : "-"}
                         </span>
                       </div>
@@ -832,10 +853,10 @@ const Repayment = () => {
 
                     <div className="flex flex-row justify-between mb-4">
                       <div className="flex flex-row  w-[100%] justify-between  ">
-                        <span className="text-base 2xl:text-lg text-aliceblue text-left  ml-3  ">
-                          Interest rate per month
+                        <span className="text-aliceblue text-left  ml-3  ">
+                          Total Interest
                         </span>
-                        <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3  ">
+                        <span className="text-aliceblue font-normal mr-3  ">
                           {emiData ? emiData.interestRate : "-"}
                         </span>
                       </div>
@@ -843,10 +864,10 @@ const Repayment = () => {
 
                     <div className="flex flex-row justify-between mb-4">
                       <div className="flex flex-row  w-[100%] justify-between  ">
-                        <span className="text-base 2xl:text-lg text-aliceblue text-left  ml-3  ">
-                          Tensure(months)
+                        <span className="text-aliceblue text-left  ml-3  ">
+                          Tenure(in days)
                         </span>
-                        <span className="text-base 2xl:text-lg text-aliceblue font-normal mr-3 ">
+                        <span className="text-aliceblue font-normal mr-3 ">
                           {emiData ? emiData.tenure : "-"}
                         </span>
                       </div>
@@ -854,10 +875,10 @@ const Repayment = () => {
 
                     <div className="flex flex-row justify-between mb-4">
                       <div className="flex flex-row  w-[100%] justify-between  ">
-                        <span className="text-base 2xl:text-lg text-black text-left ml-3   ">
-                          EMI
+                        <span className="text-black text-left ml-3   ">
+                          Total Payable
                         </span>
-                        <span className="text-base 2xl:text-lg text-black font-normal mr-3 ">
+                        <span className="text-black font-normal mr-3 ">
                           ₹{emiData ? emiData.amount : "-"}
                         </span>
                       </div>
@@ -867,12 +888,12 @@ const Repayment = () => {
 
                 <div className="flex flex-row ml-5 mt-3">
                   <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
-                    EMI Dates
+                    Payment Dates
                   </span>
                 </div>
                 {allEmi ? (
                   allEmi.map((emi) => (
-                    <div className="flex flex-row w-[600px] h-[50px] justify-around items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-6 mt-4">
+                    <div className="flex flex-row w-[600px] h-[50px] justify-around items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-5 mt-4">
                       <div className="ml-4 max-w-[20%] w-full text-base 2xl:text-lg font-semibold">
                         {new Date(emi.date).toLocaleDateString("en-GB", {
                           day: "2-digit",
@@ -896,13 +917,96 @@ const Repayment = () => {
                     </div>
                   ))
                 ) : (
-                  <h2>No emis</h2>
+                  <h2>No Payments</h2>
+                )}
+
+                <div className="flex flex-row ml-5 mt-3">
+                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                    Merchant Details
+                  </span>
+                </div>
+                <div className="flex w-[600px] py-4 flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-4 ml-5 mr-0">
+                  <div className="flex flex-row justify-around">
+                    <div className="flex flex-col max-w-[60%] w-full justify-start items-center mr-auto ml-5 pr-4">
+                      <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1 ">
+                        Merchant Name
+                      </span>
+                      <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
+                        {emiData ? emiData.merchantName : "-"}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-center max-w-[40%] w-full justify-start pr-8">
+                      <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
+                        Merchant Code
+                      </span>
+                      <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
+                        {emiData ? emiData.merchantCode : "-"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-row ml-5 mt-3">
+                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                    Invoice Details
+                  </span>
+                </div>
+                <div
+                  className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-5 mt-4 cursor-pointer"
+                  onClick={() => {
+                    setOpenLightbox(!openLightbox);
+                    handleInvoice(emiData.invoice)
+                  }}
+                >
+                  <span className="mr-auto ml-4 text-lg font-semibold">
+                    Invoice Details
+                  </span>
+                  <span className="ml-auto mr-4">
+                    <img src={require("./arrow.png")} alt="arrow" />
+                  </span>
+                </div>
+                {openLightbox && (
+                  <div>
+                    <Lightbox
+                      open={openLightbox}
+                      slides={[{ src: invoice }]}
+                      close={() => setOpenLightbox(!openLightbox)}
+                      plugins={[Download, Zoom]}
+                      animation={{ zoom: 500 }}
+                      // zoom={{
+                      //   maxZoomPixelRatio:1,
+                      //   zoomInMultiplier:2,
+                      //   doubleTapDelay:300,
+                      //   doubleClickDelay:300,
+                      //   doubleClickMaxStops:2,
+                      //   keyboardMoveDistance:50,
+                      //   wheelZoomDistanceFactor:100,
+                      //   pinchZoomDistanceFactor:100,
+                      //   scrollToZoom:false,
+
+                      // }}
+                      carousel={{
+                        finite: true,
+                        preload: 2,
+                        imageFit: "contain",
+                        padding: "16px",
+                        spacing: "16px",
+                      }}
+                      render={{
+                        buttonPrev: () => null,
+                        buttonNext: () => null,
+                        buttonZoom: () => true,
+                      }}
+                    />
+                  </div>
                 )}
               </>
             )}
           </Drawer>
         </div>
       </div>
+      <footer className="bottom-0 absolute right-0 2xl:left-[226px] left-[198px] ">
+        <Footer/>
+      </footer>
     </>
   );
 };

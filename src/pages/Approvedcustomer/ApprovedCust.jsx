@@ -10,6 +10,7 @@ import { useContext } from "react";
 import { Spinner } from "@chakra-ui/react";
 import { FormContext } from "../../Contexts/FormContext";
 import { BsSearch } from "react-icons/bs";
+import Footer from "../../components/Footer";
 
 const ApprovedCust = () => {
   const [selectClient, setSelectClient] = useState(false);
@@ -306,6 +307,7 @@ const ApprovedCust = () => {
     //         )}
     //       </div>
     //     )}
+    <>
     <div className="flex w-full relative overflow-hidden">
       <div className="fixed top-0 bottom-0">
         <Sidebar />
@@ -401,7 +403,7 @@ const ApprovedCust = () => {
                 className="flex w-[50%] h-[32px] 2xl:text-sm text-sm justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
                 onClick={() => {
                   navigate("/login");
-                  localStorage.setItem("token", "");
+                  localStorage.removeItem("token");
                 }}
               >
                 <div className="flex ml-2 mr-1">
@@ -441,7 +443,7 @@ const ApprovedCust = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 align-middle py-[40px] px-[68px] gap-5">
-            {customers &&
+            {customers.length > 0 ?
               customers
                 .slice()
                 .reverse()
@@ -489,7 +491,12 @@ const ApprovedCust = () => {
                       )}
                     </div>
                   </div>
-                ))}
+                ))
+              :(
+                <div className="flex w-full justify-center items-end pt-[200px] pl-[200px] text-lg 2xl:text-xl">
+              No customers found. 
+            </div>
+              )}
           </div>
         )}
 
@@ -756,6 +763,10 @@ const ApprovedCust = () => {
         </Drawer>
       </div>
     </div>
+      <footer className="bottom-0 absolute right-0 2xl:left-[226px] left-[198px] ">
+        <Footer/>
+      </footer>
+    </>
   );
 };
 

@@ -572,6 +572,7 @@ import { DatePicker } from "antd";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { FormContext } from "../../Contexts/FormContext";
+import Footer from "../../components/Footer";
 const HospitalHome = () => {
   const [transactions, setTransactions] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -680,7 +681,7 @@ const HospitalHome = () => {
               </span>
             </div>
             <div className="flex justify-start items-center mr-[-0.1vw] 2xl:mr-[-1vw]">
-              <div className="flex 2xl:text-lg text-base border-solid border-transparent w-full max-w-[218px] h-[32px] ">
+              <div className="flex 2xl:text-sm text-[10px] border-solid border-transparent w-full max-w-[180px] h-[32px] ">
                 <div
                   className="flex w-[50%] h-[32px] justify-evenly items-center rounded-l-lg bg-black text-white cursor-pointer"
                   onClick={() => {
@@ -688,7 +689,7 @@ const HospitalHome = () => {
                     sessionStorage.setItem("selectedSettingTab", "profile");
                   }}
                 >
-                  <div className="flex max-w-[20px] w-full ml-2 mr-2">
+                  <div className="flex max-w-[20px] w-full ml-1 mr-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="28"
@@ -719,23 +720,23 @@ const HospitalHome = () => {
                       </defs>
                     </svg>
                   </div>
-                  <div className="flex mr-6">Profile</div>
+                  <div className="flex mr-2">Profile</div>
                 </div>
                 <div
                   className="flex w-[50%] h-[32px] justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
                   onClick={() => {
                     navigate("/login");
-                    localStorage.setItem("token", "");
+                    localStorage.removeItem("token");
                   }}
                 >
-                  <div className="flex w-full max-w-[20px] ml-2">
+                  <div className="flex w-full max-w-[20px] ml-2 mr-1">
                     <img
                       src={require("../../image/logout.png")}
                       className="w-full max-w-[15px]"
                       alt="logout"
                     />
                   </div>
-                  <div className="flex mr-4">Logout</div>
+                  <div className="flex mr-2 ">Logout</div>
                 </div>
               </div>
             </div>
@@ -1101,7 +1102,7 @@ const HospitalHome = () => {
             </div>
           </div>
           {loading ? (
-            <div className="flex px-[20px] 2xl:px-[30px]">
+            <div className="flex px-[20px] 2xl:px-[30px] pb-7">
               <table cellSpacing="0" className="w-full mt-4">
                 <thead>
                   <tr className="border-solid text-lg xl:text-base border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
@@ -1168,7 +1169,7 @@ const HospitalHome = () => {
               </table>
             </div>
           ) : (
-            <div className="flex pr-[20px] ml-[35px] 2xl:pr-5">
+            <div className="flex pr-[20px] ml-[35px] 2xl:pr-5 pb-7">
               <table cellSpacing="0" className="w-full mt-4">
                 <thead>
                   <tr className="border-solid text-lg xl:text-base border-1 border-aliceblue bg-lightBlue rounded-lg h-[50px]">
@@ -1221,7 +1222,7 @@ const HospitalHome = () => {
                   </tr>
                 </thead>
                 <tbody className="border-solid 2xl:text-lg text-base border-1 border-aliceblue bg-white rounded-lg">
-                  {transactions &&
+                  {transactions ?
                     transactions.slice(-10).reverse().map((transaction, index) => (
                       <tr
                         className={` border-solid border-1 border-aliceblue bg-lightBlue rounded-lg h-[65px] ${
@@ -1295,12 +1296,20 @@ const HospitalHome = () => {
                           </td>
                         )}
                       </tr>
-                    ))}
+                    ))
+                  :(
+                    <div className="flex w-full justify-center items-end text-lg 2xl:text-xl">
+                      Nothing to display.
+                    </div>
+                  )}
                 </tbody>
               </table>
             </div>
           )}
         </div>
+        <footer className="bottom-0 absolute right-0 2xl:left-[226px] left-[198px]">
+        <Footer/>
+      </footer>
       </div>
     </>
   );

@@ -80,6 +80,7 @@ const Auth = () => {
           ></div>
         )}
         <div className="w-[70vw] h-full top-0 bottom-0 left-0 fixed">
+        <div className="bg-blue opacity-40 inset-0 fixed"></div>
           <img
             src={require("../../image/bg_login.png")}
             alt="bgimage"
@@ -91,13 +92,13 @@ const Auth = () => {
             <img
               src={require("../../image/Home.png")}
               alt="curecoin"
-              className="max-w-[300px] w-full"
+              className="max-w-[250px] w-full"
             />
           </div>
           <div className="flex flex-col justify-center items-center mt-6">
             <span className="2xl:text-3xl text-2xl text-white font-bold">Sign In</span>
             <span className="text-lg 2xl:text-xl text-white mt-2">
-              Use your Curecoin account.
+              Use your Cashwave account.
             </span>
           </div>
           <form

@@ -8,6 +8,7 @@ import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { FormContext } from "../../Contexts/FormContext";
+import Footer from "../../components/Footer";
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -297,7 +298,7 @@ const Loans = () => {
                   className="flex w-[50%] h-[32px] 2xl:text-sm text-sm justify-evenly rounded-r-lg items-center bg-blue text-white cursor-pointer"
                   onClick={() => {
                     navigate("/login");
-                    localStorage.setItem("token", "");
+                    localStorage.removeItem("token");
                   }}
                 >
                   <div className="flex ml-2 mr-1">
@@ -441,7 +442,7 @@ const Loans = () => {
                   </tr>
                 </thead>
                 <tbody className="border-solid 2xl:text-lg text-base border-1 border-aliceblue bg-white rounded-lg">
-                  {allLoans &&
+                  {allLoans.length> 0 ? 
                     allLoans
                       .slice()
                       .reverse()
@@ -523,7 +524,11 @@ const Loans = () => {
                             </td>
                           )}
                         </tr>
-                      ))}
+                      )):(
+                        <div className="flex w-full justify-center items-end pt-[200px] text-lg 2xl:text-xl">
+                      Nothing to display.
+                    </div>
+                      )}
                 </tbody>
               </table>
             </div>
@@ -941,6 +946,9 @@ const Loans = () => {
           </Drawer>
         </div>
       </div>
+      <footer className="bottom-0 absolute right-0 2xl:left-[226px] left-[198px] ">
+        <Footer/>
+      </footer>
     </>
   );
 };

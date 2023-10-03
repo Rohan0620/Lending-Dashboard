@@ -95,6 +95,7 @@ module.exports = {
     },
     opacity: {
       '67': '.67',
+      '40':'0.40'
     },
     fontWeight: {
       thin: '100',

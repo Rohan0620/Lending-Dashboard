@@ -1,9 +1,10 @@
 import React from "react";
 import Sidebar from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
-import { Divider, Drawer } from "antd";
+import { Divider, Drawer, Spin } from "antd";
 import axios from "axios";
 import { FormContext } from "../../Contexts/FormContext";
+import Footer from "../../components/Footer";
 
 const Setting = () => {
   const [showSelected, setShowSelected] = React.useState(() => {
@@ -12,9 +13,34 @@ const Setting = () => {
   const [mailDrawer, setMailDrawer] = React.useState(false);
   const [otpDrawer, setOtpDrawer] = React.useState(false);
   const [nameDrawer, setNameDrawer] = React.useState(false);
-  const [settingData, setSettingData] = React.useState(null)
-  const {baseUrl} = React.useContext(FormContext)
+  const [mailData, setMailData] = React.useState({mail:"",otp:""})
+  const [submitting, setSubmitting] = React.useState(false)
+  const [settingData, setSettingData] = React.useState(null);
+  const { baseUrl } = React.useContext(FormContext);
   let navigate = useNavigate();
+  const DrawerContext = React.createContext({
+    mailDrawer: false,
+    otpDrawer: false,
+    openMailDrawer: () => {
+      setMailDrawer(true)
+    },
+    closeMailDrawer: () => {
+      setMailDrawer(false)
+    },
+    openOtpDrawer: () => {
+      setOtpDrawer(true)
+    },
+    closeOtpDrawer: () => {
+      setOtpDrawer(false)
+    },
+  });
+    const {
+      openMailDrawer,
+      closeMailDrawer,
+      openOtpDrawer,
+      closeOtpDrawer,
+    } = React.useContext(DrawerContext);
+  
 
   const onCloseMailDrawer = () => {
     setMailDrawer(false);
@@ -33,27 +59,45 @@ const Setting = () => {
   const handleEditName = () => {
     setNameDrawer(true);
   };
-
-  const getData = async () =>{
-    try{
-      const response = await axios.get(`${baseUrl}/Hospitals/settings`,
-      {
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem('token')}`
+  const getData = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/Lenders/settings`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        withCredentials:'include'
-      },
-      )
-      const  data = response.data;
-      setSettingData(data)
-      console.log(settingData)
+        withCredentials: true,
+      });
+      const data = response.data;
+      setSettingData(data.data);
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
     }
-    catch(err)
-    {
-      console.log(err)
+  };
+  const handleMailSubmit = async () =>{
+    try {
+      const response = await axios.post(`${baseUrl}/Lenders/generateEmail`, 
+        {
+          email:mailData.mail
+        },
+        {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        withCredentials: true,
+      });
+      const data = response.data
+      if(data.status === "Success")
+      {
+        closeMailDrawer()
+        openOtpDrawer()
+      }
+      
+    } catch (error) {
+      console.log(error)
+      
     }
   }
-
   const handleTabClick = (tabName) => {
     setShowSelected(tabName);
     sessionStorage.setItem("selectedSettingTab", tabName);
@@ -61,12 +105,14 @@ const Setting = () => {
       sessionStorage.setItem("selectedTab", "help");
     } else {
       sessionStorage.setItem("selectedTab", "settings");
-    }  };
-  React.useEffect(()=>{
-    getData()
-    setShowSelected(sessionStorage.getItem("selectedSettingTab") || "profile")
-  },[showSelected])
+    }
+  };
+  React.useEffect(() => {
+    getData();
+    setShowSelected(sessionStorage.getItem("selectedSettingTab") || "profile");
+  }, [showSelected]);
   return (
+    <>
     <div className="w-full font-poppins relative">
       <div className="fixed top-0 bottom-0">
         <Sidebar />
@@ -159,20 +205,34 @@ const Setting = () => {
               className="flex w-[150px] h-[32px] bg-black text-base 2xl:text-lg justify-center items-center text-white border-1 rounded-lg absolute bottom-6 cursor-pointer"
               onClick={() => {
                 navigate("/login");
-                localStorage.setItem("token", "");
+                localStorage.removeItem("token");
               }}
             >
               <span className="mr-auto max-w-[20px] w-full ml-5 mt-2">
-                <img src={require("../../image/logout.png")} className="w-full h-[20px]" alt="logout" />
+                <img
+                  src={require("../../image/logout.png")}
+                  className="w-full h-[20px]"
+                  alt="logout"
+                />
               </span>
               <span className="ml-auto mr-9">Logout</span>
             </div>
           </div>
         </div>
       </div>
+      {
+        settingData === null ? (
+          <>
+          <div className="fixed inset-0 bg-gray-500 opacity-100 z-50"></div>
+          <div className=" flex justify-center items-center w-full h-screen transition ease-in delay-300 ">
+            <Spin size="large" />
+          </div>
+        </>
+        ):(
 
+        <>
       {showSelected === "profile" && (
-        <div className="ml-[500px] 2xl:ml-[600px] ">
+        <div className="ml-[500px] 2xl:ml-[600px] pb-12">
           <div className="mt-[50px] text-left">
             <span className="text-2xl 2xl:text-3xl font-bold ml-[10px]">
               Profile
@@ -181,11 +241,11 @@ const Setting = () => {
           <div className="flex flex-col mt-[30px] gap-6 text-base 2xl:text-lg">
             <div className="flex flex-col max-w-[600px] min-h-[100px] h-full justify-center border-1 border-none  bg-lightBlue rounded-xl mt-[15px]">
               <span className="ml-[50px] mr-auto">Username</span>
-              <span className="ml-[50px] mr-auto font-bold">test</span>
+              <span className="ml-[50px] mr-auto font-bold">{settingData?.profile?.username}</span>
             </div>
             <div className="flex flex-col max-w-[600px] min-h-[100px] h-full justify-center border-1 border-none  bg-lightBlue rounded-xl mt-[10px]">
-              <span className="ml-[50px] mr-auto">Lender Name</span>
-              <span className="ml-[50px] mr-auto font-bold">XYZ Hospital</span>
+              <span className="ml-[50px] mr-auto">Merchant Name</span>
+              <span className="ml-[50px] mr-auto font-bold">{settingData?.profile?.hospitalName}</span>
             </div>
             <div className="flex flex-col max-w-[600px] min-h-[100px] h-full justify-center border-1 border-none  bg-lightBlue rounded-xl mt-[10px]">
               <div className="flex">
@@ -197,12 +257,12 @@ const Setting = () => {
                   Edit
                 </span>
               </div>
-              <span className="ml-[50px] mr-auto font-bold">John Doe</span>
+              <span className="ml-[50px] mr-auto font-bold">{settingData?.profile?.inChargeName}</span>
             </div>
             <div className="flex flex-col max-w-[600px] min-h-[100px] h-full justify-center border-1 border-none  bg-lightBlue rounded-xl mt-[10px]">
               <span className="ml-[50px] mr-auto">Address</span>
               <span className="ml-[50px] mr-auto font-bold flex-wrap">
-                XYZ Hospital, abc nagar Hubli Karnataka 582101
+                {settingData?.profile?.address}
               </span>
             </div>
           </div>
@@ -224,7 +284,7 @@ const Setting = () => {
             <div className="flex flex-col max-w-[600px] min-h-[100px] h-full justify-center border-1 border-none bg-lightBlue rounded-xl mt-[15px]">
               <span className="ml-[50px] mr-auto">Account Number</span>
               <span className="ml-[50px] mr-auto font-bold">
-                1234567899008777
+                {settingData?.bankAccount?.accountNumber}
               </span>
             </div>
             <div className="flex flex-col max-w-[600px] min-h-[100px] h-full justify-center border-1 border-none bg-lightBlue rounded-xl mt-[15px]">
@@ -255,12 +315,12 @@ const Setting = () => {
                 Edit
               </span>
             </div>
-            <span className="ml-[50px] mr-auto font-bold">ABC@gmail.com</span>
+            <span className="ml-[50px] mr-auto font-bold">{settingData?.email}</span>
           </div>
         </div>
       )}
       {showSelected === "help" && (
-        <div className="ml-[500px] 2xl:ml-[600px]">
+        <div className="ml-[500px] 2xl:ml-[600px] pb-12">
           <div className="mt-[50px] text-left">
             <span className="text-2xl 2xl:text-3xl font-bold ml-[10px]">
               Help Centre
@@ -291,6 +351,7 @@ const Setting = () => {
           </form>
         </div>
       )}
+      
       {mailDrawer && (
         <Drawer
           placement="right"
@@ -300,12 +361,12 @@ const Setting = () => {
           width={700}
           className="border-solid border-1 border-aliceblue border-t-0 border-b-0 border-r-0 "
         >
-          {/* {submitting && (
+          {submitting && (
           <div
             className="bg-blue h-1 absolute top-0 left-0 right-0"
             style={{ width: "100%", animation: "loading-bar 2s infinite" }}
           ></div>
-        )} */}
+        )}
           <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
             <svg
               className="h-8 w-8 text-black cursor-pointer"
@@ -322,21 +383,23 @@ const Setting = () => {
               />
             </svg>
           </div>
-          <form>
+          <form onSubmit={handleMailSubmit}>
             <div className="flex flex-col ml-5 mt-8 font-Poppins">
-              <span className="text-2xl 2xl:text-3xl font-bold mt-4">New Email</span>
+              <span className="text-2xl 2xl:text-3xl font-bold mt-4">
+                New Email
+              </span>
               <span className="text-lg 2xl:text-xl font-normal mt-4">
                 We will send verification code to the email you choose.
               </span>
             </div>
             <div className="block mt-5 ml-7">
               <input
-                type="text"
-                name="name"
-                className="w-[575px] h-[50px] font-Poppins text-lg 2xl:text-xl text-blue border-1 border-solid border-blue placeholder-blue bg-lightBlue border-x-0 border-t-0"
+                type="email"
+                name="mail"
+                className="w-[575px] h-[50px] font-Poppins text-lg px-3 outline-none 2xl:text-xl text-blue border-1 border-solid border-blue placeholder-blue bg-lightBlue border-x-0 border-t-0"
                 placeholder="New Email"
-                // value={otp}
-                // onChange={handleChange}
+                value={mailData.mail}
+                onChange={(e)=>setMailData({mail:e.target.value})}
                 required
               />
             </div>
@@ -347,12 +410,13 @@ const Setting = () => {
                   className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-lightBlue"
                   onClick={onCloseMailDrawer}
                 >
-                  <span className="text-base 2xl:text-lg font-bold">CANCEL</span>
+                  <span className="text-base 2xl:text-lg font-bold">
+                    CANCEL
+                  </span>
                 </button>
                 <button
                   className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue"
                   type="submit"
-                  onClick={handleOtpDrawer}
                 >
                   <span className="text-base 2xl:text-lg font-bold">NEXT</span>
                 </button>
@@ -394,7 +458,9 @@ const Setting = () => {
           </div>
           <form>
             <div className="flex flex-col ml-5 mt-8 font-Poppins">
-              <span className="text-2xl 2xl:text-3xl font-bold mt-4">Incharge Name</span>
+              <span className="text-2xl 2xl:text-3xl font-bold mt-4">
+                Incharge Name
+              </span>
             </div>
             <div className="block mt-5 ml-7">
               <input
@@ -414,7 +480,9 @@ const Setting = () => {
                   className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-lightBlue"
                   onClick={onCloseNameDrawer}
                 >
-                  <span className="text-base 2xl:text-lg font-bold">CANCEL</span>
+                  <span className="text-base 2xl:text-lg font-bold">
+                    CANCEL
+                  </span>
                 </button>
                 <button
                   className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue"
@@ -436,12 +504,12 @@ const Setting = () => {
           width={700}
           className="border-solid border-1 border-aliceblue border-t-0 border-b-0 border-r-0 "
         >
-          {/* {submitting && (
+          {submitting && (
           <div
             className="bg-blue h-1 absolute top-0 left-0 right-0"
             style={{ width: "100%", animation: "loading-bar 2s infinite" }}
           ></div>
-        )} */}
+        )}
           <div className="flex mt-[10px] flex-row justify-start items-start ml-5">
             <svg
               className="h-8 w-8 text-black cursor-pointer"
@@ -460,7 +528,9 @@ const Setting = () => {
           </div>
           <form>
             <div className="flex flex-col ml-5 mt-8 font-Poppins">
-              <span className="text-2xl 2xl:text-3xl font-bold mt-4">Verification Code</span>
+              <span className="text-2xl 2xl:text-3xl font-bold mt-4">
+                Verification Code
+              </span>
               <span className="text-lg 2xl:text-xl font-normal mt-4">
                 Enter the 6-digit code that we sent to your phone number to
                 finish your authentication.
@@ -468,12 +538,12 @@ const Setting = () => {
             </div>
             <div className="block mt-5 ml-7">
               <input
-                type="text"
+                type="numeric"
                 name="otp"
                 className="w-[575px] h-[50px] font-Poppins text-lg 2xl:text-xl text-blue border-1 border-solid border-blue placeholder-blue bg-lightBlue border-x-0 border-t-0"
                 placeholder="OTP"
-                // value={otp}
-                // onChange={handleChange}
+                value={mailData.otp}
+                onChange={(e)=>setMailData({otp:e.target.value})}
                 required
               />
             </div>
@@ -484,7 +554,9 @@ const Setting = () => {
                   className=" bg-white text-blue border-solid border-1 border-aliceblue rounded-xl w-[150px] h-[55px] mx-2 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-lightBlue"
                   onClick={onCloseOtpDrawer}
                 >
-                  <span className="text-base 2xl:text-lg font-bold">CANCEL</span>
+                  <span className="text-base 2xl:text-lg font-bold">
+                    CANCEL
+                  </span>
                 </button>
                 <button
                   className=" bg-blue text-white border-solid border-1 border-lightBlue rounded-xl w-[150px] h-[55px] mx-5 bottom-1 cursor-pointer transition duration-300 ease-in-out hover:bg-darkBlue"
@@ -497,7 +569,14 @@ const Setting = () => {
           </form>
         </Drawer>
       )}
+      </>
+      )
+      }
     </div>
+      <footer className="bottom-0 fixed right-0 2xl:left-[550px] left-[450px]">
+        <Footer/>
+      </footer>
+    </>
   );
 };
 

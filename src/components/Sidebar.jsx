@@ -287,7 +287,7 @@ const Sidebar = () => {
       <div className="2xl:w-[210px] xl:w-[180px] w-full xl:text-[18px] bg-blue h-screen p-2  pt-8 duration-300 font-Poppins ">
         <div className="mr-auto w-full text-left">
           <img
-            className="2xl:max-w-[165px] max-w-[150px] w-full h-[15px] mt-4 mb-[40px] ml-2 mr-auto"
+            className="2xl:max-w-[165px] max-w-[150px] w-full mb-[20px] ml-2 mr-auto"
             src={Logo}
             alt="logo"
           />
