@@ -539,16 +539,16 @@ const ApprovedCust = () => {
           </>
           ) : (
             <div>
-              <div className="flex w-[600px] h-[550px] flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+              <div className="flex w-[600px] py-8 flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5">
                 <div className="flex flex-row w-full">
-                  <div className="flex w-[75px] h-[75px] mt-[20px] ml-[20px] items-start rounded-full overflow-hidden">
+                  <div className="flex w-[75px] h-[75px] ml-[20px] items-start rounded-full overflow-hidden">
                     <img
                       className="w-[75px] h-[75px] "
                       src={`${baseUrl}/${custDetails.data.profileImage}`}
                       alt="user"
                     />
                   </div>
-                  <div className="flex flex-col m-4 mt-9">
+                  <div className="flex flex-col m-4">
                     <span className="text-base 2xl:text-lg text-left font-semibold mr-auto">
                       {custDetails.data.name ? custDetails.data.name : "-"}
                     </span>
@@ -557,7 +557,7 @@ const ApprovedCust = () => {
                     </span>
                   </div>
 
-                  <div className="flex flex-col w-[30%] items-center justify-start mt-[3rem] ml-auto pr-12">
+                  <div className="flex flex-col w-[30%] items-center justify-start mt-6 ml-auto pr-12">
                     {/* <span className="text-[18px] text-left text-red font-semibold ml-auto m-1">
                   Pending
                 </span> */}
@@ -662,11 +662,11 @@ const ApprovedCust = () => {
 
                     <div className="flex flex-col items-center max-w-[40%] w-full justify-start pr-8">
                       <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
-                        Employment Type
+                        Credit Limit
                       </span>
                       <span className="text-base 2xl:text-lg text-left font-normal mr-auto m-1">
-                        {custDetails.data.employmentType
-                          ? custDetails.data.employmentType
+                      ₹{custDetails.data.creditLimit
+                          ? custDetails.data.creditLimit
                           : ""}
                       </span>
                     </div>
@@ -683,8 +683,8 @@ const ApprovedCust = () => {
                     </div>
                     <div className="block ml-auto p-5 mr-3 text-left">
                       <span className="text-[10px] 2xl:text-sm font-normal">
-                        Total Limit-₹
-                        {custDetails.data.creditLimit}
+                        Available Limit-₹
+                        {custDetails.data.creditLimit - custDetails.data.creditUsed}
                       </span>
                     </div>
                   </div>
@@ -731,15 +731,15 @@ const ApprovedCust = () => {
                   <div className="flex flex-row ml-5 mt-3 ">
                     <div className="block">
                       <span className="text-2xl 2xl:text-3xl text-left font-extrabold mr-auto">
-                        Ongoing Treatments
+                        Ongoing Loans
                       </span>
                     </div>
                   </div>
                   {custDetails.data.creditUsed ? (
                     <div className="w-[600px] h-[55px] bg-lightBlue border-1 border-solid border-blue rounded-lg flex flex-row items-center ml-6 mt-6">
                       <span className="text-base 2xl:text-lg ml-5">
-                        Treatment ID -{" "}
-                        {custDetails.data.pendingTransaction.treatmentCode}
+                        Loan ID -{" "}
+                        {custDetails.data.pendingTransaction.trnId}
                       </span>
                       <span className="ml-auto mr-5 text-red text-base 2xl:text-lg">
                         Pending
@@ -747,7 +747,7 @@ const ApprovedCust = () => {
                     </div>
                   ) : (
                     <div className="flex flex-row w-full mt-8 mb-10 justify-center items-center">
-                      <div className="block">No Ongoing Treatments</div>
+                      <div className="block">No Ongoing Loans</div>
                     </div>
                   )}
                 </div>
