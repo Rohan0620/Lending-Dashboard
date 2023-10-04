@@ -9,6 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { FormContext } from "../../Contexts/FormContext";
 import Footer from "../../components/Footer";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import Download from "yet-another-react-lightbox/plugins/download";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
 const Loans = () => {
   const [selectClient, setSelectClient] = React.useState(false);
@@ -17,9 +21,11 @@ const Loans = () => {
   const [loading, setLoading] = React.useState(true);
   const [showCreditsLimit, setShowCreditsLimit] = useState(false);
   const [showApproved, setShowApproved] = useState(false);
-  const [approveStatus, setApproveStatus] = useState("");
+  const [approveStatus, setApproveStatus] = useState();
   const [amounts, setAmounts] = useState({ unsettled: "", settled: "" });
   const { baseUrl } = React.useContext(FormContext);
+  const [openLightbox, setOpenLightbox] = React.useState(false);
+  const [invoice, setInvoice] = useState(null)
   let navigate = useNavigate();
 
   const socketRef = useRef(null);
@@ -37,8 +43,7 @@ const Loans = () => {
     });
   };
 
-  const [fundData, setFund] = useState("");
-  console.log("f", fundData.length);
+  const [fundData, setFund] = useState(null);
 
   console.log(socketRef.current);
   // useEffect(() => {
@@ -59,20 +64,21 @@ const Loans = () => {
   // }, [socketRef]);
   if (socketRef.current) {
     socketRef.current.on("credited", (data) => {
-      console.log("Received data from server:", data);
-      console.log(fundData);
       const newFundData = Object.assign({}, fundData, {
         data: {
           ...fundData.data,
           amountReceived: data.amount,
         },
       });
-      console.log(newFundData);
       setFund(newFundData);
       if (data.amount >= IdAmt) {
         socketRef.current.close();
       }
     });
+  }
+  const handleInvoice = (img) =>{
+    const _invoice = img.replace("public","https://cashwave.nyc3.digitaloceanspaces.com")
+    setInvoice(_invoice)
   }
 
   const getFundDetails = async () => {
@@ -87,7 +93,6 @@ const Loans = () => {
           },
         }
       );
-      console.log("Fund data ===>", response.data);
       setFund(response.data);
     } catch (err) {
       console.error(err);
@@ -131,7 +136,7 @@ const Loans = () => {
     setShowClientdDtails(false);
   };
 
-  const [emiData, setEmi] = useState("");
+  const [emiData, setEmi] = useState(null);
   const [allEmi, setAllEmis] = useState(null);
   const [paramIds, setParams] = useState("");
   const [IdAmt, setEmiAmt] = useState("");
@@ -170,6 +175,7 @@ const Loans = () => {
   const onCloseCredits = () => {
     setShowCreditsLimit(false);
     setSelectClient(true);
+    setFund(null)
   };
 
   const [allLoans, setLoanData] = useState("");
@@ -500,7 +506,7 @@ const Loans = () => {
                           </td>
                           <td className="max-w-[120px] 2xl:max-w-[100px] w-full pr-5">
                             {transaction.tenure}
-                            {status === "Success" ? " months" : " "}
+                            {status === "Success" ? " days" : " "}
                           </td>
                           <td className="max-w-[100px] w-full">
                             <span>₹{transaction.treatmentCost || ""}</span>
@@ -692,8 +698,8 @@ const Loans = () => {
                     Loan Details
                   </span>
                 </div>
-                <div className="flex w-[600px] h-[200px] flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
-                  <div className="flex flex-col w-full m-3">
+                <div className="flex w-[600px] py-5 flex-row border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-5 mt-9">
+                  <div className="flex flex-col w-full mx-6">
                     <div className="flex flex-row justify-between mb-4">
                       <div className="flex flex-row  w-[100%] justify-between  ">
                         <span className="text-base 2xl:text-xl text-aliceblue text-left    ">
@@ -708,7 +714,7 @@ const Loans = () => {
                     <div className="flex flex-row justify-between mb-4">
                       <div className="flex flex-row  w-[100%] justify-between  ">
                         <span className="text-base 2xl:text-xl text-aliceblue text-left    ">
-                          Interest rate per month
+                          Total Interest
                         </span>
                         <span className="text-base 2xl:text-xl text-aliceblue font-normal  ">
                           {emiData ? emiData.interestRate : ""}
@@ -719,7 +725,7 @@ const Loans = () => {
                     <div className="flex flex-row justify-between mb-4">
                       <div className="flex flex-row  w-[100%] justify-between  ">
                         <span className="text-base 2xl:text-xl text-aliceblue text-left    ">
-                          Tenure(months)
+                          Tenure(days)
                         </span>
                         <span className="text-base 2xl:text-xl text-aliceblue font-normal  ">
                           {emiData ? emiData.tenure : ""}
@@ -730,7 +736,7 @@ const Loans = () => {
                     <div className="flex flex-row justify-between mb-4">
                       <div className="flex flex-row  w-[100%] justify-between  ">
                         <span className="text-base 2xl:text-xl text-black text-left    ">
-                          EMI
+                          Total Payable
                         </span>
                         <span className="text-base 2xl:text-xl text-black font-normal  ">
                           ₹{emiData ? emiData.amount : ""}
@@ -745,7 +751,7 @@ const Loans = () => {
                     Payment Dates
                   </span>
                 </div>
-                <div className="mb-[100px]">
+                <div className="">
                   {allEmi ? (
                     allEmi.map((emi) => (
                       <>
@@ -770,6 +776,85 @@ const Loans = () => {
                     <h2>No emis</h2>
                   )}
                 </div>
+                <div className="flex flex-row ml-5 mt-3">
+                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                    Merchant Details
+                  </span>
+                </div>
+                <div className="flex w-[600px] py-4 flex-col border-solid border-1 bg-lightBlue border-aliceblue rounded-lg m-4 ml-5 mr-0">
+                  <div className="flex flex-row justify-around">
+                    <div className="flex flex-col max-w-[60%] w-full justify-start items-center mr-auto ml-5 pr-4">
+                      <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1 ">
+                        Merchant Name
+                      </span>
+                      <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
+                        {emiData ? emiData.merchantName : "-"}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-center max-w-[40%] w-full justify-start pr-8">
+                      <span className="text-base 2xl:text-lg text-left font-semibold mr-auto m-1">
+                        Merchant Code
+                      </span>
+                      <span className="text-base 2xl:text-lg font-normal mr-auto m-1">
+                        {emiData ? emiData.merchantCode : "-"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-row ml-5 mt-3">
+                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
+                    Invoice Details
+                  </span>
+                </div>
+                <div
+                  className="flex flex-row w-[600px] h-[50px] mb-[100px] items-center border-solid border-1 border-blue bg-lightBlue rounded-lg ml-5 mt-4 cursor-pointer"
+                  onClick={() => {
+                    setOpenLightbox(!openLightbox);
+                    handleInvoice(emiData.invoice)
+                  }}
+                >
+                  <span className="mr-auto ml-4 text-lg font-semibold">
+                    Invoice Details
+                  </span>
+                  <span className="ml-auto mr-4">
+                    <img src={require("./arrow.png")} alt="arrow" />
+                  </span>
+                </div>
+                {openLightbox && (
+                  <div>
+                    <Lightbox
+                      open={openLightbox}
+                      slides={[{ src: invoice }]}
+                      close={() => setOpenLightbox(!openLightbox)}
+                      plugins={[Download, Zoom]}
+                      animation={{ zoom: 500 }}
+                      // zoom={{
+                      //   maxZoomPixelRatio:1,
+                      //   zoomInMultiplier:2,
+                      //   doubleTapDelay:300,
+                      //   doubleClickDelay:300,
+                      //   doubleClickMaxStops:2,
+                      //   keyboardMoveDistance:50,
+                      //   wheelZoomDistanceFactor:100,
+                      //   pinchZoomDistanceFactor:100,
+                      //   scrollToZoom:false,
+
+                      // }}
+                      carousel={{
+                        finite: true,
+                        preload: 2,
+                        imageFit: "contain",
+                        padding: "16px",
+                        spacing: "16px",
+                      }}
+                      render={{
+                        buttonPrev: () => null,
+                        buttonNext: () => null,
+                        buttonZoom: () => true,
+                      }}
+                    />
+                  </div>
+                )}
 
                 <div className="w-full bottom-0 right-0 absolute z-1 bg-white ">
                   <Divider className="bg-blue mr-auto mt-0" />
@@ -823,6 +908,15 @@ const Loans = () => {
             {/* <div className="block px-5 pt-10">
             <span className="text-4xl font-bold">Set Credit Limit</span>
           </div> */}
+          {fundData === null ? (
+              <>
+                <div className="fixed inset-0 bg-gray-500 opacity-100 z-50"></div>
+                <div className=" flex justify-center items-center w-full h-full transition ease-in delay-300 ">
+                  <Spin size="large" />
+                </div>
+              </>
+            ) : (
+              <>
 
             <div className="flex flex-row ml-5 mt-3">
               <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
@@ -865,12 +959,13 @@ const Loans = () => {
                       Amount Received
                     </span>
                     <span className="text-sm 2xl:text-base font-normal mr-auto m-1">
-                      {fundData ? fundData.data.amountReceived : "-"}
+                    ₹{fundData ? fundData.data.amountReceived : "-"}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
+            </>)}
 
             {/* <div className="flex flex-row w-[600px] h-[50px] items-center border-solid border-1 border-gold bg-lightBlue rounded-lg ml-6 mt-40">
             <span className="mr-auto ml-4 text-lg font-semibold text-gold">
@@ -895,7 +990,7 @@ const Loans = () => {
                     approveStatus === false ? "opacity-67" : ""
                   }`}
                   onClick={handleApprove}
-                  disabled={approveStatus === false}
+                  disabled={approveStatus === false ? false : true}
                 >
                   <span className="text-base 2xl:text-lg font-bold">
                     APPROVE
@@ -933,14 +1028,23 @@ const Loans = () => {
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </div>
-              <div className="flex w-full h-screen justify-center top-[50%] font-Poppins">
-                <div className="flex flex-col flex-wrap justify-center items-center">
-                  <div className="">
-                    <img src={require("./approved.png")} alt="congrats" />
+              <div className="flex w-full justify-center pt-[80px] space-y-5 font-Poppins">
+                <div className="flex flex-col justify-center items-center">
+                  <div className="w-[250px]">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                    >
+                      <path
+                        fill="#306FC7"
+                        d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"
+                      />
+                    </svg>
                   </div>
-                  <span className=" w-[500px] break-words text-3xl  font-bold text-center">
+                  <span className="font-bold text-2xl 2xl:text-3xl mt-5">
                     Approved Successfully
                   </span>
+                  
                 </div>
               </div>
             </div>
