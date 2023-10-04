@@ -80,7 +80,7 @@ const Loans = () => {
     console.log("Fund ID===>", fundId);
     try {
       const response = await axios.get(
-        `${baseUrl}/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${IdAmt}`,
+        `${baseUrl}/Lenders/getvirtualaccount?trnId=%23${fundId}&amount=${totalPay}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -96,7 +96,7 @@ const Loans = () => {
 
   const onFundAccount = () => {
     console.log("socket api is going call");
-    const socket = io("http://localhost:8000/", {
+    const socket = io(`${baseUrl}`, {
       withCredentials: true,
       query: {
         // Add your parameters here as key-value pairs
@@ -139,7 +139,7 @@ const Loans = () => {
   console.log("ID amount===>", IdAmt);
   // console.log("Length of all EMI",Object.values(allEmi).length);
   // console.log("EMI DATA===>",emiData.customerId.name)
-
+  const [totalPay, setTotalPay] = useState(0)
   const handleClick = async (id) => {
     console.log("Params id", id);
     setSelectClient(!selectClient);
@@ -161,6 +161,7 @@ const Loans = () => {
       setAllEmis(data.data.EmiDates);
       setEmi(data.data);
       setEmiAmt(data.data.treatmentCost);
+      setTotalPay(data.data.totalPay)
     } catch (err) {
       console.error(err);
     }
@@ -581,7 +582,7 @@ const Loans = () => {
                     <div className="flex w-[75px] mt-[20px] ml-[20px] items-start">
                       <img
                         className="w-[75px] "
-                        src={require("./user.png")}
+                        src={`${baseUrl}/${emiData?.customerId?.profileImage}`}
                         alt="user"
                       />
                     </div>
@@ -741,7 +742,7 @@ const Loans = () => {
 
                 <div className="flex flex-row ml-5 mt-3">
                   <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
-                    EMI Dates
+                    Payment Dates
                   </span>
                 </div>
                 <div className="mb-[100px]">
