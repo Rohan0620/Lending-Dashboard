@@ -48,7 +48,7 @@ const Repayment = () => {
     setSelectClient(false);
   };
   const onClose = () => {
-    setEmi(false);
+    setEmi(null);
     setAllEmis(null)
     setSelectClient(false);
     setShowApproved(false);
@@ -61,7 +61,7 @@ const Repayment = () => {
   };
   const [invoice, setInvoice] = useState(null)
 
-  const [emiData, setEmi] = useState("");
+  const [emiData, setEmi] = useState(null);
   const [allEmi, setAllEmis] = useState(null);
   // console.log("Length of all EMI",Object.values(allEmi).length);
   // console.log("EMI DATA===>",emiData.customerId.name)
@@ -98,7 +98,6 @@ const Repayment = () => {
     setSelectClient(true);
   };
 
-  console.log("Length", emiData.length);
 
   const [repayData, setRepayData] = useState("");
   const getRepay = async () => {
@@ -707,7 +706,7 @@ const Repayment = () => {
                 Client Details
               </span>
             </div>
-            {emiData && allEmi === null ? (
+            {emiData === null ? (
               <>
                 <div className="fixed inset-0 bg-gray-500 opacity-100 z-50"></div>
                 <div className=" flex justify-center items-center w-full h-full transition ease-in delay-300 ">
@@ -827,12 +826,6 @@ const Repayment = () => {
                     </div>
                   </div>
                 </div>
-
-                <div className="flex flex-row ml-5 mt-3">
-                  <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
-                    Loan Details
-                  </span>
-                </div>
                 <div className="flex flex-row ml-5 mt-3">
                   <span className="text-2xl 2xl:text-3xl font-extrabold mt-4">
                     Loan Details
@@ -857,7 +850,7 @@ const Repayment = () => {
                           Total Interest
                         </span>
                         <span className="text-aliceblue font-normal mr-3  ">
-                          {emiData ? emiData.interestRate : "-"}
+                          {emiData ? emiData.interestRate : "-"}%
                         </span>
                       </div>
                     </div>
