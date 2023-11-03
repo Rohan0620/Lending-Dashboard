@@ -97,7 +97,7 @@ const Loans = () => {
         }
       );
       setFund(response.data);
-      console.log(fundData)
+      console.log("got funddata",fundData)
     } catch (err) {
       console.error(err);
     }
