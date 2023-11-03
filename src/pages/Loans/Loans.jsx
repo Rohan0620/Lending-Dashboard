@@ -64,6 +64,7 @@ const Loans = () => {
   // }, [socketRef]);
   if (socketRef.current) {
     socketRef.current.on("credited", (data) => {
+      console.log("check")
       const newFundData = Object.assign({}, fundData, {
         data: {
           ...fundData.data,
