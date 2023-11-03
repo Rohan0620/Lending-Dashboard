@@ -64,13 +64,15 @@ const Loans = () => {
   // }, [socketRef]);
   if (socketRef.current) {
     socketRef.current.on("credited", (data) => {
-      console.log("check")
+      console.log(fundData)
+      console.log("check",data)
       const newFundData = Object.assign({}, fundData, {
         data: {
           ...fundData.data,
           amountReceived: data.amount,
         },
       });
+      console.log(newFundData)
       setFund(newFundData);
       if (data.amount >= IdAmt) {
         socketRef.current.close();
@@ -95,6 +97,7 @@ const Loans = () => {
         }
       );
       setFund(response.data);
+      console.log(fundData)
     } catch (err) {
       console.error(err);
     }
